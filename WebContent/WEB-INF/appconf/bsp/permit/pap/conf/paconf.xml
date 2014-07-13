@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!--***********PADomian配置开始*************-->
+	 <bean id="paDomain" class="net.mast.bsp.permit.pap.domain.core.PAImpl"> 
+	    <property name="rolesDao"><ref bean="rolesDao"/></property> 
+	    <property name="roleResourceDao"><ref bean="roleResourceDao"/></property> 
+	    <property name="functionDomain"><ref bean="functionDomain"/></property> 
+	  </bean>
+	<!--***********PADomian配置结束*************-->
+</beans>

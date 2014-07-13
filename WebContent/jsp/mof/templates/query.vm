@@ -1,0 +1,582 @@
+##PAGEָ����̶���
+<%@ page contentType="text/html;charset=GBK" %>
+<%@ page import="net.mast.mof.util.MultiRequestUtil"%>
+##PAGEָ���������
+
+##TAGLIB�̶���
+<%@ taglib uri="/tags/web-flex" prefix="flex"%>
+<%@ taglib uri="/tags/web-grid" prefix="grid"%>
+<%@ taglib uri="/tags/web-html" prefix="html"%>
+<%@ taglib uri="/tags/web-date" prefix="date"%>
+<%@ taglib uri="/tags/web-mast" prefix="ntmast"%>
+<%@ taglib uri="/tags/web-widgets" prefix="widgets"%>
+<%@ taglib uri="/tags/pubcommonhelp" prefix="help"%>
+<%@ taglib uri="/tags/metadata" prefix="meta"%>
+##TAGLIB������
+
+##JAVA����̶���
+<%
+	String main_pk = (String)request.getAttribute("main_primaryKey");
+	if( main_pk == null ){
+		main_pk = MultiRequestUtil.getParameter(request,"main_primaryKey");
+	}
+	String parent = MultiRequestUtil.getParameter(request,"parent_window");
+	String isCommonSearch=(String)request.getAttribute("isCommonSearch");
+	if( isCommonSearch==null) isCommonSearch="false";
+	
+	String queueId = MultiRequestUtil.getParameter(request,"queueId");
+%>
+#set ( $Tab = $window.MainTab)
+##JAVA���������
+
+##HTMLͷ�̶���
+<HTML>
+<HEAD>
+<TITLE>${window.Description}��ѯ</TITLE>
+<link rel="stylesheet" type="text/css" href="<ntmast:ui css='flexgrid.css'/>">
+<link rel="stylesheet" type="text/css" href="<ntmast:ui css='skin.css'/>">
+<script language="javascript" src="<ntmast:ui js='flexgrid.js'/>"></script>
+<script language="javascript" src="<ntmast:ui js='grid.js'/>"></script>
+<script language="javascript" src="<ntmast:ui js='pubcommonhelp.js'/>"></script>
+<script language="javascript" src="<ntmast:ui js='calendar.js'/>"></script>
+<script language="javascript" src="<ntmast:ui js='mof.js'/>"></script>
+<script language="javascript" src="<ntmast:ui js='comb.js'/>"></script>
+
+##HTMLͷ������
+##����Զ���ű��ļ�
+##foreach( $table in $window.getAllTable() )
+#foreach( $custom_js in $window.getIncludeJsFiles("Q") )
+<script language="javascript" src="<ntmast:ui js='$custom_js'/>"></script>
+#end
+##end
+
+##HTML�壨�������̶���
+</HEAD>
+<BODY topmargin="10px">
+<iframe name="help_frame" src=""  width=0 height=0> </iframe>
+##------------------------��ɼ򵥲�ѯ����------------------------
+<widgets:container title="${window.Description}��ѯ" >
+##<widgets:containbutton onclick="showCommonSearch(true);" text="ͨ�ò�ѯ" ></widgets:containbutton>
+##<widgets:containbutton onclick="showCommonSearch(false);" text="�򵥲�ѯ" ></widgets:containbutton>
+##-----------------�����tab��û�ж���ϵͳ��ť�����Զ����Ĭ�ϰ�ť-------------------
+
+##HTML�壨������������
+
+##��ť��̶���
+#if( $Tab.getAllSysBtnFields().size()==0 )
+#if ( $Tab.isUpdate()&&$window.canUpdate())
+<widgets:containbutton name="insert_sysBut_query" onclick="forInsert()" text="����"></widgets:containbutton>
+<widgets:containbutton name="update_sysBut_query" onclick="forUpdate()" text="�޸�"></widgets:containbutton>
+#end
+<widgets:containbutton name="detail_sysBut_query" onclick="forDetail()" text="��ϸ"></widgets:containbutton>
+#if ( $Tab.isUpdate()&&$window.canUpdate() )
+<widgets:containbutton name="delete_sysBut_query" onclick="forDelete()" text="ɾ��"></widgets:containbutton>
+#end
+#end
+
+##��ť�������
+##-------------------���ϵͳ��ť���Զ��尴ť----------------------------
+#foreach( $field in $Tab.Fields )
+	${field.outButton("Query")}
+#end
+
+
+##���չʾ��
+<html:messages></html:messages>
+<html:form name="frmList" action="">
+<%if(main_pk!=null){%>
+	<html:hidden name="main_primaryKey" value="<%=main_pk%>" />
+<%}%>
+<%if(parent!=null){%>
+	<html:hidden name="parent_window" value="<%=parent%>" />
+<%}%>
+<input type="hidden" name="return_url" value="mofexecquery.cmd?window_name=${window.Name}&clear=true" />
+<html:hidden name="mof_process_save" value="0" />
+<html:hidden name="window_name" value="${window.Name}"/>
+<%if(queueId != null) {%>
+<html:hidden name="queueId" value="<%=queueId%>" />
+<%}%>
+<html:hidden name="isSearch" value="1" />
+<html:hidden name="isCommonSearch" value="<%=isCommonSearch%>" />
+#set ($pageType="search")
+<div id="simple_search">
+<fieldset class="FieldsetCss" ><legend>��ѯ����</legend>
+<table id="tblSearch" >
+#set ($queryNum=0)
+#foreach( $field in $Tab.Fields )
+ #if($field.isCondition())
+  #if( ($queryNum)%4==3)
+   #set($queryNum=($queryNum)+1)
+   
+      <td/><td/>
+    </tr>
+  #end
+  #if ( ($queryNum)%4==0 )
+<tr>
+  #end
+  
+##<td class="tdRight">${field.Description}��${field.outSearchJSP()}</td>
+	  <td class="tdRight" align="right">${field.Description}��</td> 
+#set ($disp=$field.getDisplayControl($pageType))
+#if($useRefTemplate)
+	  <td class="tdRight" align="left">#parse(${field.getInputJSPTemplate($pageType)})</td>
+#else
+	  <td class="tdRight" align="left">${field.outSearchJSP()}</td>
+#end
+  #set ($queryNum=($queryNum)+1)
+ #end
+#end
+
+##��<td/>ʹ��ѯ��ťλ�ڱ���4��
+#set ($tdNum=($queryNum+1)%4)
+#if($tdNum>1)
+#foreach($i in [$tdNum..3])
+	  <td/><td/>
+#end
+#end
+      <td/>
+	  <td><flex:searchImg name="chaxun" action="mofexecquery.cmd?window_name=${window.Name}&clear=true" image="search.gif"/></td>
+  </tr>
+</table>
+</fieldset>
+</div>
+
+##------------------------���ͨ�ò�ѯ����-------------------------
+<div id="common_search" style="display:none">
+	<fieldset class="FieldsetCss" ><legend>��ѯ����</legend>
+	<grid:grid name="condition" sumRow="false" headCss="divToucss" detailCss="divTiSkin" sumCss="divSumcss" complexHead="false" property="condition" type="edit" headHeight="22"  sumHeight="22" width="100%" height="100">
+		<grid:primaryKeyCol index="1" name="ID" property="ID" caption="ѡ��"  xml="ID" width="30" style="width:100%;" styleClass="default"  />
+		<grid:selectCol index="2" name="left_bracket" property="left_bracket" caption="������" width="40" size="1" ><grid:options collection="left_bracket.Collection" labelProperty="Name" property="ID"  /></grid:selectCol>
+		<grid:selectCol index="3" name="field" property="field" caption="��"  xml="field" width="150" doChange="getGridCellHtml(this.options[this.selectedIndex].value,0)" ><grid:options collection="field.Collection" labelProperty="Name" property="ID"  /></grid:selectCol>
+		<grid:selectCol index="4" name="compare" property="compare" caption="�ȽϷ�" xml="compare" width="60" size="1" ><grid:options collection="compare.Collection" labelProperty="Name" property="ID"  /></grid:selectCol>
+		<grid:textCol  index="5" name="value" property="value" caption="ֵ" xml="value" width="150" style="width:100%;" styleClass="default"  />			
+		<grid:selectCol index="2" name="right_bracket" property="right_bracket" caption="������" width="40" size="1" ><grid:options collection="right_bracket.Collection" labelProperty="Name" property="ID"  /></grid:selectCol>
+		<grid:selectCol index="7" name="link" property="link" caption="���ӷ�" width="70" size="1" ><grid:options collection="link.Collection" labelProperty="Name" property="ID"  /></grid:selectCol>
+	</grid:grid>
+  <table width="100%" cellpadding="0" class="tblContent" style="border:0px solid #000000">
+	  <tr>
+	    <td align="left" width="50%">
+			  <IMG src="<ntmast:ui img='closeflag.gif'/>" name="add_Row" onclick="addRow()" style="cursor: hand;"/>
+			  <IMG src="<ntmast:ui img='dele_h.gif'/>" name="delete_Row" onclick="deleteRow()" style="cursor: hand;"/>
+		  </td>
+		  <td align="left" width="50%">
+			  <IMG src="<ntmast:ui img='search.gif'/>" name="common_chaxun" onclick="commonQuery()" style="cursor: hand;"/>
+	    </td>
+	  </tr>
+  </table>
+  </fieldset>
+</div>
+
+<flex:flexgrid name="grid" height="258" action="mofexecquery.cmd?window_name=${window.Name}&clear=true" isSubmit="true">
+#foreach( $field in $Tab.Fields )
+	#if($field.isKey())		
+		<flex:checkboxCol caption="ѡ��" width="50" property="${Tab.Name}_${field.Name}" name="primaryKey" sortName="${Tab.Name}.${field.Name}" ></flex:checkboxCol>
+	#end
+#end
+#set ($index=0)
+#foreach( $field in $Tab.Fields )
+    #if($field.isQuery())
+       #if($field.getMofColumn().isNumber())
+          #set ($style="text-align:$field.getMofReference().getStyle()")
+             #else
+				#set ($style="text-align:left")
+			#end
+			   #set ($handStyle="'")
+			#if($index==0)
+				#set ($handStyle=";cursor:hand' onclick='forDetail(true)'")
+			#end
+			#set ($index=$index+1)	
+			#set ($len=$field.QueryLen)			
+			#set ($len=$len*7)
+			##�����Ƿ��Array����property
+			#set ($hasMultiProperty=$field.hasMultiProperty())
+			#set ($canSort=$field.canSort())
+			#if ($field.isQueryHidden())
+				#set($cusDisplay="display:none;")
+			#else
+				#set($cusDisplay="display:block;")
+			#end
+			#if ( $field.hasCollection() )
+				<flex:flexCol caption='${field.Description}' width="${len}" property="${Tab.Name}_${field.Name}" sortName="${Tab.Name}.${field.Name}"  canSort="$canSort"  style='${style}$handStyle type="enum" enumCollection="${Tab.Name}_${field.Name}.Collection" enumKey="ID" enumValue="Name" hasDelimiter="$hasMultiProperty">
+			#else
+				<flex:flexCol caption='${field.Description}' width="${len}" property="${Tab.Name}_${field.Name}" sortName="${Tab.Name}.${field.Name}"  canSort="$canSort" style='${style}$handStyle >
+			#end
+				</flex:flexCol>
+		#end
+#end
+</flex:flexgrid>
+#set ($win_pagesize=$window.getPagesize())
+#if($win_pagesize>0)
+<flex:pagePolit action="mofexecquery.cmd?window_name=${window.Name}&clear=true" pageSize="$win_pagesize">
+</flex:pagePolit>
+#end
+
+##Html�壨�ײ����̶���
+</html:form>
+</widgets:container>
+
+##Html�壨�ײ���������
+<iframe style="display:none" id="dataFrame"></iframe>
+
+##---------Ϊÿ����ѡ�����һ��div����Ŷ�Ӧ�Ķ�ѡ������----------
+#foreach($field in $Tab.Fields)
+#if($field.hasMultiProperty())
+<div id="${field.Name}" style="display:none" class='selectColCss'></div>
+#end
+#end
+</BODY>
+
+##HTMLβ�̶���
+<script language="javascript">
+grid.show();
+grid.setSumText("");
+
+#set ($count=0)
+#foreach( $field in $Tab.Fields )
+	#if($field.isQuery() || $field.isKey() )
+		#set ($count=$count+1)
+grid.setTouAlign($count,"center");
+	#end
+#end
+
+init();
+
+<%if(isCommonSearch!=null&&isCommonSearch.equals("true")){%>
+showCommonSearch(true);
+<%}else{%>
+showCommonSearch(false);
+<%}%>
+
+function showCommonSearch(isdisplay){
+	//alert(document.all("ttt") );
+	var ss = "";
+	var cc = "";
+	if( isdisplay){
+	    document.forms[0].return_url.value="mofcommonquery.cmd?window_name=${window.Name}";
+	   	ss="none";
+	   	cc="";
+	}else{
+	    document.forms[0].return_url.value="mofexecquery.cmd?window_name=${window.Name}&clear=true";
+		ss="";
+		cc="none";
+	}
+	document.all("common_search").style.display=cc;
+	##document.body.getElementsByTagName("button")[0].style.display=ss;
+	
+	document.all("simple_search").style.display=ss;
+	##document.body.getElementsByTagName("button")[1].style.display=cc;
+}
+
+function commonQuery(){
+  if (checkConditions()) {
+    document.forms[0].action="mofcommonquery.cmd?window_name=${window.Name}";
+    document.forms[0].submit();
+  }
+  return;
+}
+function addRow(){
+	condition.addRow();
+}
+function deleteRow(){
+	condition.delRow();
+}
+
+function getDelete(){
+  var sel=grid.getCheckLine();
+  if(sel==""){
+	alert("��ѡ��Ҫɾ��ļ�¼!");
+	return false;
+  }
+  if (!confirm("���Ҫɾ��ѡ�еļ�¼�𣿴˲������ָܻ���")) {
+		 return false;
+		 }  
+  return true;
+}
+
+function process(){
+	if(!getSelect()) return;
+	document.forms[0].submit();	
+}
+
+function getSelect(){
+  var sel=grid.getCheckLine();
+  if(sel==""){
+	alert("��ѡ��һ����¼!");
+	return false;
+  }
+  var obj=sel.split(",");  
+  if(obj.length*1>1){
+	alert("��ѡ��һ����¼!");
+	return false;
+  }  
+  return true;
+}
+
+function checkSelect(count){
+  if( count == "0" ) 	
+  	return true;
+  var sel=grid.getCheckLine();
+  if(sel==""){
+	alert("��ѡ��һ����¼!");
+	return false;
+  }
+  if( count=="n")
+  	return true;
+  	
+  var obj=sel.split(",");  
+  if(obj.length*1>parseInt(count) ){
+	alert("��ѡ��"+count+"��¼!");
+	return false;
+  }  
+  return true;
+}
+
+##-----------ͨ�ò�ѯ�����﷨У��-----------------
+function checkConditions() {
+  var count=condition.returnRowCount();
+  var i,left,right;
+  var checkSum=0;
+  
+  if(count == 0) return true;
+  //��ϵ�����У��
+  for(i=1; i<count; i++) {
+    if (condition.getCellValue([i],7)=="") {
+      alert("��ѯ������"+i+"�еĹ�ϵ������Ϊ�գ�");
+      return false;
+    }
+  }
+  if (condition.getCellValue([i],7)!="") {
+    alert("��ѯ�������һ�еĹ�ϵ��������Ϊ�գ�");
+    return false;
+  }
+    
+  //����ƥ��У��
+  for(i=1; i<count+1; i++) {
+    left=condition.getCellValue([i],2).length;
+    right=condition.getCellValue([i],6).length;
+    checkSum+=left-right;
+    if (checkSum<0) {
+      alert("��⵽���Ų�ƥ�䣡");
+      return false;
+    }
+  }
+  if (checkSum!=0) {
+    alert("��⵽���Ų�ƥ�䣡");
+    return false;
+  }
+  return true;
+}
+
+##----------------���������͸ı���Ӧ����ֵ��չʾ��ʽ------------------
+//��ȡǶ��editgrid��Ԫ���html����
+function getGridCellHtml(fieldName,row) {
+  if(row==0) row=condition.getCurrentLine();
+  var iframe = document.getElementById("dataFrame");
+
+  iframe.src = "multiselect.cmd?method=getHtmlByFieldName&fieldName="+fieldName+"&gridName=condition&window_name=${window.Name}&row="+row;
+}
+//��html����Ƕ�뵥Ԫ����
+function fillCell(cellHtml,row,fieldName) {
+
+  var cell=condition.getCellObject(row,5);
+  var value=cell.value;
+  var td;
+  var selectedIndex;
+  var seldiv=document.all(fieldName);
+
+  if(cell.tagName=="SELECT")td=cell.parentElement.parentElement;
+  else td=cell.parentElement;
+  var htmls = cellHtml.split("@");
+  td.innerHTML=htmls[0];
+
+  //�����ڶ�ѡ������չʾ��div��ֵ
+  if(htmls.length>1)seldiv.innerHTML=htmls[1];
+    
+  condition.rename();
+ // condition.show();
+}
+//��ʾ����Ի���
+function show_date_dialog(obj, hasTime){
+	var url="jsp/mof/exec/datepage.jsp";
+	if(hasTime)url="jsp/mof/exec/datetimepage.jsp";
+	var format=obj.getAttribute("targetFormat");
+	if(format!=null&&format!="")url+="?targetformat="+format;
+    var datetime = showModalDialog(url,window,"scroll:no;status:no;dialogWidth:192px;dialogHeight:183px");
+	if(datetime){
+	    obj.previousSibling.value=datetime;
+	}
+}
+//��ʼ����ѯ����grid
+function init() {
+  //condition.show();
+  condition.setSumText("");
+  
+  var count=condition.returnRowCount();
+  var iframe = document.getElementById("dataFrame");
+  var src="multiselect.cmd?method=getHtmlByFieldName";
+
+  if(count>0){
+    for(i=1; i<=count; i++) {
+      src+="&fieldName="+condition.getCellValue(i,3);
+      src+="&fieldValue="+condition.getCellValue(i,5);
+    }
+    src+="&gridName=condition&isinit=true&window_name=${window.Name}";
+
+    iframe.src=src;
+  }
+}
+
+##---------------ͨ�ð������͵Ľű�----------------
+function condition_value_clear(cell){
+   var td=cell.parentElement;
+   cell.value="";
+   td.children[0].value="";
+ }
+ function condition_value_dialog(cell,helpId){
+   try{
+     condition_forHelp(cell,helpId);
+   }catch(e){}
+ }
+ function condition_forHelp(cell,helpId){
+   var win = null;
+   win = help(helpId,null);
+   setcondition_dataHelp(win,cell);
+ }
+ function setcondition_dataHelp(win,cell){
+   var td=cell.parentElement;
+   if(win!=null && win.length>=1){
+     var no_str="";
+     var name_str="";
+     for(i=0;i<win.length;i++){
+       if( i>0){ no_str=no_str+",";name_str=name_str+",";}
+       no_str+=win[i][0];
+       name_str+=win[i][1];
+     }
+     td.children[0].value=no_str;
+     td.children[1].value=name_str;
+   }else{
+     td.children[0].value="";
+     td.children[1].value="";
+   }
+ }
+
+##------------------֧�ֶ�ѡ������Ľű�-------------------
+var lastInput=null;
+ function doTextFocusInGrid(inputname){
+ inputname.style.display="none";
+
+ var inputvalue=inputname.parentElement.children[0];
+ var fieldName=condition.getCellValue(condition.getCurrentLine(),3);
+ var seldiv=document.all(fieldName);
+ var sel=seldiv.children[0];
+ seldiv.style.position="absolute";
+
+ var opts=sel.options;
+ var selopts=inputvalue.value.split(",");
+
+ for(var i=0;i<opts.length;i++){
+   for(var j=0;j<selopts.length;j++){
+     if(selopts[j]==opts[i].value){
+		 opts[i].selected="true";
+	     break;
+     }
+   }
+ }
+
+ var divTi=inputname.offsetParent.offsetParent.offsetParent;
+ //ѭ��ȡ��div�Ķ�λ���
+ var top=0;
+ var left=0;
+ var oParent=inputname.offsetParent;
+ while(oParent.tagName!="BODY"){
+	 top+=oParent.offsetTop;
+	 left+=oParent.offsetLeft;
+     oParent=oParent.offsetParent;
+ }
+
+ seldiv.style.top=top - divTi.scrollTop;
+ seldiv.style.left=left -divTi.scrollLeft;
+ seldiv.style.display="block";
+ seldiv.style.width="150px";
+ sel.focus();
+
+ lastInput=inputname;
+}
+
+function doSelBlurInGrid(sel){
+	if(lastInput==null)return;
+
+    var inputname=lastInput;
+	var inputvalue=inputname.parentElement.children[0];
+	var names="";
+	var values="";
+    var opts=sel.options;
+
+	for(var i=0;i<opts.length;i++){
+	    if(opts[i].selected){
+		    if(names!=""){names+=",",values+=","}
+			names+=opts[i].innerText;
+			values+=opts[i].value;
+		}
+	}
+    inputname.value=names;
+	inputvalue.value=values;
+
+	sel.parentElement.style.display="none";
+    inputname.style.display="block";
+
+	for(var i=0;i<sel.options.length;i++){
+		sel.options[i].selected=false;
+    }
+}
+
+##-------------�����tab��û�ж���ϵͳ��ť�����Զ����Ĭ�ϰ�ť�Ľű�-------------
+#if( $Tab.getAllSysBtnFields().size()==0 )
+#if ( $Tab.isUpdate() )
+function forInsert(){
+  document.forms[0].action ="mofexec.cmd?method=forinsert&window_name=${window.Name}";    
+  document.forms[0].submit();
+  disableButton(true);
+}
+function forUpdate(){
+  if(!getSelect()) return;
+  document.forms[0].action ="mofexec.cmd?method=forupdate&window_name=${window.Name}";    
+  document.forms[0].submit();	
+  disableButton(true);
+}
+function forDelete(){
+  if(!getDelete()) return;
+  document.forms[0].action ="mofexec.cmd?method=delete&window_name=${window.Name}";    
+  document.forms[0].submit();
+  disableButton(true);
+}
+#end
+function forDetail(hand){
+  if(!hand && !getSelect()) return;
+  var sel;
+  if( hand )
+	sel = grid.getCurrentLine();
+  else
+	sel=grid.getCheckLineNo();
+  //alert("sel:" +sel);
+  var pk = grid.getCellValue(sel,1);
+  document.forms[0].action ="mofexec.cmd?method=detail&window_name=${window.Name}&primaryKey=" + pk;    
+  document.forms[0].submit();	
+  disableButton(true);
+}
+#end
+
+##---------------���ϵͳ��ť��Ӧ�Ľű�-------------------
+#foreach( $sysBtnField in $Tab.getAllSysBtnFields())
+	${sysBtnField.outScriptFunction("Query")}
+#end
+
+##HTMLβ������
+##����Զ���ű�����
+##foreach( $table in $window.getAllTable() )
+##$table.getCustomJs()
+#foreach( $customJs in $window.getCustomJsFunction() )
+$customJs
+#end
+
+</script>

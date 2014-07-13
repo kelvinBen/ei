@@ -1,0 +1,24 @@
+##可以使用的变量$field,$disp
+#set ($ref=$field.getMofReference())
+#if($disp.isHidden())
+    #parse("${standardTemplatePath}/StandardHidden.vm")
+#elseif ($disp.isLabel())
+    #parse("${standardTemplatePath}/StandardMultiLabel.vm")
+#else
+     <help:helpsearch ismulti="true" name="$field.getFormName()" size="$field.getLength()"
+          helpid="$ref.getHelpNo($field)"
+    #if($disp.isOutValue())
+          property="$field.getFormName()"
+    #else
+          value=""
+    #end
+          imgsrc="skins/default/images/liulan.gif"
+    #if ($disp.isReadOnly()) {
+          readonly="true"
+    #end
+          script="$ref.getHelpScript($field,true)" />
+    #if ($disp.isMandatory()&&!$disp.isReadOnly())
+          <font color="#FF0000">*</font>
+	#end
+	$ref.getCustomEvent($field,$ref.hasDisplayTextField())
+#end

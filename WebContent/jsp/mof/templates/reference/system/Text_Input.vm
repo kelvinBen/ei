@@ -1,0 +1,33 @@
+##可以使用的变量$field,$disp,$ref
+#set ($ref=$field.getMofReference()) 
+#if($disp.isHidden())
+    #parse("${standardTemplatePath}/StandardHidden.vm")
+#elseif ($disp.isLabel())
+    #parse("${standardTemplatePath}/StandardLabel.vm")
+#else
+	<html:textarea name="$field.getFormName()"
+	#if ($disp.isOutValue()) 
+		 property="$field.getFormName()"
+    #else
+	     value=""
+    #end
+	#if ($disp.isReadOnly())
+		readonly="true" styleClass="txtReadOnly"
+	#end
+	#set ($text_rows=$field.getMaxLength()/$field.getLength()+ 1)
+	    cols="$field.getLength()"	rows="$text_rows"
+	#if ($disp.hasChangedField()||$disp.hasLimitField())
+		     onchange="${field.getFormName()}_change()"
+	#end
+	#if ($field.hasTip())
+		     title="$field.getTip()"
+    #end
+	/>
+	#if ($disp.isMandatory())
+		<font color="#FF0000">*</font>
+	#end
+	#if ($disp.hasChangedField())
+		$ref.getChangeScript($field,$field.getChangeField())
+	#end
+	$ref.getCustomEvent($field,$ref.hasDisplayTextField())
+#end	

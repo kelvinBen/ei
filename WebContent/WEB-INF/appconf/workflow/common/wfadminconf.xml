@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+   <bean id="processmgradminquery" class="net.mast.workflow.wfclient.admin.ProcessMgrAdminQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="WfAdminView"><ref bean="WfAdminView"/></entry>
+	        </map>
+        </property>   
+        <property name="dictService"><ref bean="DictService"/></property>
+  </bean>
+  <bean id="processalladminquery" class="net.mast.workflow.wfclient.admin.ProcessAllAdminQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="WfAdminView"><ref bean="WfAdminView"/></entry>
+	        </map>
+        </property>   
+        <property name="dictService"><ref bean="DictService"/></property>
+  </bean>
+  <bean id="processendadminquery" class="net.mast.workflow.wfclient.admin.ProcessEndAdminQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="WfAdminView"><ref bean="WfAdminView"/></entry>
+	        </map>
+        </property>   
+        <property name="dictService"><ref bean="DictService"/></property>
+  </bean>
+  
+   <bean id="wfadminquery" class="net.mast.workflow.wfclient.admin.WfAdminQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="WfAdminView"><ref bean="WfAdminView"/></entry>
+	            
+	        </map>
+		</property>
+		<property name="dictService"><ref bean="DictService"/></property>
+    </bean>
+	
+	 <!--<bean id="wfadminquery" class="com.cnooc.workflow.wfclient.admin.WfAdminQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="WfAdminView"><ref bean="WfAdminView"/></entry>
+	            
+	        </map>
+		</property>
+		<property name="dictService"><ref bean="DictService"/></property>
+    </bean>
+	--><bean id="wfadminoperate" class="net.mast.workflow.wfclient.admin.cmd.WfAdminOperateCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="WfAdminView"><ref bean="WfAdminView"/></entry>
+	        </map>
+		</property>
+			
+    </bean>    
+    <bean id="WfAdminViewChain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="processmgrsuccess"><ref bean="processmgradminquery"/></entry>
+			    <entry key="processendsuccess"><ref bean="processendadminquery"/></entry>
+			    <entry key="processallsuccess"><ref bean="processalladminquery"/></entry>
+			</map>
+		</property>
+    </bean>
+    <bean id="WfAdminView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="getProcessList">jsp/workflow/admin/admin_processlist.jsp</prop>
+			    <prop key="getProcessMgrList">jsp/workflow/admin/admin_processmgrlist.jsp</prop>
+			    <prop key="getProcessAllList">jsp/workflow/admin/admin_processalllist.jsp</prop>
+			    <prop key="getActivityList">jsp/workflow/admin/admin_activitylist.jsp</prop>
+			    <prop key="getAssignmentList">jsp/workflow/admin/admin_assignmentlist.jsp</prop>
+			    <prop key="getProcessEndList">jsp/workflow/admin/admin_processendlist.jsp</prop>
+			    <prop key="getActivityEndList">jsp/workflow/admin/admin_activityendlist.jsp</prop>
+			    <prop key="getAssignmentEndList">jsp/workflow/admin/admin_assignmentendlist.jsp</prop>
+			    <prop key="cacheAdmin">jsp/workflow/admin/cache_detail.jsp</prop>
+			    <prop key="setCacheSize">jsp/workflow/admin/cache_setcachesize.jsp</prop>
+			    <prop key="forupload">jsp/workflow/admin/admin_processmgr_forupload.jsp</prop>
+			    <prop key="getHistoryProcessList">jsp/workflow/admin/admin_processhistorylist.jsp</prop>
+			</props>
+		</property>
+	</bean>   
+    <bean id="UploadView"  class="net.mast.workflow.wfclient.admin.UploadView" singleton="false"/>
+    <bean id="processmgr" class="net.mast.workflow.wfclient.admin.ProcessMgrCmd" singleton="false">
+		
+	    <property name="view"><ref bean="UploadView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="WfAdminView"><ref bean="WfAdminView"/></entry>
+	             <entry key="WfAdminViewChain"><ref bean="WfAdminViewChain"/></entry>
+	        </map>
+		</property>
+		<property name="dictService"><ref bean="DictService"/></property>
+	</bean>
+    <bean id="processadmin" class="net.mast.workflow.wfclient.admin.ProcessAdminCmd" singleton="false">
+		<property name="forwards">
+	        <map>
+	            <entry key="WfAdminView"><ref bean="WfAdminView"/></entry>
+	        </map>
+		</property>
+		<property name="dictService"><ref bean="DictService"/></property>
+	</bean>	
+	<bean id="processalladmin" class="net.mast.workflow.wfclient.admin.ProcessAllAdminCmd" singleton="false">
+		<property name="forwards">
+	        <map>
+	            <entry key="WfAdminView"><ref bean="WfAdminView"/></entry>
+	            <entry key="WfAdminViewChain"><ref bean="WfAdminViewChain"/></entry>
+	        </map>
+		</property>
+		<property name="dictService"><ref bean="DictService"/></property>
+	</bean>	
+	<bean id="activityadmin" class="net.mast.workflow.wfclient.admin.ActivityAdminCmd" singleton="false">
+		<property name="forwards">
+	        <map>
+	            <entry key="WfAdminView"><ref bean="WfAdminView"/></entry>
+	        </map>
+		</property>
+		<property name="dictService"><ref bean="DictService"/></property>
+	</bean>	
+	<bean id="assignmentadmin" class="net.mast.workflow.wfclient.admin.AssignmentAdminCmd" singleton="false">
+		<property name="forwards">
+	        <map>
+	            <entry key="WfAdminView"><ref bean="WfAdminView"/></entry>
+	        </map>
+		</property>
+		<property name="dictService"><ref bean="DictService"/></property>
+	</bean>	
+	<bean id="processendadmin" class="net.mast.workflow.wfclient.admin.ProcessEndAdminCmd" singleton="false">
+		<property name="forwards">
+	        <map>
+	            <entry key="WfAdminViewChain"><ref bean="WfAdminViewChain"/></entry>
+	        </map>
+		</property>
+		
+	</bean>
+	
+</beans>

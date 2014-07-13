@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+<!--***********************dao配置***********************************************-->
+	<bean id="wfTaskaccreditDao" class="net.mast.workflow.wfclient.taskinfo.accredit.dao.jdbc.WfTaskaccreditJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+<!--***********************domain配置********************************************-->
+
+	<bean id="wfTaskaccreditDomain" class="net.mast.workflow.wfclient.taskinfo.accredit.domain.support.WfTaskaccreditDomainImpl"> 
+		<property name="wfTaskaccreditDao"><ref bean="wfTaskaccreditDao"/></property>   	
+	</bean>
+<!--***********************service配置*******************************************-->
+
+	<bean id="wfTaskaccreditService" class="net.mast.workflow.wfclient.taskinfo.accredit.service.support.WfTaskaccreditServiceImpl"> 
+		<property name="wfTaskaccreditDomain"><ref bean="wfTaskaccreditDomain"/></property>   	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+		<property name="taskAccreditId"><ref bean="taskAccreditId"/></property>
+	</bean>
+
+
+<!--***********************翻页初始化特殊查询配置开始******************************************-->
+	<bean id="wftaskaccreditquery" class="net.mast.workflow.wfclient.taskinfo.accredit.query.WfTaskaccreditQueryPageInitCmd">
+	    <property name="wfTaskaccreditService"><ref bean="wfTaskaccreditService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="speQuery"><ref bean="wftaskaccreditqueryforward"/></entry>
+	        </map>
+        </property>
+        <property name="beforIntercept">
+	        <list>
+	            <ref bean="taskaccredit_interceptor"/>
+	        </list>
+        </property>
+	</bean>
+<!--***********************翻页初始化特殊查询配置结束******************************************-->
+<!--***********************查询界面转向forward配置开始***********************************-->
+	<bean id="wftaskaccreditqueryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="queryPageInit">jsp/workflow/accredit/wf_taskaccredit_query_init.jsp</prop>  
+			</props>
+	    </property>
+	</bean> 
+<!--***********************查询界面转向forward配置结束***********************************-->
+	
+<!--***********************视图对象View配置****************************************-->
+	<bean id="wfTaskaccreditView"  class="net.mast.workflow.wfclient.taskinfo.accredit.view.WfTaskaccreditView" singleton="false"/>
+
+<!--***********************cmd配置开始*********************************************-->
+    <bean id="wftaskaccredit" class="net.mast.workflow.wfclient.taskinfo.cmd.WfTaskaccreditCmd" singleton="false">
+	    <property name="wfTaskaccreditService"><ref bean="wfTaskaccreditService"/></property>
+	    <property name="view"><ref bean="wfTaskaccreditView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="wftaskaccreditView"><ref bean="wftaskaccreditforward"/></entry>
+	            <entry key="wftaskaccreditViewChain"><ref bean="wftaskaccreditforwardchain"/></entry>
+	        </map>
+		</property>
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="taskaccredit_interceptor"/>
+	        </list>
+        </property>  
+    </bean>
+
+<!--***********************cmd配置结束*********************************************-->
+
+<!--***********************界面转向forward配置开始***********************************-->
+    <bean id="wftaskaccreditforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/workflow/accredit/wf_taskaccredit_detail.jsp</prop>
+			    <prop key="forinsert">jsp/workflow/accredit/wf_taskaccredit_forinsert.jsp</prop>
+			    <prop key="forProxyInsert">jsp/workflow/accredit/wf_taskaccredit_forProxyInsert.jsp</prop>
+			    <prop key="forupdate">jsp/workflow/accredit/wf_taskaccredit_forupdate.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="wftaskaccreditforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+		
+			    <entry key="success"><ref bean="wftaskaccreditquery"/></entry>
+			  
+			</map>
+		</property>
+    </bean>
+    
+<!--***********************界面转向forward配置结束***********************************-->
+<bean id="taskAccreditId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>WF_TASKACCREDIT_ID</value></property>
+</bean>
+<bean id="taskaccredit_interceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+	<property name="collections">
+		<map>
+			<entry key="PROCESS_ORGANIZE_COLLECTION"><ref bean="PROCESS_ORGANIZE_COLLECTION"/></entry>
+			<entry key="taskaccredit_collection"><ref bean="taskaccredit_collection"/></entry>
+        </map>
+	</property>
+</bean>
+<bean id="taskaccredit_collection" class="net.mast.waf.data.EnumCollection">
+	    <property name="enumName"><value>WORKFLOW.TASKACCREDIT_TYPE</value></property>
+	    <property name="enumService"><ref bean="enumService"/></property>
+</bean> 
+
+	<bean id="WFTASKACCREDIT_FLAG_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>WFTASKACCREDIT.FLAG</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="WFTASKACCREDIT_TYPE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>WFTASKACCREDIT.TYPE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+</beans>

@@ -1,0 +1,33 @@
+body{ FONT-FAMILY: ËÎÌו,Arial,"Ms Sans Serif"; } 
+td{ FONT-FAMILY: ËÎÌו,Arial,"Ms Sans Serif"; font-size:12pt;}
+.gtd0{font-size:9pt}
+.gtd1{background-image: url('../images/bg-5.gif');color:#ffffff}
+.tblSearch{border:1px solid #6699cc;background-color:#dddddd}
+.iptInput{border:0px solid #eeeeee;background-color:#eeeeee}
+.tool {  border-style: inset; border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px}
+.toolup {  border-style: outset; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px}
+.toolout{border:0px} 
+.tblSkin{ border:3px double #6699CC; border-collapse:collapse;}
+.tdSkin{border: 3 double #6699CC;}
+.divSkin{padding:8px;}
+.tblMingxi{}
+.tdMingxiTitle{border:2px solid #cccccc;background-color:#eeeeee}
+.tdDetailTitle{border:2px solid #cccccc;background-color:#eeeeee}
+.tdTitle{background-image: url('../images/hline.gif');height:22px;;font-weight:bold}
+.tdContrast{border-bottom:1px solid #6699cc; }
+.Contrast{background-color:#dddddd;} 
+.tblMenu{background-image:url(../images/jb.gif);width:140px;} 
+.tdt{border:1px outset;width:140px} 
+.tdc{border:1px outset;width:140px}
+.spt{font-weight:bold;cursor:default;}
+.sptl{font-weight:bold;cursor:default;}
+.spc{width:100%;padding-left:20px;cursor:default;}
+.spcl{width:100%;padding-left:20px;color:red;cursor:hand;}
+.imgt{}
+.imgc{}
+A:link {COLOR: #000000; text-decoration: none}
+A:visited {COLOR: #000000; TEXT-DECORATION: none}
+A:active {COLOR: #ff0000; text-decoration: none}
+A:hover {COLOR: #ff0000; text-decoration: none}
+.tdYuejie {  border-color: #eeeeee #999999 #999999 #eeeeee; border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; background-image: url(../images/metal.gif)}
+.iptdisable {  background-color: #CCCCCC}

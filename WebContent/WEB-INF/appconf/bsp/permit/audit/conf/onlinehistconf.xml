@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+<!--***********************dao配置***********************************************-->
+	<bean id="onlineHistDao" class="net.mast.bsp.permit.audit.online.dao.jdbc.OnlineHistJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+<!--***********************查询配置开始********************************************-->
+	<bean id="onlinehistquery" class="net.mast.waf.mvc.CommonQueryCommandWithInit">
+		<property name="mappings">
+			<props>
+				<prop key="success">jsp/bsp/permit/audit/onlinehist/query.jsp</prop>
+			</props>
+		</property>     
+		
+		<property name="collection"><ref bean="sqlPageCollection"/></property>
+
+	</bean>
+	<bean id="onlinehistquerying" class="net.mast.bsp.permit.audit.online.cmd.OnlineHistQueryCmd">
+		 <property name="onlineService"><ref bean="onlineService"/></property>
+		 <property name="forwards">
+	          <map>
+	              <entry key="querying"><ref bean="onlinehistforward"/></entry>
+	          </map>
+        </property>   
+	</bean>
+<!--***********************cmd配置开始*********************************************-->
+    <bean id="onlinehist" class="net.mast.bsp.permit.audit.online.cmd.OnlineHistCmd" singleton="false">
+	    <property name="onlineService"><ref bean="onlineService"/></property>
+	    <property name="view"><ref bean="OnlineView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="onlinehistview"><ref bean="onlinehistforward"/></entry>
+	            <entry key="onlinehistviewChain"><ref bean="onlinehistforwardchain"/></entry>
+	        </map>
+		</property>
+    </bean>
+
+<!--***********************cmd配置结束*********************************************-->
+
+<!--***********************界面转向forward配置开始***********************************-->
+    <bean id="onlinehistforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/permit/audit/onlinehist/detail.jsp</prop>
+			    <prop key="success">jsp/bsp/permit/audit/onlinehist/query.jsp</prop>
+			    <prop key="deletebetween">jsp/bsp/permit/audit/onlinehist/delete.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="onlinehistforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="onlinehistquery"/></entry>
+			</map>
+		</property>
+    </bean>
+<!--***********************界面转向forward配置结束***********************************-->
+
+
+</beans>

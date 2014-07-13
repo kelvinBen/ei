@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urls xsi:noNamespaceSchemaLocation="../dtd/formConfigUrls.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<reserve-url><![CDATA[${contextpath}/formmanager.cmd?method=getReserveKeysXml&amp;processtype=${processtype}]]></reserve-url>
+	<edit-field-url>${contextpath}/formmanager.cmd?method=getEditFieldsXml</edit-field-url>
+	<select-field-url>${contextpath}/formmanager.cmd?method=getSelectFieldsXml</select-field-url>
+	<special-edit-url>${contextpath}/formmanager.cmd?method=getSpecialEditsXml</special-edit-url>
+	<verify-url>${contextpath}/formmanager.cmd?method=getVerifysXml</verify-url>
+	<dynamic-default-url>${contextpath}/formmanager.cmd?method=getDynamicDefaultsXml</dynamic-default-url>
+	<extend-fields-url>${contextpath}/formmanager.cmd?method=getFixedFieldsXml</extend-fields-url>
+</urls>

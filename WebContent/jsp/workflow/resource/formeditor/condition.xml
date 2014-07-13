@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<condtion>
+	<upper>
+	<use-when><![CDATA[!hiddenFieldList.contains("${name}")]]></use-when>
+	<readonly-when><![CDATA[(!activityUser.contains(curUser) && !"".equals(DATAID_field)) || readOnlyFieldList.contains("${name}")]]></readonly-when>
+	<notnull-when><![CDATA[notNullList.contains("${name}")]]></notnull-when>
+	<sub-use-when><![CDATA[!hiddenFieldList.contains("subEntityName")]]></sub-use-when>
+	<sub-readonly-when><![CDATA[(!activityUser.contains(curUser) && !"".equals(DATAID_field)) || readOnlyFieldList.contains("${subEntityName}")]]></sub-readonly-when>
+	</upper>
+	<lower>
+	<use-when><![CDATA[!hiddenFieldList.contains("${name}")]]></use-when>
+	<readonly-when><![CDATA[(!activityUser.contains(curUser) && !"".equals(dataId_field)) || readOnlyFieldList.contains("${name}")]]></readonly-when>
+	<notnull-when><![CDATA[notNullList.contains("${name}")]]></notnull-when>	
+	<sub-use-when><![CDATA[!hiddenFieldList.contains("${subEntityName}")]]></sub-use-when>
+	<sub-readonly-when><![CDATA[(!activityUser.contains(curUser) && !"".equals(dataId_field)) || readOnlyFieldList.contains("${subEntityName}")]]></sub-readonly-when>
+	</lower>
+	<imagelisturl><![CDATA[/control/ImgSelect]]></imagelisturl>
+</condtion>

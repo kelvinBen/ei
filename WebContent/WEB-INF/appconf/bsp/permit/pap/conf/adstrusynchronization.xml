@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean id="adStruSynchronization" class="net.mast.bsp.permit.pap.domain.ad.AdStrusynchronizationImpl">
+		<property name="bspEncoder"><ref bean="bspEncoder"/></property>   	
+    </bean>
+    
+    <bean id="adStruSynchronizationDomain" class="net.mast.bsp.permit.pap.domain.support.AdStruSynchronizationDomainImpl"> 
+	    <property name="adStruSynchronization"><ref bean="adStruSynchronization"/></property>  
+	    <property name="struDomain"><ref bean="struDomain"/></property>
+	    <property name="userDomain"><ref bean="userDomain"/></property>
+	    <property name="bspEncoder"><ref bean="bspEncoder"/></property> 	
+    </bean>
+    
+    <bean id="adStruSynchronizationService" class="net.mast.bsp.permit.pap.service.support.AdStruSynchronizationServiceImpl"> 
+    	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	    <property name="adStruSynchronizationDomain"><ref bean="adStruSynchronizationDomain"/></property>   	
+    </bean>
+    
+	<bean id="adStruSyn" class="net.mast.bsp.permit.pap.cmd.AdStruSynchronizationCmd">
+	    <property name="struService"><ref bean="struService"/></property>
+	    <property name="adStruSynchronizationService"><ref bean="adStruSynchronizationService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="adStruSynchronizationForward"/></entry>
+	        </map>
+        </property>
+     </bean>
+
+
+     <bean id="adStruSynchronizationForward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+	              <props>		    		    
+			    <prop key="success">jsp/bsp/permit/pap/ldapstru/success.jsp</prop> 
+			    <prop key="query_tree">jsp/bsp/permit/pap/ldapstru/adsynchronization_tree.jsp</prop>
+			    <prop key="query_node">jsp/bsp/permit/pap/ldapstru/adsynchronization_node.jsp</prop>
+		      </props>
+            </property>
+     </bean>
+
+</beans>

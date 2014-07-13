@@ -1,0 +1,3 @@
+##可以使用的变量$field,$disp,$ref
+##使用默认的YesNoReference的模版
+#parse("system/YesNo_Input.vm")

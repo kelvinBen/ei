@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>	 
+   
+    <bean id="checkuserCmd" class="net.mast.bsp.permit.pap.cmd.CheckUserCmd" singleton="false">
+    <property name="checkUserService"><ref bean="checkUserService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="checkUserView"><ref bean="checkusersforward"/></entry>
+	        </map>
+		</property>
+		
+    </bean>
+   
+    <bean id="checkusersforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>    
+			    <prop key="checkUser">jsp/bsp/permit/pap/check/checkuser.jsp</prop>
+	            <prop key="checkCPubUser">jsp/bsp/permit/pap/check/checkCPubUser.jsp</prop>
+	            <prop key="repair">jsp/bsp/permit/pap/check/repairCPubUser.jsp</prop>
+	            <prop key="checkUserPer">jsp/bsp/permit/pap/check/checkUserPer.jsp</prop>
+	            <prop key="repairUserPer">jsp/bsp/permit/pap/check/repairUserPer.jsp</prop>
+	            <prop key="checkCorporation">jsp/bsp/permit/pap/check/checkCorporation.jsp</prop>
+	            <prop key="repairCorporation">jsp/bsp/permit/pap/check/repairCorporation.jsp</prop>
+	            <prop key="checkUserStru">jsp/bsp/permit/pap/check/checkUserStru.jsp</prop>
+	            <prop key="checkUsrDataRef">jsp/bsp/permit/pap/check/checkUsrDataRef.jsp</prop>
+	            <prop key="checkMenuParent">jsp/bsp/permit/pap/check/checkMenuParent.jsp</prop>
+			</props>
+		</property>
+    </bean> 
+
+
+    <bean id="checkUserService" class="net.mast.bsp.permit.pap.service.support.CheckUserServiceImpl"> 
+	    <property name="checkUserDomain"><ref bean="checkUserDomain"/></property>	
+    	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+    </bean>
+    
+    <bean id="checkUserDomain" class="net.mast.bsp.permit.pap.domain.support.CheckUserImpl">
+		<property name="checkUserDao"><ref bean="checkUserDao"/></property>
+    </bean> 
+	
+     <bean id="checkUserDao" class="net.mast.bsp.permit.pap.dao.jdbc.CheckUsersJdbcDao">
+	        <property name="dataSource"><ref bean="dataSource"/></property>
+	 </bean>
+</beans>

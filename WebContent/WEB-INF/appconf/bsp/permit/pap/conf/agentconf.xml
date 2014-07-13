@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	 <bean id="agentDomain" class="net.mast.bsp.permit.pap.domain.support.AgentImpl">
+		<property name="agentDao"><ref bean="agentDao"/></property>   	
+     </bean> 
+	 <bean id="agentDao" class="net.mast.bsp.permit.pap.dao.jdbc.AgentJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>   	
+     </bean> 
+	
+</beans>

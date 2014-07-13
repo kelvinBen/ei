@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="struTypeRefDao" class="net.mast.bsp.permit.pap.dao.jdbc.StruTypeRefJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+	<bean id="struTypeRefDomain" class="net.mast.bsp.permit.pap.domain.support.StruTypeRefImpl"> 
+		<property name="struTypeRefDao"><ref bean="struTypeRefDao"/></property> 
+		<property name="struTypeDomain"><ref bean="struTypeDomain"/></property>
+		<property name="struDomain"><ref bean="struDomain"/></property>  	
+	</bean>
+	<bean id="struTypeRefView"  class="net.mast.bsp.permit.pap.view.StruTypeRefView" singleton="false"/>
+</beans>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menus templet="variable/menu.ftl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../dtd/menu.xsd">
+ <menu id="edocform" title="公文专用的操作" type="EDOC">
+    <menu-item id="finishedoc" title="办结" description="公文办结,结束公文流程,用于公文流程最后一个环节">
+      <jsfun formId="0" fun-name="finishedoc()" target="" text=""/>
+    </menu-item> 
+    <menu-item id="localsend" title="分发"  description="公文发文流程操作，分发公文到系统内的部门">
+      <jsfun formId="0" fun-name="localsend()" target="" text=""/>
+    </menu-item>  
+    <menu-item id="foreignsend" title="外发"  description="公文发文流程操作,分发公文到其它系统的公司或部门">
+      <jsfun formId="0" fun-name="foreignsend()" target="" text=""/>
+    </menu-item>
+	<menu-item id="copy" title="抄送" description="公文流程操作，抄送公文给某人查看，不能处理，流程结束后自动消失">
+		<jsfun formId="0" fun-name="makeCopy()" target="" text="" />
+	</menu-item>
+	<!--  
+    <menu-item id="hasten" title="催办" description="">
+      <jsfun formId="0" fun-name="hasten()" target="" text=""/>
+    </menu-item>  --> 
+    <!--<menu-item id="huizhi" title="设置回执" description="">
+      <jsfun formId="0" fun-name="huizhi()" target="" text=""/>
+    </menu-item> -->	
+    <!-- 
+    <menu-item id="duban" title="承办交流" description="公文承办流程操作，用于与督办流程处理人信息交流">
+      <jsfun formId="0" fun-name="edocDuban()" target="" text=""/>
+    </menu-item>   
+    <menu-item id="dubanxiafa" title="督办下发" description="公文督办流程操作，与分发类似">
+      <jsfun formId="0" fun-name="dubanxiafa()" target="" text=""/>
+    </menu-item>   
+    <menu-item id="dubanresult" title="督办总结" description="公文督办流程操作，填写督办总结">
+      <jsfun formId="0" fun-name="edocDubanResult()" target="" text=""/>
+    </menu-item> 		
+  </menu> -->
+  </menu>
+  <menu id="updateform" title="公用请求" type="">
+    <menu-item id="text" title="正文" description="处理过程中使用，内容可编辑，正文权限还需在环节属性的正文权限属性中详细定制"  readonly-show="false">
+		<jsfun formId="0" fun-name="showText(this)" target="" text=""/>
+	</menu-item> 
+    <menu-item id="readOnly_text" title="正文" description="流程结束后使用，内容不可编辑"  readonly-show="true">
+		<jsfun formId="0" fun-name="showReadText(this)" target="" text=""/>
+	</menu-item> 	
+    <menu-item id="save" title="保存" description="不带表单校验功能，在新文档时创建并保存表单数据，非新文档时只保存表单数据">
+      <jsfun formId="0" fun-name="saveControl('保存')" target="" text=""/>
+    </menu-item>
+    <menu-item id="saveWithVerify" title="保存" description="带表单校验功能，在新文档时创建并保存表单数据，非新文档时只保存表单数据">
+      <jsfun formId="0" fun-name="saveControlWithVerify('保存')" target="" text=""/>
+    </menu-item>
+<!--
+    <menu-item id="saveOnly" title="保存" description="在非新文档时使用，只保存表单数据">
+      <jsfun formId="0" fun-name="saveFormData('taskinfo.cmd?method=saveformdata&amp;isSave=1','保存')" target="" text=""/>
+    </menu-item>
+    <menu-item id="saveCreate" title="保存" description="在新文档时使用，创建并保存新文档数据">
+      <jsfun formId="0" fun-name="create('taskinfo.cmd?method=createdocument&amp;isSave=1','保存')" target="" text=""/>
+    </menu-item>    
+-->
+    <menu-item id="send" title="发送" description="发送任务给下一处理人，不能选择目标环节和参与者，新文档时新建并发送，非新文档时只发送">
+      <jsfun formId="0" fun-name="sendControl('发送')" target="" text=""/>
+    </menu-item>
+    <menu-item id="nextActivities" title="发送" description="发送任务给下一处理人，可以选择目标环节和参与者，发送前需要先保存表单">
+		<jsfun formId="0" fun-name="selectAndSend('taskinfo.cmd?method=send','发送')" target="" text="" />
+	</menu-item>    
+    <menu-item id="nextActivitiesWithFilter" title="发送" description="发送任务给下一处理人，可以选择目标环节和参与者，并且带根据迁移线条件过滤环节功能，发送前需要先保存表单">
+		<jsfun formId="0" fun-name="selectAndSendWithFilter('taskinfo.cmd?method=send','发送')" target="" text="" />
+	</menu-item>
+	<menu-item id="nextUser" title="提交" description="发送任务给下一处理人，会签环节使用，不能选择目标环节和参与者">
+      <jsfun formId="0" fun-name="sendControl('提交')" target="" text=""/>
+    </menu-item>
+    <menu-item id="addAssignAndSend" title="转发" description="会签环节使用，但不能用于顺序会签，增加会签人并把任务发送出去">
+      <jsfun formId="0" fun-name="addAssignAndSend('转发')" target="" text=""/>
+    </menu-item>
+    <!--<menu-item id="forward" title="转发" description="使用通用流程，把流程转发给他人查看并可填写意见，单不能修改表单，正文和附件数据">
+      <jsfun formId="0" fun-name="forward()" target="" text=""/>
+    </menu-item>   -->
+    <menu-item id="assign" title="改发" description="取消本人处理权限，把任务转给他人处理">
+      <jsfun formId="0" fun-name="assign('taskinfo.cmd?method=assign','改发')" target="" text=""/>
+    </menu-item>
+    <menu-item id="approve" title="批准" description="迁移条件需要设置是否批准等于1">
+      <jsfun formId="0" fun-name="approve('taskinfo.cmd?method=send','批准')" target="" text=""/>
+    </menu-item>
+    <menu-item id="reject" title="驳回" description="迁移条件需要设置是否批准等于-1">
+      <jsfun formId="0" fun-name="reject('taskinfo.cmd?method=send','驳回')" target="" text=""/>
+    </menu-item>
+    <menu-item id="addAssign" title="添加处理人" description="会签环节使用，但不能用于顺序会签，增加当前环节处理人，不发送任务">
+      <jsfun formId="0" fun-name="addAssign()" target="" text=""/>
+    </menu-item>  
+    <!--  <menu-item id="uinProcessQuery" title="通用流程查询" description="查询通用流程转发记录及处理状态">
+      <jsfun formId="0" fun-name="uinProcessQuery()" target="" text=""/>
+    </menu-item> -->
+<!--
+    <menu-item id="sendOnly" title="发送" description="非新文档时使用，只发送">
+      <jsfun formId="0" fun-name="send('taskinfo.cmd?method=send','发送')" target="" text=""/>
+    </menu-item>  
+    <menu-item id="sendCreate" title="发送" description="新文档时使用，新建并发送">
+      <jsfun formId="0" fun-name="createAndSend('taskinfo.cmd?method=createAndSend','发送')" target="" text=""/>
+    </menu-item> 
+-->    
+    <menu-item id="backTo" title="退回" description="退回当前任务到前续环节，可以选择目标环节和处理人">
+      <jsfun formId="0" fun-name="backto('taskinfo.cmd?method=jump','退回',0)" target="" text=""/>
+    </menu-item>
+    <menu-item id="backToMode1" title="退回" description="退回当前任务到前续环节，可以选择目标环节和处理人，退回后再发送时直接发送到当前环节">
+      <jsfun formId="0" fun-name="backto('taskinfo.cmd?method=jump','退回',1)" target="" text=""/>
+    </menu-item>
+    <menu-item id="goback" title="退回" description="只需要选择退回的目标环节，勿须选择环节参与者，会自动退回到目标环节的历史处理人">
+      <jsfun formId="0" fun-name="goback('taskinfo.cmd?method=jump','退回',0)" target="" text=""/>
+    </menu-item>
+    <menu-item id="gobackMode1" title="退回" description="只需要选择退回的目标环节，勿须选择环节参与者，会自动退回到目标环节的历史处理人,，退回后再发送时直接发送到当前环节">
+      <jsfun formId="0" fun-name="goback('taskinfo.cmd?method=jump','退回',1)" target="" text=""/>
+    </menu-item>
+    
+    <menu-item id="revert" title="回复" description="回复任务给发送人">
+      <jsfun formId="0" fun-name="revert('taskinfo.cmd?method=jump','回复')" target="" text=""/>
+    </menu-item>
+    <menu-item id="retract" title="收回" description="在已办任务中使用，将当前任务回收到指定环节">
+      <jsfun formId="0" fun-name="retract('taskinfo.cmd?method=retract')" target="" text=""/>
+    </menu-item> 
+    <!--<menu-item id="backtoHistory" title="退回历史" description="">
+      <jsfun formId="0" fun-name="backtoHistory()" target="" text=""/>
+    </menu-item>  -->
+    <menu-item id="jump" title="跳过" description="可以选择目标环节和参与者，发送任务给选定的环节和参与者，保存表单数据">
+      <jsfun formId="0" fun-name="jump('taskinfo.cmd?method=jump','跳过','1')" target="" text=""/>
+    </menu-item>
+    <menu-item id="jump1" title="跳过" description="可以选择目标环节和参与者，发送任务给选定的环节和参与者，不保存表单数据">
+      <jsfun formId="0" fun-name="jump('taskinfo.cmd?method=jump','跳过','0')" target="" text=""/>
+    </menu-item>
+    <menu-item id="history" title="流转历史"  description="查看当前流程实例的运转过程"  readonly-show="true">
+		<jsfun formId="0" fun-name="openFlow()" target="" text="" />
+	</menu-item>
+	<menu-item id="adjunctEdit" title="附件" description="处理过程中使用，可以增加、修改、删除附件">
+		<jsfun formId="0" fun-name="adjunctManage('1')" target="" text="" />
+	</menu-item>
+	<menu-item id="adjunctDetail" title="附件" description="处理过程中使用，只能查看附件"  readonly-show="false">
+		<jsfun formId="0" fun-name="adjunctManage('0')" target="" text="" />
+	</menu-item>
+	<menu-item id="readOnly_adjunctDetail" title="附件" description="流程结束后使用，只能查看附件"  readonly-show="true">
+		<jsfun formId="0" fun-name="adjunctManage('0')" target="" text="" />
+	</menu-item>	
+    <menu-item id="suspend" title="冻结" description="暂停当前流程实例的运转，使任务不可处理">
+      <jsfun formId="0" fun-name="suspend('taskinfo.cmd?method=suspend','冻结')" target="" text=""/>
+    </menu-item>
+    <menu-item id="resume" title="解冻" description="使被冻结状的流程实例解除冻结态">
+      <jsfun formId="0" fun-name="resume('taskinfo.cmd?method=resume','解冻')" target="" text=""/>
+    </menu-item> 
+    <menu-item id="terminate" title="回收" description="删除当前流程实例">
+      <jsfun formId="0" fun-name="terminate('taskinfo.cmd?method=terminate','回收')" target="" text=""/>
+    </menu-item>
+    <menu-item id="deleteprocess" title="删除" description="删除当前流程实例，只能在第一环节使用">
+      <jsfun formId="0" fun-name="deleteprocess('taskinfo.cmd?method=deleteProcess','删除')" target="" text=""/>
+    </menu-item>  
+    <menu-item id="formprint" title="打印" description="套用打印模板，打印表单">
+      <jsfun formId="0" fun-name="printForm()" target="" text=""/>
+    </menu-item>  
+    <menu-item id="printFormUseExp" title="打印表单" description="使用浏览器打印">
+      <jsfun formId="0" fun-name="printFormUseExp()" target="" text=""/>
+    </menu-item>   
+    <menu-item id="formprintend" title="打印表单" description="套用打印模板，打印表单,在结束任务中使用" readonly-show="true">
+      <jsfun formId="0" fun-name="printForm()" target="" text=""/>
+    </menu-item> 
+    <menu-item id="printFormUseExpend" title="打印表单" description="使用浏览器打印,在结束任务中使用" >
+      <jsfun formId="0" fun-name="printFormUseExp()" target="" text=""/>
+    </menu-item>
+    <menu-item id="limittime" title="设置限时" description="设置任务处理时限">
+      <jsfun formId="0" fun-name="limittime()" target="" text=""/>
+    </menu-item>  
+    <menu-item id="undelgate" title="取消委派" description="针对角色任务接受委派后可以取消委派">
+      <jsfun formId="0" fun-name="undelegate('taskinfo.cmd?method=undelegate','取消委派')" target="" text=""/>
+    </menu-item>  
+    <menu-item id="forReturn" title="返回" description="返回到前一个页面"  fixItem="true">
+		<jsfun formId="0" fun-name="returnUrl()" target="" text=""/>
+	</menu-item> 
+	<menu-item id="endReturn" title="返回" description="结束任务中使用"  readonly-show="true"  fixItem="true">
+		<jsfun formId="0" fun-name="returnUrl()" target="" text=""/>
+	</menu-item> 
+  </menu>      
+</menus>

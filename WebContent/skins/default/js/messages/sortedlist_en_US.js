@@ -1,0 +1,1 @@
+var sortedlist_msg_1="Only one item can be moved once£¡";

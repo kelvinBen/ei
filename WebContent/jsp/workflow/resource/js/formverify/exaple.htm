@@ -1,0 +1,25 @@
+<html>
+<head>
+<title>测试页面</title>
+<script language="javascript" src="extendString.js"></script>
+<script language="javascript" src="formVerify.js"></script>
+<script language="javascript" src="runFormVerify.js"></script>
+<script language="javascript">
+	bodyonload = "alert('onload事件中运行的程序！')";
+</script>
+</head>
+<body>
+<form method="POST" action="#" name="rrr">
+	<p><input type="text" name="T1" size="20" notnull="text不可为空" value="2005-01-01"><br>
+	<textarea rows="2" name="S1" cols="20" notnull="textarea不可为空" restriction="emailVerify">adffdd@dfsaf.nnsdf</textarea><br>
+	<textarea rows="2" name="S2" cols="20"></textarea><br>
+	<input type="text" name="T2" size="20" restriction="afterVerify,T1"><br>
+	<select size="1" name="D1" notnull="select 不可为空">
+		<option value="">wu</option>
+		<option value="dsfds">you</option>
+	</select><br>
+	<input type="button" value="提交" name="B1" onclick="this.form.submit()"><br>
+	<input type="reset" value="重置" name="B2"></p>
+</form>
+</body>
+</html>

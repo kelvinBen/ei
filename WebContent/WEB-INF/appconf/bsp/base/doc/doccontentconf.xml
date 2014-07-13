@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!--只是在mail中用到了docContentDao的调用  -->
+<beans>
+    <bean id="doccontent" class="net.mast.bsp.base.doc.cmd.DocContentCmd" singleton="false">
+	    <property name="docContentService"><ref bean="docContentService"/></property>
+	    <property name="view"><ref bean="docContentView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="doccontentView"><ref bean="doccontentforward"/></entry>	            
+	        </map>
+		</property>		
+    </bean>
+    <bean id="docContentView"  class="net.mast.bsp.base.doc.view.DocContentView" singleton="false"/>
+    
+    <bean id="docContentService" class="net.mast.bsp.base.doc.service.support.DocContentServiceImpl"> 
+		<property name="docContentDomain"><ref bean="docContentDomain"/></property>   	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+    <bean id="doccontentforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/doc/doc/doc_content_detail.jsp</prop>
+			</props>
+		</property>
+	</bean>
+<bean id="docContentDao" class="net.mast.bsp.base.doc.dao.jdbc.DocContentJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="docContentDomain" class="net.mast.bsp.base.doc.domain.support.DocContentDomainImpl"> 
+	<property name="docContentDao"><ref bean="docContentDao"/></property>
+	<property name="docContentId"><ref bean="pubDocContentId"/></property>
+</bean>
+<bean id="pubDocContentId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="id"><value>PUB_DOC_CONTENT_ID</value></property>
+</bean>
+</beans>

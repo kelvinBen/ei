@@ -1,0 +1,30 @@
+# Ant properties for building the project application
+
+# ------------------------------------------------------------------------------
+name = integration
+
+tomcat.home = G:\\apache-tomcat-6.0.28
+tomcat.lib = ${tomcat.home}/lib
+
+svn.javahl = true
+svn.svnkit = true
+svn.url.src = http://10.68.129.6:8081/svn/proj/integration/src
+svn.url.workflow = http://10.68.129.6:8081/svn/proj/integration/workflow
+svn.url.WebContent = http://10.68.129.6:8081/svn/proj/integration/WebContent
+svn.username = cjz
+svn.password = chenjiazhen11
+svn.destPath.src = target/svn/src
+svn.destPath.workflow = target/svn/workflow
+svn.destPath.WebContent = target/svn/WebContent
+
+web.dir = ${svn.destPath.WebContent}
+src.dir = ${svn.destPath.src}
+workflow.dir = ${svn.destPath.workflow}
+doc.dir = doc
+javadoc.dir = ${doc.dir}/javadoc
+build.dir = target/classes
+build.workflow.dir = target/workflow/classes
+dist.dir = dist
+webclasses.dir = ${web.dir}/WEB-INF/classes
+weblib.dir = ${web.dir}/WEB-INF/lib
+svn.destPath = target

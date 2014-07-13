@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+<!--***********************dao配置***********************************************-->
+	<bean id="pubAppDao" class="net.mast.bsp.permit.app.dao.jdbc.PubAppJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+<!--***********************domain配置********************************************-->
+
+	<bean id="pubAppDomain" class="net.mast.bsp.permit.app.domain.support.PubAppDomainImpl"> 
+		<property name="pubAppDao"><ref bean="pubAppDao"/></property> 
+		<property name="pubAppId"><ref bean="pubAppId"/></property>   	
+	</bean>
+<!--***********************service配置*******************************************-->
+
+	<bean id="pubAppService" class="net.mast.bsp.permit.app.service.support.PubAppServiceImpl"> 
+		<property name="pubAppDomain"><ref bean="pubAppDomain"/></property>   	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+
+
+<!--***********************翻页初始化特殊查询配置开始******************************************-->
+	<bean id="pubappquery_page_init" class="net.mast.bsp.permit.app.query.PubAppQueryPageInitCmd">
+	    <property name="pubAppService"><ref bean="pubAppService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="speQuery"><ref bean="pubappqueryforward"/></entry>
+	        </map>
+        </property>
+        <property name="pageSize">
+        	<value>10</value>
+        </property>
+	</bean>
+<!--***********************翻页初始化特殊查询配置结束******************************************-->
+<!--***********************查询界面转向forward配置开始***********************************-->
+	<bean id="pubappqueryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="queryPageInit">jsp/bsp/permit/app/pub_app_query_init.jsp</prop>  
+			</props>
+	    </property>
+	</bean> 
+<!--***********************查询界面转向forward配置结束***********************************-->
+	
+<!--***********************视图对象View配置****************************************-->
+	<bean id="pubAppView"  class="net.mast.bsp.permit.app.view.PubAppView" singleton="false"/>
+
+<!--***********************cmd配置开始*********************************************-->
+    <bean id="pubapp" class="net.mast.bsp.permit.app.cmd.PubAppCmd" singleton="false">
+	    <property name="pubAppService"><ref bean="pubAppService"/></property>
+	    <property name="view"><ref bean="pubAppView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="pubappView"><ref bean="pubappforward"/></entry>
+	            <entry key="pubappViewChain"><ref bean="pubappforwardchain"/></entry>
+	        </map>
+		</property>
+    </bean>
+
+<!--***********************cmd配置结束*********************************************-->
+
+<!--***********************界面转向forward配置开始***********************************-->
+    <bean id="pubappforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/permit/app/pub_app_detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/permit/app/pub_app_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/permit/app/pub_app_forupdate.jsp</prop>
+			    <prop key="success">jsp/bsp/permit/app/pubapphelp.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="pubappforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="pubappquery_page_init"/></entry>
+			</map>
+		</property>
+    </bean>
+<!--***********************界面转向forward配置结束***********************************-->
+<!--***********************业务流水号配置开始***********************************-->
+    <bean id="pubAppId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	    <property name="dataSource"><ref bean="dataSource"/></property>
+	    <property name="id"><value>PUB_APP_ID</value></property>
+    </bean>
+<!--***********************业务流水号配置结束***********************************-->
+</beans>

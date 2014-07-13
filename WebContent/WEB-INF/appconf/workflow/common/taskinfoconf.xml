@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+
+   <bean id="taskinfoquery" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskInfoQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="taskinfoforward"/></entry>
+	        </map>
+        </property>   
+ 
+     	<property name="beforIntercept">
+	        <list>
+	            <ref bean="wf_state_interceptor"/>
+	            <ref bean="wf_taskinfoquery_interceptor"/>
+	        </list>
+        </property>        	
+	</bean>
+    <bean id="taskinfoforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/taskinfo/taskinfo_query.jsp</prop>
+			    
+			    <prop key="getDaiBanProcessTypeList">jsp/workflow/taskinfo/daiban_processtypelist.jsp</prop>
+			    <prop key="getDaiBanProcessList">jsp/workflow/taskinfo/daiban_processlist.jsp</prop>
+				<prop key="getYiBanProcessTypeList">jsp/workflow/taskinfo/yiban_processtypelist.jsp</prop>
+				<prop key="getYiBanProcessList">jsp/workflow/taskinfo/yiban_processlist.jsp</prop>
+				<prop key="getEndProcessTypeList">jsp/workflow/taskinfo/end_processtypelist.jsp</prop>
+				<prop key="getEndProcessList">jsp/workflow/taskinfo/end_processlist.jsp</prop>
+				<prop key="getDaiBanProcessListByProcType">jsp/workflow/taskinfo/daiban_processlistbyproctype.jsp</prop>
+				<prop key="getYiBanProcessListByProcType">jsp/workflow/taskinfo/yiban_processlistbyproctype.jsp</prop>
+				<prop key="getEndProcessListByProcType">jsp/workflow/taskinfo/end_processlistbyproctype.jsp</prop>
+				<prop key="result">jsp/workflow/taskinfo/result.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	
+    <bean id="taskquery" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="taskqueryforward"/></entry>
+	        </map>
+        </property>   
+ 		<property name="dictService"><ref bean="DictService"/></property>
+ 	</bean>
+    <bean id="taskqueryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/taskinfo/taskinfo_query_all.jsp</prop>
+			</props>
+		</property>
+	</bean>
+
+    <bean id="taskinfonew" class="net.mast.workflow.wfclient.utils.TaskInfoDealNewAction" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="taskinfoView"><ref bean="taskinfoView"/></entry>
+	            <entry key="taskinfoViewChain"><ref bean="taskinfoViewChain"/></entry>
+	        </map>
+		</property>
+		<property name="dictService"><ref bean="DictService"/></property>
+		
+    </bean>
+    
+    
+
+    <bean id="taskinfo" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskInfoDealCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="taskinfoView"><ref bean="taskinfoView"/></entry>
+	            <entry key="taskinfoViewChain"><ref bean="taskinfoViewChain"/></entry>
+	        </map>
+		</property>
+		<property name="dictService"><ref bean="DictService"/></property>
+		
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="workflow_limit_time_unit_interceptor"/>
+	        </list>
+        </property> 		
+    </bean>
+    <bean id="taskinfoView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="fordeal">jsp/workflow/taskinfo/taskinfo_formodify.jsp</prop>
+			    <prop key="forcreate">jsp/workflow/taskinfo/taskinfo_formodify.jsp</prop>
+			    <prop key="forend">jsp/workflow/taskinfo/taskinfo_formodify.jsp</prop>
+			    <prop key="forold">jsp/workflow/taskinfo/taskinfo_formodify.jsp</prop>
+			    <prop key="forres">jsp/workflow/taskinfo/taskinfo_formodify.jsp</prop>
+			    <prop key="forrole">jsp/workflow/taskinfo/taskinfo_formodify.jsp</prop>
+			    <prop key="forcopydis">jsp/workflow/taskinfo/taskinfo_formodify.jsp</prop>
+			    			    
+			    <prop key="fortest">jsp/workflow/taskinfo/taskinfo_test.jsp</prop>
+			    <prop key="forupload">jsp/workflow/taskinfo/testload.jsp</prop>
+
+			    <prop key="specialeditdialog">jsp/workflow/taskinfo/specialedit_dialog.jsp</prop>
+			    
+			    <prop key="editdialog">jsp/workflow/taskinfo/edit_dialog.jsp</prop>
+			    <prop key="signdialog">jsp/workflow/taskinfo/sign_dialog.jsp</prop>				
+			    <prop key="displayStatus">jsp/workflow/processmanage/process/visualFlow.jsp</prop>
+			    <prop key="getnextactivities">jsp/workflow/taskinfo/nextactivities.jsp</prop>
+			    <prop key="gethistoryactivities">jsp/workflow/taskinfo/backto_dialog.jsp</prop>
+			    <prop key="getnoselpartyhistoyact">jsp/workflow/taskinfo/backto_noparty.jsp</prop>
+			    <prop key="getjumpactivities">jsp/workflow/taskinfo/jump_dialog.jsp</prop>
+			    <prop key="forterminatedialog">jsp/workflow/taskinfo/terminate_dialog.jsp</prop>
+			    <prop key="forsuspenddialog">jsp/workflow/taskinfo/suspend_dialog.jsp</prop>
+			    <prop key="forresumedialog">jsp/workflow/taskinfo/resume_dialog.jsp</prop>
+			    <prop key="forassigndialog">jsp/workflow/taskinfo/assign_dialog.jsp</prop>
+			    <prop key="forhastendialog">jsp/workflow/taskinfo/hasten_dialog.jsp</prop>
+			    <prop key="hastensuccess">jsp/workflow/taskinfo/hasten_success.jsp</prop>
+			    <prop key="hastenfailure">jsp/workflow/taskinfo/hasten_failure.jsp</prop>
+			    <prop key="taskinfo_result_forward">jsp/workflow/taskinfo/taskinfo_forward.jsp</prop>
+			    
+			    <prop key="forlimittime">jsp/workflow/taskinfo/limittime_dialog.jsp</prop>
+			    <prop key="forhuizhi">jsp/workflow/taskinfo/huizhi_dialog.jsp</prop>
+			    <prop key="forall">jsp/workflow/taskinfo/all/taskinfo_all.jsp</prop>
+			    <prop key="startActList">jsp/workflow/taskinfo/startactlist_forcreate.jsp</prop>
+   			    <prop key="printform">jsp/workflow/taskinfo/printform.jsp</prop>
+			    
+			</props>
+		</property>
+	</bean>
+    <bean id="taskinfoViewChain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="taskinfoquery"/></entry>
+			    <entry key="suspend"><ref bean="taskinfoquery"/></entry>
+			    <entry key="resume"><ref bean="taskinfoquery"/></entry>
+			    <entry key="terminate"><ref bean="taskinfoquery"/></entry>
+			    <entry key="deleteprocess"><ref bean="taskinfoquery"/></entry>
+			    <entry key="delProcessForMonitedTask"><ref bean="restaskinfoquery"/></entry>
+			    
+			</map>
+		</property>
+    </bean>
+    
+        <bean id="processlist" class="net.mast.workflow.wfclient.taskinfo.cmd.ProcessListCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="processlistView"><ref bean="processlistView"/></entry>
+	            
+	        </map>
+		</property>
+    </bean>
+    <bean id="processlistView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="processlist">jsp/workflow/taskinfo/processlist_forcreate.jsp</prop>
+			    <prop key="taskinfoportal">jsp/workflow/taskinfo/taskinfo_portal.jsp</prop>
+			</props>
+		</property>
+	</bean>
+				<!--oldtaskinfo-->
+   <bean id="oldtaskinfoquery" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskOldQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="oldtasklistforward"/></entry>
+	        </map>
+        </property>
+        <property name="beforIntercept">
+	        <list>
+	            <ref bean="wf_state_interceptor"/>
+	            <ref bean="wf_taskinfoquery_interceptor"/>
+	        </list>
+        </property> 
+  
+	</bean>
+	
+	<bean id="alltaskinfoquery" class="net.mast.workflow.wfclient.taskinfo.cmd.AllTaskOldQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="alltasklistforward"/></entry>
+	        </map>
+        </property>
+        <property name="beforIntercept">
+	        <list>
+	            <ref bean="wf_state_interceptor"/>
+	            <ref bean="wf_taskinfoquery_interceptor"/>
+	        </list>
+        </property> 
+  
+	</bean>
+	
+    <bean id="oldtasklistforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/taskinfo/taskinfo_old_query.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	
+	
+	<bean id="alltasklistforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/taskinfo/taskinfo_all_query.jsp</prop>
+			</props>
+		</property>
+	</bean>	
+	
+	<bean id="allfinishtasklistforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/taskinfo/alltaskinfo_finish_query.jsp</prop>
+			</props>
+		</property>
+	</bean>	
+		
+				<!--finishtaskinfo-->
+   <bean id="finishtaskinfoquery" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskFinishQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="finishtasklistforward"/></entry>
+	        </map>
+        </property>
+        <property name="beforIntercept">
+	        <list>
+	        </list>
+        </property>   
+	</bean>
+    <bean id="finishtasklistforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/taskinfo/taskinfo_finish_query.jsp</prop>
+			    <prop key="radiohelpquery">jsp/workflow/help/taskinfo_finish_radio.jsp</prop>
+			    <prop key="checkboxhelpquery">jsp/workflow/help/taskinfo_finish_checkbox.jsp</prop>
+			</props>
+		</property>
+	</bean>	
+		
+	  <bean id="allfinishtaskinfoquery" class="net.mast.workflow.wfclient.taskinfo.cmd.AllTaskFinishQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="allfinishtasklistforward"/></entry>
+	        </map>
+        </property>
+        <property name="beforIntercept">
+	        <list>
+	        </list>
+        </property>   
+	</bean>
+
+	
+				<!--restaskinfo-->
+   <bean id="restaskinfoquery" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskResQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="restasklistforward"/></entry>
+	        </map>
+        </property>   
+ 
+         <property name="beforIntercept">
+	        <list>
+	            <ref bean="wf_state_interceptor"/>
+	            <ref bean="wf_taskinfoquery_interceptor"/>
+	        </list>
+        </property>         	
+	</bean>
+    <bean id="restasklistforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/taskinfo/taskinfo_res_query.jsp</prop>
+			</props>
+		</property>
+	</bean>	
+				<!--roletaskinfo-->
+   <bean id="roletaskinfoquery" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskRoleQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="roletasklistforward"/></entry>
+	        </map>
+        </property>
+        <property name="beforIntercept">
+	        <list>
+	            <ref bean="wf_state_interceptor"/>
+	            <ref bean="wf_taskinfoquery_interceptor"/>
+	        </list>
+        </property>    
+	</bean>
+    <bean id="roletasklistforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/taskinfo/taskinfo_role_query.jsp</prop>
+			</props>
+		</property>
+	</bean>	
+    <bean id="taskinfomonitor" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskInfoMonitorCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="taskInfoMonitorView"><ref bean="taskInfoMonitorView"/></entry>
+	            
+	        </map>
+		</property>	
+		<property name="view"><ref bean="taskinfo_noneview"/></property>	
+    </bean>
+    <bean id="taskInfoMonitorView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="processtypelist">jsp/workflow/taskinfo/taskinfo_monitor_processtypelist.jsp</prop>
+			    <prop key="processlist">jsp/workflow/taskinfo/taskinfo_monitor_processlist.jsp</prop>
+			   
+			</props>
+		</property>
+	</bean>
+    <bean id="taskinfodaiban" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskInfoDaiBanCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="taskInfoDaiBanView"><ref bean="taskInfoDaiBanView"/></entry>
+	            
+	        </map>
+		</property>	
+		<property name="view"><ref bean="taskinfo_noneview"/></property>	
+    </bean>
+    <bean id="taskInfoDaiBanView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="processtypelist">jsp/workflow/taskinfo/taskinfo_daiban_processtypelist.jsp</prop>
+			    <prop key="processlist">jsp/workflow/taskinfo/taskinfo_daiban_processlist.jsp</prop>
+			    <prop key="processlistForSender">jsp/workflow/taskinfo/taskinfo_daiban_processlistForSender.jsp</prop>
+			   
+			</props>
+		</property>
+	</bean>	
+	    <bean id="taskinfozaiban" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskInfoZaiBanCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="taskInfoZaiBanView"><ref bean="taskInfoZaiBanView"/></entry>
+	            
+	        </map>
+		</property>	
+		<property name="view"><ref bean="taskinfo_noneview"/></property>	
+    </bean>
+    <bean id="taskInfoZaiBanView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="processtypelist">jsp/workflow/taskinfo/taskinfo_zaiban_processtypelist.jsp</prop>
+			    <prop key="processlist">jsp/workflow/taskinfo/taskinfo_zaiban_processlist.jsp</prop>
+			    <prop key="processlistForSender">jsp/workflow/taskinfo/taskinfo_zaiban_processlistForSender.jsp</prop>
+			   
+			</props>
+		</property>
+	</bean>	
+	<bean id="taskinfoyiban" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskInfoYiBanCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="taskInfoYiBanView"><ref bean="taskInfoYiBanView"/></entry>
+	            
+	        </map>
+		</property>	
+		<property name="view"><ref bean="taskinfo_noneview"/></property>	
+    </bean>
+    <bean id="taskInfoYiBanView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="processtypelist">jsp/workflow/taskinfo/taskinfo_yiban_processtypelist.jsp</prop>
+			    <prop key="processlist">jsp/workflow/taskinfo/taskinfo_yiban_processlist.jsp</prop>
+			   
+			</props>
+		</property>
+	</bean>	
+	<bean id="taskinfofinish" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskInfoFinishCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="taskInfoFinishView"><ref bean="taskInfoFinishView"/></entry>
+	            
+	        </map>
+		</property>	
+		<property name="view"><ref bean="taskinfo_noneview"/></property>	
+    </bean>
+    <bean id="taskInfoFinishView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="processtypelist">jsp/workflow/taskinfo/taskinfo_finish_processtypelist.jsp</prop>
+			    <prop key="processlist">jsp/workflow/taskinfo/taskinfo_finish_processlist.jsp</prop>
+			   
+			</props>
+		</property>
+	</bean>	
+	<bean id="taskinforole" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskInfoRoleCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="taskInfoRoleView"><ref bean="taskInfoRoleView"/></entry>
+	            
+	        </map>
+		</property>	
+		<property name="view"><ref bean="taskinfo_noneview"/></property>	
+    </bean>
+    <bean id="taskInfoRoleView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="processtypelist">jsp/workflow/taskinfo/taskinfo_role_processtypelist.jsp</prop>
+			    <prop key="processlist">jsp/workflow/taskinfo/taskinfo_role_processlist.jsp</prop>
+			   
+			</props>
+		</property>
+	</bean>	
+	<bean id="taskinfosearch" class="net.mast.workflow.wfclient.taskinfo.query.TaskInfoSearchCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="TaskInfoSearchView"><ref bean="TaskInfoSearchView"/></entry>
+	            
+	        </map>
+		</property>	
+		<property name="view"><ref bean="taskinfo_noneview"/></property>	
+		<property name="beforIntercept">
+	        <list>
+	        </list>
+        </property>
+    </bean>
+    <bean id="TaskInfoSearchView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="forsearch">jsp/workflow/taskinfo/taskinfo_forsearch.jsp</prop>
+			    <prop key="searchlist_daiBan">jsp/workflow/taskinfo/taskinfo_searchlist_daiban.jsp</prop>
+			    <prop key="searchlist_yiBan">jsp/workflow/taskinfo/taskinfo_searchlist_yiban.jsp</prop>
+			    <prop key="searchlist_wanCheng">jsp/workflow/taskinfo/taskinfo_searchlist_wancheng.jsp</prop>
+			</props>
+		</property>
+	</bean>					
+<bean id="taskinfo_noneview"  class="java.lang.Object" singleton="false"/> 	   
+	<bean id="taskInfoForClient" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskInfoForClientCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="taskInfoForClientForword"><ref bean="taskInfoForClientForword"/></entry>	            
+	        </map>
+		</property>	
+    </bean>
+    <bean id="taskInfoForClientForword" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="taskListXML">jsp/workflow/taskinfo/taskinfo_client_listXML.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	
+	
+	
+	
+	<!-- ********************************所有任务综合页面相关配置开始************************************ -->
+    <bean id="taskinfoforemp" class="net.mast.workflow.wfclient.taskinfo.cmd.TaskInfoForEmpCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="taskInfoForEmpView"><ref bean="taskInfoForEmpView"/></entry>
+	           
+	        </map>
+		</property>		
+    </bean>
+    <bean id="taskInfoForEmpView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="getTaskInfoForEmp">jsp/workflow/taskinfo/all/taskinfo_foremp.jsp</prop>
+			    <prop key="processlist_daiban">jsp/workflow/taskinfo/all/taskinfo_daiban_processlist.jsp</prop>
+			    <prop key="processlist_zaiban">jsp/workflow/taskinfo/all/taskinfo_zaiban_processlist.jsp</prop>
+			    <prop key="processlist_yiban">jsp/workflow/taskinfo/all/taskinfo_yiban_processlist.jsp</prop>
+			    <prop key="processlist_finish">jsp/workflow/taskinfo/all/taskinfo_finish_processlist.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- ********************************所有任务综合页面相关配置结束************************************ -->
+	
+	
+	   <bean id="partynextactivityquery" class="net.mast.workflow.wfclient.taskinfo.cmd.PartyNextActivityQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="partyactivityforward"/></entry>
+	        </map>
+        </property>         	
+		
+	</bean>
+    <bean id="partyactivityforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="newactivitypartylist">jsp/workflow/taskinfo/newactivitypartylist.jsp</prop>
+			    
+			</props>
+		</property>
+	</bean>
+	<!-- 针对任务列表中，对公文类型的流称任务列表中，公文种类列显示值的配置 
+	
+	<bean id="edoc_type_interceptor_taskinfo" class="net.mast.waf.interceptor.CollectionInterceptor">
+		<property name="collections">
+			<map>
+				<entry key="EDOC_TYPE_COLLECTION"><ref bean="EDOC_TYPE_COLLECTION"/></entry>
+			    <entry key="EDOC_SECRETLEVEL_COLLECTION"><ref bean="EDOC_SECRETLEVEL_COLLECTION"/></entry>
+				<entry key="EDOC_INSTANTLEVEL_COLLECTION"><ref bean="EDOC_INSTANTLEVEL_COLLECTION"/></entry>
+           </map>
+		</property>
+	</bean>
+	
+	<bean id="EDOC_TYPE_COLLECTION" class="net.mast.waf.data.SqlCollection">
+		    <property name="sql"><value>SELECT TYPE_ID,TYPE_NAME FROM EDOC_TYPE</value></property>
+		    <property name="ds"><ref bean="dataSource"/></property>
+	</bean>
+	-->
+	<bean id="isallparty" class="net.mast.workflow.wfclient.taskinfo.cmd.IsAllPartyCmd" singleton="false">
+    </bean>
+</beans>

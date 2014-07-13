@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+<!--***********************dao配置***********************************************-->
+	<bean id="templatesDao" class="net.mast.bsp.permit.pap.dao.jdbc.TemplatesJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+<!--***********************domain配置********************************************-->
+
+	<bean id="templatesDomain" class="net.mast.bsp.permit.pap.domain.support.TemplatesImpl"> 
+		<property name="templatesDao"><ref bean="templatesDao"/></property>  
+		<property name="trolesDomain"><ref bean="trolesDomain"/></property> 	
+		<property name="roleDomain"><ref bean="roleDomain"/></property> 
+			
+	</bean>
+<!--***********************service配置*******************************************-->
+
+	<bean id="templatesService" class="net.mast.bsp.permit.pap.service.support.TemplatesServiceImpl"> 
+		<property name="templatesDomain"><ref bean="templatesDomain"/></property>   	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+
+<!--***********************查询配置开始********************************************-->
+	<bean id="templatesquery" class="net.mast.bsp.permit.pap.cmd.TemplatesQuery">
+		 <property name="templatesService"><ref bean="templatesService"/></property>
+		  <property name="forwards">
+	        <map>
+	            <entry key="templatesView"><ref bean="templatesforward"/></entry>
+    
+	        </map>
+		</property>
+	</bean>
+	<!-- add by zhb start -->
+	<bean id="templatesdelete" class="net.mast.waf.mvc.CommonQueryCommand">
+	<property name="mappings">
+		<props>
+			<prop key="success">jsp/bsp/permit/pap/role/deletdetail.jsp</prop>
+		</props>
+	</property> 
+	</bean>
+	<!-- add by zhb end -->
+<!--***********************查询配置结束********************************************-->
+
+<!--***********************视图对象View配置****************************************-->
+	<bean id="templateView"  class="net.mast.bsp.permit.pap.view.TemplateView" singleton="false"/>
+
+<!--***********************cmd配置开始*********************************************-->
+    <bean id="templates" class="net.mast.bsp.permit.pap.cmd.TemplatesCmd" singleton="false">
+	    <property name="templatesService"><ref bean="templatesService"/></property>
+	    <property name="trolesService"><ref bean="trolesService"/></property>
+	    <property name="view"><ref bean="templateView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="templatesView"><ref bean="templatesforward"/></entry>
+	            <entry key="templatesViewChain"><ref bean="templatesforwardchain"/></entry>
+	        </map>
+		</property>
+    </bean>
+
+<!--***********************cmd配置结束*********************************************-->
+
+<!--***********************界面转向forward配置开始***********************************-->
+    <bean id="templatesforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/permit/pap/template/templates_detail.jsp</prop>
+				<prop key="treedetail">jsp/bsp/permit/pap/template/templates_tree_detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/permit/pap/template/templates_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/permit/pap/template/templates_forupdate.jsp</prop>
+				<prop key="query">jsp/bsp/permit/pap/template/templates_query.jsp</prop>
+				<prop key="root">jsp/bsp/permit/pap/template/templates_tree.jsp</prop>
+				<prop key="node">jsp/bsp/permit/pap/template/templates_tree_node.jsp</prop>
+				<prop key="ok">jsp/bsp/permit/pap/template/success.jsp</prop> 
+				<prop key="forinsert_info">jsp/bsp/permit/pap/template/templates_forinsert_info.jsp</prop>
+			    <prop key="forupdate_info">jsp/bsp/permit/pap/template/templates_forupdate_info.jsp</prop>
+			    <prop key="applyTemplate">jsp/bsp/permit/pap/template/applyTemplate.jsp</prop>
+			    <prop key="applyTemplateByOrganType">jsp/bsp/permit/pap/template/applyTemplateByOrganType.jsp</prop>
+				<prop key="ok2">jsp/bsp/permit/pap/template/success2.jsp</prop> 
+			</props>
+		</property>
+	</bean>
+    <bean id="templatesforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="templatesquery"/></entry>
+			    <entry key="deletedetail"><ref bean="templatesdelete"/></entry>
+			</map>
+		</property>
+    </bean>
+<!--***********************界面转向forward配置结束***********************************-->
+
+
+</beans>

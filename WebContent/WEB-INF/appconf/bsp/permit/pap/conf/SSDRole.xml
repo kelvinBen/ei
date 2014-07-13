@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>	
+<!--****************HierarchicalRole通用查询配置开始*****************-->
+    <bean id="commonquery_role" class="net.mast.waf.mvc.CommonQueryCommand">
+	<property name="mappings">
+		<props>
+			<prop key="success">jsp/content.jsp</prop>
+		</props>
+	</property>     
+	
+     </bean>
+    <!-- add by zhb start --> 
+    <bean id="commonquery_role_failure" class="net.mast.waf.mvc.CommonQueryCommand">
+	<property name="mappings">
+		<props>
+			<prop key="success">jsp/bsp/permit/pap/role/deletdetail.jsp</prop>
+		</props>
+	</property>     
+	
+     </bean>
+      <!-- add by zhb end --> 
+<!--****************HierarchicalRole通用查询配置结束*****************-->
+  	
+<!--****************HierarchicalRoleCmd配置开始*****************-->
+     <bean id="role" class="net.mast.bsp.permit.pap.cmd.RoleCmd" singleton="false">
+	         <property name="roleService"><ref bean="roleService"/></property>
+	         <property name="struService"><ref bean="struService"/></property>
+	         <property name="view"><ref bean="RoleView"/></property>
+	         <property name="forwards">
+	                 <map>
+	                      <entry key="RoleView"><ref bean="roleforward"/></entry>
+	                      <entry key="RoleViewChain"><ref bean="roleforwardchain"/></entry>
+	                 </map>
+		     </property>
+		    
+     </bean>
+<!--****************HierarchicalRoleCmd配置结束*****************-->
+
+<!--****************HierarchicalRoleForward配置结束*****************-->
+     <bean id="roleforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	         <property name="mappings">
+			        <props>		
+			              <prop key="grant">jsp/bsp/permit/pap/function/iframe.jsp</prop> 
+			              <prop key="revoke">jsp/bsp/permit/pap/role/resourcetree/iframe.jsp</prop>      		    
+			              <prop key="detail">jsp/bsp/permit/pap/role/detail.jsp</prop>
+			              <prop key="exactdetail">jsp/bsp/permit/pap/role/exactdetail.jsp</prop>
+			              <prop key="forinsert">jsp/bsp/permit/pap/role/forinsert.jsp</prop>
+			              <prop key="forupdate">jsp/bsp/permit/pap/role/forupdate.jsp</prop>
+			              <prop key="exactforupdate">jsp/bsp/permit/pap/role/exactforupdate.jsp</prop>
+			              <prop key="query">jsp/bsp/permit/pap/role/query.jsp</prop> 
+			              <prop key="root">jsp/bsp/permit/pap/role/role_tree.jsp</prop> 
+			              <prop key="node">jsp/bsp/permit/pap/role/role_tree_node.jsp</prop> 
+			              <prop key="selroot">jsp/bsp/permit/pap/role/checkroot.jsp</prop>
+			              <prop key="selnode">jsp/bsp/permit/pap/role/checknode.jsp</prop>
+			              <prop key="choiceroot">jsp/bsp/permit/pap/role/choiceroot.jsp</prop>
+			              <prop key="choicenode">jsp/bsp/permit/pap/role/choicenode.jsp</prop>
+			              <prop key="usercheckroot">jsp/bsp/permit/pap/role/usercheckroot.jsp</prop>
+			              <prop key="userchecknode">jsp/bsp/permit/pap/role/userchecknode.jsp</prop>
+			               <!--      20070111针对dcwork增加系统角色通用帮助树的jsp界面       -->
+			              <prop key="getchoicesysroleroot">jsp/bsp/permit/pap/role/choice_sys_role_tree.jsp</prop>
+			              <prop key="getchoicesysrolenode">jsp/bsp/permit/pap/role/choice_sys_role_tree_node.jsp</prop>
+			              <prop key="getchecksysroleroot">jsp/bsp/permit/pap/role/checkbox_sys_role_tree.jsp</prop>
+			              <prop key="getchecksysrolenode">jsp/bsp/permit/pap/role/checkbox_sys_role_tree_node.jsp</prop>
+			              <!--      列表形式实现拥有一个角色的用户的选择       -->
+			       		  <prop key="checkTable">jsp/bsp/permit/pap/role/usercheckTable.jsp</prop>
+			       		   <!--      批量授权       -->
+			       		  <prop key="batchGrant">jsp/bsp/permit/pap/role/batchGrant.jsp</prop> 
+			       		  
+			        </props>
+		     </property>
+     </bean>
+     <bean id="roleforwardchain" class="net.mast.waf.mvc.ChainForward">
+	         <property name="mappings">
+			        <map>
+			               <entry key="success"><ref bean="commonquery_role"/></entry>
+			               <entry key="failure"><ref bean="commonquery_role_failure"/></entry>
+			        </map>
+		     </property>
+     </bean>
+
+<!--****************HierarchicalRoleForward配置开始*****************-->
+
+<!--****************HierarchicalRoleView配置开始*****************-->
+     <bean id="RoleView"  class="net.mast.bsp.permit.pap.view.RoleView" singleton="false">
+     </bean>
+<!--****************HierarchicalRoleView配置结束*****************-->
+
+<!--****************HierarchicalRoleService配置开始*****************-->
+     <bean id="roleService" class="net.mast.bsp.permit.pap.service.support.RoleServiceImpl"> 
+	         <property name="roleDomain"><ref bean="roleDomain"/></property>   	
+	         <property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+     </bean>
+<!--****************HierarchicalRoleService配置结束*****************-->
+
+<!--****************HierarchicalRoleDomain配置开始*****************-->
+      <bean id="roleDomain" class="net.mast.bsp.permit.pap.domain.ssd.SSDRoles"> 
+        <property name="rolesDao"><ref bean="rolesDao"/></property>   
+	    <property name="struDomain"><ref bean="struDomain"/></property>  	
+	    <property name="globalDomain"><ref bean="globalDomain"/></property>   
+	    <property name="uaDomain"><ref bean="uaDomain"/></property>  
+	    <property name="paDomain"><ref bean="paDomain"/></property>  
+	    <property name="rolePrivsDomain"><ref bean="rolePrivsDomain"/></property> 
+	    <property name="trolesDomain"><ref bean="trolesDomain"/></property> 
+	    <property name="troleOptsDomain"><ref bean="troleOptsDomain"/></property>    
+	    <property name="conflictRoleSetDomain"><ref bean="conflictRoleSetDomain"/></property>    
+	    <property name="functionDomain"><ref bean="functionDomain"/></property>
+	    <property name="moduleDomain"><ref bean="moduleDomain"/></property>
+      </bean>
+<!--****************HierarchicalRoleDomain配置结束****************-->    
+ 
+<!--****************HierarchicalRole dao配置开始****************-->
+ 	 <bean id="rolesDao" class="net.mast.bsp.permit.pap.dao.jdbc.RolesJdbcDao">
+	        <property name="dataSource"><ref bean="dataSource"/></property>
+	 </bean>
+<!--****************HierarchicalRole dao配置结束****************-->
+	
+</beans>

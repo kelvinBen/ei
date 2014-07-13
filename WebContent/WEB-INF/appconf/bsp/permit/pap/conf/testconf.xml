@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+     <bean id="rolequery" class="net.mast.waf.mvc.CommonQueryCommand">
+	       <property name="mappings">
+		           <props>
+			           <prop key="success">jsp/bsp/permit/pap/test/rolechoice.jsp</prop>
+		           </props>
+	       </property>     
+	       <property name="collection"><ref bean="sqlPageCollection"/></property>
+      </bean>
+     <bean id="testbpcontext" class="net.mast.bsp.permit.pap.cmd.TestBspContextCmd" singleton="false">
+        <property name="bspInfoService"><ref bean="bspInfoService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="out"><ref bean="testbpcontextforward"/></entry>
+	        </map>
+            </property>
+    </bean>
+    
+    <bean id="bspInfoService" class="net.mast.bsp.permit.pap.service.support.TestBspInfoServiceImpl" singleton="false">
+	    <property name="testBspInfo"><ref bean="testBspInfo"/></property>
+    </bean>
+    <bean id="testBspInfo" class="net.mast.bsp.permit.pap.domain.support.TestBspInfoImpl" singleton="false">
+        <property name="userDomain"><ref bean="userDomain"/></property>
+    </bean>
+    <bean id="testbpcontextforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="success">jsp/bsp/permit/pap/test/detail.jsp</prop>
+			</props>
+	    </property>
+     </bean>
+</beans>

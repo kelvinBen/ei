@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>°å¿éÊôÐÔ</TITLE>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+</HEAD>
+<style>
+td 
+{
+font-size:9pt;
+}
+legend 
+{
+font-size:9pt;
+}
+
+</style>
+<script language="javascript">
+var win,curObj;
+function init()
+{
+win=window.dialogArguments;
+curObj=win.ff.OBJ.getCurXmlNode();
+if(curObj==null) return;
+var otype=curObj.getAttribute("type");
+var oname=curObj.getAttribute("name");
+var objBkname=document.all("bkname");
+objBkname.value=oname;
+
+var objBktype=document.all("bktype");
+objBktype.innerText=otype;
+
+var objCandel=document.all("candel");
+var isCanDel=curObj.getAttribute("isCanDel");
+if(isCanDel=="false")
+objCandel.checked=true;
+var objCanmove=document.all("canmove");
+var isCanMove=curObj.getAttribute("isCanMove");
+if(isCanMove=="false")
+objCanmove.checked=true;
+
+
+}
+function dosave()
+{
+if(curObj==null) return;
+var objBkname=document.all("bkname");
+if(objBkname.value!=null && objBkname.value!="")
+curObj.setAttribute("name",objBkname.value);
+var objBkskin=document.all("bkskin");
+if(objBkskin.value!=null && objBkskin.value!="")
+curObj.setAttribute("skin",objBkskin.value);
+var objCandel=document.all("candel");
+if(objCandel.checked)
+	curObj.setAttribute("isCanDel","false");
+else
+	curObj.setAttribute("isCanDel","true");
+var objCanmove=document.all("canmove");
+if(objCanmove.checked)
+	curObj.setAttribute("isCanMove","false");
+else
+	curObj.setAttribute("isCanMove","true");
+win.ff.OBJ.reDraw(1);
+window.close();
+
+}
+function docancel()
+{
+window.close();
+}
+
+</script>
+<BODY bgcolor="#DBDBDB" onload="init()">
+<fieldset  style="boder:2 solid red"><legend>°å¿éÐÅÏ¢</legend>
+<table width="100%" border="0">
+  <tr>
+    <td width="40%">°å¿éÃû³Æ£º</td>
+    <td><input type="text"  size=8  name="bkname"></td>
+  </tr>
+  <tr>
+    <td>Âß¼­ÀàÐÍ£º</td>
+    <td>&nbsp;<span id="bktype"></span></td>
+  </tr>
+   <tr>
+    <td>Ö÷Ìå°å¿é£º</td>
+    <td>·ñ&nbsp;</td>
+  </tr>
+</table>
+</fieldset>
+<br>
+<fieldset ><legend>°å¿éÊôÐÔ</legend>
+<table width="100%" border="0">
+  <tr>
+    <td width="40%">°å¿éSKIN£º</td>
+    <td><input size=5 name="bkskin"><BUTTON>ä¯ÀÀ</button></td>
+  </tr>
+  <tr>
+    <td>°å¿é×´Ì¬£º</td>
+    <td><select id="selzt"><option value=1>Ò»°ã</option></select></td>
+  </tr>
+   <tr>
+    <td colspan=2><input id="candel" type="checkbox">½ûÖ¹É¾³ý&nbsp;&nbsp;<input id="canmove" type="checkbox">½ûÖ¹ÒÆ¶¯</td>
+  </tr>
+</table>
+</fieldset>
+<center>
+<button onclick="dosave();">È·¶¨</button>&nbsp;&nbsp;<button onclick="docancel();">È¡Ïû</button>
+
+</center>
+</BODY>
+</HTML>

@@ -1,0 +1,812 @@
+<html>
+<head>
+<LINK href="skin.css" rel=stylesheet type=text/css>
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>文本区属性　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　</title>
+</head>
+<script language="javascript">
+var canclose=true;
+var topwin=window.dialogArguments;
+var modalTd=topwin.OBJ.CurControl.parentElement;
+var modalObj=topwin.OBJ.CurControl;;
+var datahid=true;// 数据库属性表格 
+var zihaoModifystr="";//字号信息的MODIFY部分
+var oldZihao="";//上次保存的字号
+var inputname=null;//对象名
+function init()
+{
+//fillsele();
+if(modalObj==null ) return;
+var radio=document.all("r1");
+if(radio!=null)
+	{
+		var ratype=modalObj.getAttribute("dmtype");
+		if(ratype!=null)
+		{
+			selected("r1",ratype);
+		}
+		//else
+		//{
+		//	selected("r1","zihao");
+		//}
+	}
+var col=modalObj.cols;
+var row=modalObj.rows;
+document.all("col").value=col;
+document.all("row").value=row;
+document.all("yuname").value=modalObj.name;
+var olddiv=modalObj.getAttribute("displayname");
+var signoldstr=modalObj.getAttribute("isSign");
+if(signoldstr!=null && signoldstr!="")
+	document.all("qianming").checked=true;
+var olddiv=modalObj.getAttribute("displayname");
+var bloldstr=modalObj.getAttribute("reservefield");
+if(bloldstr!=null && bloldstr!="")
+	{document.all("baoliu").checked=true;
+	document.all("getBLname").style.display="block";
+	selected("getBLname",bloldstr);
+	if(bloldstr=="fileNo")
+	{
+		document.all("baoliu").disabled=true;
+		document.all("getBLname").disabled=true;
+		var trzh=document.all("trzihao");
+		if(trzh!=null) 
+			trzh.style.display="block";
+		var topzihao=topwin.document.all("zihaovalue");
+		if(topzihao!=null&& topzihao.value!="")
+		document.all("zihaotype").value=topzihao.value;
+		var zihaoall=topzihao.value;
+		//var indexz1=zihaoall.indexOf(">");
+		//var indexz2=zihaoall.lastIndexOf("<");
+		//zihaoModifystr=zihaoall.substring(0,indexz1+1);
+		//var zihaoitem=zihaoall.substring(indexz1+1,indexz2);
+		//oldZihao=zihaoitem;
+		fillzihao(zihaoall);
+	}
+	}
+
+getolddiv();
+}
+//修改时处理文号信息
+function fillzihao(str)
+{
+if(str==null|| str=="")
+	return ;
+var arrstr=str.split("</zihao>");
+var xmlroot=new ActiveXObject("Msxml.DOMDocument");
+xmlroot.loadXML("<?xml version='1.0'?><zhxml>"+str+"</zhxml>");
+//alert("<?xml version='1.0'?><zhxml>"+str+"</zhxml>");
+var root=xmlroot.childNodes[1];
+var xmllen=root.childNodes.length;
+for(var i=0;i<xmllen;i++)
+{	
+	var indexvalue=root.childNodes[i].getAttribute("value");
+	var indexhaoid=root.childNodes[i].getAttribute("haoid");
+	var indexstate=root.childNodes[i].getAttribute("state");
+	var indextype=root.childNodes[i].getAttribute("type");
+	addTabList(indexvalue,indexhaoid,indexstate,indextype);
+}
+}
+
+//修改时获得原有标签
+function getolddiv()
+{
+if(modalObj==null)
+	return;
+var sdiv=modalObj.getAttribute("displayname");
+if(sdiv!=null)
+	{
+	var seldiv=document.all("seldiv");
+	seldiv.value=sdiv;
+	}
+
+}
+function onbeforclose()
+{
+if(canclose)
+{
+return("您所选择的控件将被删除！");
+}
+}
+function onclose()
+{
+if(topwin.obj==null) return;
+if(modalObj==null) return;
+if(modalObj.getAttribute("displayname")==null && canclose)
+	{
+	topwin.obj.delpro();
+	}
+window.close();
+}
+function modifypro()
+{
+if(modalTd!=null)
+	inputname="def_r"+modalTd.parentElement.rowIndex+"c"+modalTd.cellIndex;
+else
+	inputname="def_r"+modalObj.parentElement.parentElement.rowIndex+"c"+modalObj.parentElement.cellIndex;
+var row=document.all("row").value;
+var col=document.all("col").value;
+var selediv=document.all("seldiv");
+var seledivvalue=selediv.value;
+if(seledivvalue=="")
+{
+alert("请输入对应标签！");
+selediv.focus();
+return false;
+}
+//是否是签名域
+var qianmingObj=document.all("qianming");
+var signstr="";
+if(qianmingObj!=null && qianmingObj.checked)
+{
+signstr="Sign";
+}
+//是否是保留域
+var biaoliuObj=document.all("baoliu");
+var blstr="";
+if(biaoliuObj!=null && biaoliuObj.checked)
+{var bltype=document.all("getBLname");
+	if(bltype!=null && bltype.options[bltype.selectedIndex].value!="")
+	{
+	blstr="reservefield=\""+bltype.options[bltype.selectedIndex].value+"\"";
+	}
+}
+
+var radio=document.all("r1");
+var radiovalue=radio.options[radio.selectedIndex].value;
+var dmtypestr="";
+var zihaotype="";
+if(radiovalue=="serial")
+{
+	var bianhaoobj=topwin.document.all("bianhaovalue");
+	if(bianhaoobj!=null)
+	{
+		if(bianhaoobj.value!="")
+		bianhaoobj.value='<zihao haoid="" type="编号"></zihao>';
+	}
+}
+
+if(radiovalue=="zihao")
+{
+	var zhtype=document.all("zihaotype");
+	var zhtypestr="";
+	if(zhtype!=null)
+		zhtypestr=zhtype.value;
+	/*
+	var index=zhtypestr.indexOf('<modify');
+	var index1=zhtypestr.indexOf(">");
+	var index2=zhtypestr.lastIndexOf("<");
+	if(index>-1 && index2>-1 && index1 >-1)
+	zhtypestr=zhtypestr.substring(index1+1,index2);
+	*/
+	if(zhtypestr=="")
+		{
+		alert("请输入文号类型！");
+		return false;
+		}
+	if(zhtypestr!="")
+	{
+	zihaotype=' zihaotype="1" ';
+	var topzihao=topwin.document.all("zihaovalue");
+	if(topzihao!=null)
+		{
+		
+		topzihao.value=zhtypestr;
+		}
+	}
+}
+	dmtypestr=' dmtype="'+radiovalue+'" ';
+/*
+if(modalObj!=null)
+	{
+		modalTd.innerHTML="<TEXTAREA rows="+row+" cols="+col+" name='"+inputname+"'  "+blstr+dmtypestr+zihaotype+" displayname=\""+seledivvalue+"\" isSign=\""+signstr+"\"></TEXTAREA>";
+	canclose=false;
+	window.close();
+	return;
+	}
+*/
+var nameStr="";
+var yunamestr=document.all("yuname").value;
+if(yunamestr.search("data_")>-1 || yunamestr.search("Control_")>-1)
+{
+alert("域名称含有不合法的字符，请修改！");
+document.all("yuname").focus();
+document.all("yuname").value="";
+return false;
+}
+if(yunamestr==""||yunamestr==null)
+	nameStr=inputname;
+else
+	nameStr=yunamestr;
+
+if(modalTd==null)
+	return;
+/*
+var obj=modalTd.children[0];
+if(obj!=null)
+	{
+		modalTd.innerHTML="<TEXTAREA rows="+row+" cols="+col+" name='"+nameStr+"'  id='"+nameStr+"' "+blstr+dmtypestr+zihaotype+" displayname=\""+seledivvalue+"\" isSign=\""+signstr+"\"></TEXTAREA>";
+	
+	}
+	*/
+	modalObj.rows=row;
+	modalObj.cols=col;
+	modalObj.name=nameStr;
+	modalObj.id=nameStr;
+modalObj.displayname=seledivvalue;
+		canclose=false;
+	window.close();
+}
+function delpro()
+{
+if(modalObj!=null)
+	{
+	if(modalObj.type=="text")
+		{
+		modalObj.parentElement.innerHTML="&nbsp;";
+		}
+	return;
+	}
+if(modalTd==null)
+return;
+var obj=modalTd.children[0];
+if(obj.tagName.type=="text")
+	modalTd.innerHTML="&nbsp;";
+}
+//根据主页面的DIV来添加下拉框选项
+function fillsele()
+{
+if(modalTd==null)
+	return;
+var tab=topwin.document.all("t");
+var row=modalTd.parentElement.rowIndex;
+var col=modalTd.cellIndex;
+var selediv=document.all("seldiv");
+var arrDiv=new Array();
+for(var i=0;i<tab.rows.length;i++)
+	for(var j=0;j<tab.rows[i].cells.length;j++)
+		{
+		var td=tab.rows[i].cells[j];
+		if(td==null)
+			continue;
+		if(td.children[0]==null || typeof(td.children[0])=="undefined")
+			continue;
+		if(td.children[0].tagName=="DIV")
+			{
+			if(td.children[0].innerText!="")
+				{
+				arrDiv[arrDiv.length]=td.children[0].innerText;
+				}
+			}
+		else
+		{
+			var olddiv=td.children[0].getAttribute("displayname");
+			if(olddiv!="" || olddiv!=null)
+			{
+			for(k=0;k<arrDiv.length;k++)
+				{
+				if(arrDiv[k]==olddiv)
+					arrDiv[k]="";
+				}
+			}
+		}
+	for(jj=0;jj<arrDiv.length;jj++)
+				{
+				if(arrDiv[jj]!="")
+					{selediv.value=arrDiv[jj];
+					break;
+					}
+				}
+		}
+}
+//根据下拉框的ＮＡＭＥ，选项使该项selected
+function selected(sel,opi)
+{
+var select=document.all(sel);
+for(var i=0;i<select.options.length;i++)
+{
+if(select.options[i].value==opi)
+	select.options[i].selected=true;
+}
+}
+//打开保留域得类型窗口
+function openBLtype()
+{
+//var chk=document.all("baoliu");
+//if(chk==null || chk.checked==false)
+//	return;
+var selbl=document.all("getBLname");
+if(selbl.style.display=="none")
+	selbl.style.display="block";
+else
+	selbl.style.display="none";
+}
+//
+//选择域类型为文号时
+function dochange()
+{
+var ratype=document.all("r1");
+if(ratype==null) return;
+var trzh=document.all("trzihao");
+if(ratype.options[ratype.selectedIndex].value=="zihao")
+{
+if(!isHavezihao())
+	{
+		alert("此表单已经存在文号域，请删除后再添加！");
+		ratype.options[0].selected=true;
+		return false;
+	}
+	
+
+if(trzh==null) return;
+	trzh.style.display="block";
+	document.all("baoliu").checked=true;
+	document.all("baoliu").disabled=true;
+	document.all("getBLname").style.display="block";
+	selected("getBLname","fileNo");	
+	document.all("getBLname").disabled=true;
+}
+else
+	{
+	if(trzh==null) return;
+	trzh.style.display="none";
+	document.all("baoliu").checked=false;
+	document.all("baoliu").disabled=false;
+	document.all("getBLname").style.display="none";
+	selected("getBLname","");	
+	document.all("getBLname").disabled=false;
+	}
+if(ratype.options[ratype.selectedIndex].value=="serial")
+{
+	if(!isHavebianhao())
+		{
+			alert("此表单已经存在编号域，请删除后再添加！");
+			ratype.options[0].selected=true;
+			return false;
+		}
+}
+
+}
+//保留域为文号时
+function doselzihao()
+{
+
+if(document.all("getBLname").value=="fileNo")
+{
+	//selected("getBLname","fileNo");	
+	document.all("baoliu").disabled=true;
+	document.all("getBLname").disabled=true;
+}
+
+/*
+document.all("baoliu").disabled=true;
+selected("getBLname","fileNo");	
+document.all("getBLname").disabled=true;
+*/
+}
+//
+//先隐藏所有下拉框，再显示文号编辑页
+function showzihao()
+{
+var form1=document.form1;
+if(form1==null) return;
+for(var i=0;i<form1.elements.length;i++)
+{
+var obj=form1.elements[i];
+if(obj.tagName=="SELECT")
+obj.style.display="none";
+divzihao.style.display="block";
+}
+}
+//
+//先文号所有下拉框，再显示隐藏编辑页
+function hiddenzihao()
+{
+var form1=document.form1;
+if(form1==null) return;
+for(var i=0;i<form1.elements.length;i++)
+{
+var obj=form1.elements[i];
+if(obj.tagName=="SELECT")
+obj.style.display="block";
+divzihao.style.display="none";
+}
+}
+//
+var selectTr=null;//全局变量，表示选择的一行
+
+//打开添加页
+function showadd()
+{
+var addtab=document.all("addtab");
+if(addtab!=null)
+{
+	addtab.style.display="block";
+	var itemname=document.all("itemname");
+	if(itemname!=null)
+		{
+		itemname.value="";
+		itemname.focus();
+		}
+	
+}
+}
+//取消
+function canceladd()
+{
+var addtab=document.all("addtab");
+if(addtab!=null)
+{
+		var itemname=document.all("itemname");
+	if(itemname!=null)
+		itemname.value="";
+	addtab.style.display="none";
+}
+}
+//确定，添加一项
+function additem()
+{
+	var itemname=document.all("itemname");
+	var itemnamestr="";
+	if(itemname!=null)
+	itemnamestr=itemname.value;
+	var tablist=document.all("tablist");
+	for(var i=0;i<tablist.rows.length;i++)
+	{
+	var otd=tablist.rows[i].cells[0];
+	if(otd.innerText==itemnamestr)
+	{
+	alert("不能添加重复的选项！");
+	itemname.value="";
+	itemname.focus();
+	return false;
+	}
+	}
+
+	if(itemnamestr=="") return;
+	addTabList(itemnamestr,"",2,"字号");
+	return true;
+}
+//添加选项列表
+function addTabList(txt,haoid,state,type)
+{
+var tablist=document.all("tablist");
+var tr=tablist.insertRow();
+if(state=="3")
+tr.style.display="none";
+tr.setAttribute("value",txt);
+tr.setAttribute("haoid",haoid);
+tr.setAttribute("state",state);
+tr.setAttribute("type",type);
+var td=tr.insertCell();
+td.innerText=txt;
+td.height="15px";
+var td=tr.insertCell();
+td.innerText=haoid;
+td.height="15px";
+var td=tr.insertCell();
+td.innerText=state;
+td.height="15px";
+var td=tr.insertCell();
+td.innerText=type;
+td.height="15px";
+
+}
+//使选项列表的某一行选中
+function trSelected()
+{
+var otd=window.event.srcElement;
+if(otd.tagName!="TD") return;
+var otr=otd.parentElement;
+if(selectTr!=null)
+	selectTr.style.backgroundColor="";
+	if(otr!=null) 
+	{
+	otr.style.backgroundColor="#3399FF";
+	selectTr=otr;
+	}
+}
+//删除一项
+function delitem()
+{
+	if(selectTr!=null && selectTr.tagName=="TR" )
+	{
+	var tablist=document.all("tablist");
+	var selename=selectTr.children[0];
+	var namestr="";
+	if(selename!=null && selename.tagName=="TD")
+		namestr=selename.innerText;
+	selectTr.setAttribute("state","3");
+	selectTr.children[2].innerText="3";
+	selectTr.style.display="none";
+	//selectTr.removeNode(true);
+	}
+}
+//修改一项
+function modiitem()
+{
+	if(selectTr!=null && selectTr.tagName=="TR" )
+	{
+	var moditab=document.all("moditab");
+	if(moditab!=null)
+	{
+		moditab.style.display="block";
+	}
+	var tablist=document.all("tablist");
+	var selename=selectTr.children[0];
+	var namestr="";
+	if(selename!=null && selename.tagName=="TD")
+		namestr=selename.innerText;
+
+	var modiname=document.all("modiname");
+	if(modiname!=null)
+		{
+		modiname.value=namestr;
+		modiname.focus();
+		}
+	
+	}
+}
+//修改确定
+function savechange()
+{
+	var modiname=document.all("modiname");
+	var mnamestr="";
+	if(modiname!=null)
+		mnamestr=modiname.value;
+
+	var tablist=document.all("tablist");
+	var selename=selectTr.children[0];
+	var selestate=selectTr.children[2];
+	var oTrvalue=selectTr.getAttribute("value");
+	if(mnamestr!=oTrvalue)
+			{
+			selectTr.setAttribute("state","1");
+			selectTr.setAttribute("value",mnamestr);
+			var oname="";
+			var ovalue="";
+			var oseled="";
+			if(selename!=null && selename.tagName=="TD")
+				{
+				oname=selename.innerText;
+				selename.innerText=mnamestr;
+				}
+			if(selestate!=null && selestate.tagName=="TD")
+				{
+				selestate.innerText=1;
+				}
+			}
+		cancelmodi();
+}
+//关闭修改的TABLE
+function cancelmodi()
+{
+		moditab.style.display="none";
+}
+// 继续添加
+function goonadd()
+{
+additem();
+var itemname=document.all("itemname");
+	if(itemname!=null)
+		itemname.value="";
+}
+//文号属性定义完毕
+function getzihao()
+{
+var tablist=document.all("tablist");
+if(tablist==null) return;
+if(tablist.rows.length==0)
+{
+	return "";
+}
+var zihaostr="";
+for(var i=0;i<tablist.rows.length;i++)
+{
+	var td1=tablist.rows[i].cells[0];
+	var td2=tablist.rows[i].cells[1];
+	var td3=tablist.rows[i].cells[2];
+	var td4=tablist.rows[i].cells[3];
+	if(td1==null||td2==null||td3==null||td4==null)
+		continue;
+	zihaostr=zihaostr+'<zihao value="'+td1.innerText+'" haoid="'+td2.innerText+'" state="'+td3.innerText+'" type="'+td4.innerText+'"></zihao>';
+}
+//return zihaostr;
+document.all("zihaotype").value=zihaostr;
+hiddenzihao();
+}
+function closezihao()
+{
+hiddenzihao();
+}
+//判断是否已经存在字号域
+function isHavezihao()
+{
+if(modalObj==null) return;
+	var tab=topwin.document.all("t");
+	if(tab==null) return;
+	var selediv=document.all("seldiv");
+	for(var i=0;i<tab.rows.length;i++)
+		for(var j=0;j<tab.rows[i].cells.length;j++)
+			{
+			var td=tab.rows[i].cells[j];
+			if(td==null)
+				continue;
+			if(td.children[0]==null || typeof(td.children[0])=="undefined")
+				continue;
+			if(td.children[0].tagName=="INPUT" || td.children[0].tagName=="TEXTAREA")
+				{
+				var oldtype=td.children[0].getAttribute("dmtype");
+				if(oldtype=="zihao")
+					{
+						return false;
+					}
+				}
+			}
+return true;
+}
+//判断是否已经存在编号域
+function isHavebianhao()
+{
+if(modalObj==null) return;
+	var tab=topwin.document.all("t");
+	if(tab==null) return;
+	var selediv=document.all("seldiv");
+	for(var i=0;i<tab.rows.length;i++)
+		for(var j=0;j<tab.rows[i].cells.length;j++)
+			{
+			var td=tab.rows[i].cells[j];
+			if(td==null)
+				continue;
+			if(td.children[0]==null || typeof(td.children[0])=="undefined")
+				continue;
+			if(td.children[0].tagName=="INPUT" || td.children[0].tagName=="TEXTAREA")
+				{
+				var oldtype=td.children[0].getAttribute("dmtype");
+				if(oldtype=="serial")
+					{
+						return false;
+					}
+				}
+			}
+return true;
+}
+
+//
+</script>
+<body  onunload="onclose();" style="BORDER-RIGHT: 0px; BORDER-TOP: 0px; MARGIN: 2px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px" onload="init();">
+<form name="form1">
+  <table border="0" cellpadding="0" cellspacing="0" id="teta" width="100%" class="tblListContent">
+   
+    <tr>
+      <td align="center" nowrap class="trContentNextRow">类型:</td>
+    <td align="left"  valign="middle" class="trContentNextRow">
+		<select name="r1" onchange="dochange();">
+		<option value="comm">普通</option>
+		<option value="time">日期</option>
+		<option value="number">数值</option>
+		<option value="personName">人员名称</option>
+		<option value="departr">部门名称</option>
+		<option value="org">单位名称</option>
+		<option value="zihao">文号</option>
+		<option value="serial">编号</option>
+		</select>
+      </td>
+    </tr>
+	<tr id="trzihao" style="display:none">
+	<td align="center"  class="trContentNextRow">文号：</td>
+	<td  class="trContentNextRow">
+	<input type=hidden name="zihaotype" readonly size=5><img src="images/help.gif" onclick="showzihao();">
+	<div id="divzihao" style="position:absolute;left:10;display:none" width="250" height="220">
+	<table border="0" style="border:1 solid #808080" width="250" cellpadding="0" cellspacing="0" height="230" bgcolor="#D6D3CE">
+  <tr>
+    <td width="250" height="100" valign="top"  colspan="2">
+    
+	  <div style="background-color: #ffffff; width: 215px; height: 150px; overflow: auto;"   bgcolor="#ffffff">
+	   <table border="0" cellpadding="0" onclick="trSelected();" id="tablist" cellspacing="0" bgcolor="#ffffff" width="100%" >
+      </table>
+	  </div>
+    </td>
+    <td width="1%" height="150"  align="center"><button onclick="showadd();">添加</button><p><button onclick="delitem();" >删除</button></p><p><button onclick="modiitem();">修改</button></p></td>
+  </tr>
+
+  <tr>
+    <td width="100%" height="16" colspan="3" align="center"><button onclick="getzihao();">确定</button>&nbsp;&nbsp;&nbsp;<button onclick="closezihao();">取消</button></td>
+  </tr>
+</table>
+
+<table border="0" id="addtab" cellpadding="0" style="display:none;position:absolute;left:20px;top:90px;border:1 solid #808080" cellspacing="0" width="90%" height="80" bgcolor="#D6D3CE">
+  <tr>
+    <td width="100%" height="16" colspan="2" bgcolor="#00309C"><font color="#FFFFFF">添加选项：</font></td>
+  </tr>
+  <tr>
+    <td width="30%" height="16"  align="center">文号：</td>
+    <td width="70%" height="16"><input type="text" name="itemname"></td>
+  </tr>
+ 
+  <tr>
+    <td width="100%" height="21" colspan="2"  align="center"><button onclick="if(additem())canceladd();">确定</button>&nbsp;<button onclick="goonadd();">继续</button>&nbsp;<button onclick="canceladd();">取消</button></td>
+  </tr>
+</table>
+<table border="0" id="moditab" cellpadding="0" style="display:none;position:absolute;left:20px;top:90px;border:1 solid #808080" cellspacing="0" width="90%" height="80" bgcolor="#D6D3CE">
+  <tr>
+    <td width="100%" height="16" colspan="2" bgcolor="#00309C"><font color="#FFFFFF">修改选项：</font></td>
+  </tr>
+  <tr>
+    <td width="30%" height="16"  align="center">文号：</td>
+    <td width="70%" height="16"><input type="text" name="modiname"></td>
+  </tr>
+  <tr>
+    <td width="100%" height="21" colspan="2"  align="center"><button onclick="savechange();">确定</button>&nbsp;&nbsp;<button onclick="cancelmodi();">取消</button></td>
+  </tr>
+</table>
+	</div>
+	</td>
+	</tr>
+    <tr>
+      <td align="center" height="30" class="trContentNextRow">行:</td>
+      <td align="center" height="30" class="trContentNextRow">
+        <p align="left"><input type="text" id="row" size="10" value="2"></p>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" class="trContentNextRow" height="30">列：</td>
+      <td align="center" class="trContentNextRow" height="30">
+        <p align="left"><input type="text" id="col" size="10" value="10"></p>
+      </td>
+    </tr>
+		<tr>
+      <td align="center" nowrap height="30" class="trContentNextRow">名称:</td>
+      <td align="center" height="30" class="trContentNextRow">
+        <p align="left"><input type="text" id="yuname" size="10" ></p>
+      </td>
+    </tr>
+
+	    <tr>
+      <td align="center" nowrap height="30" class="trContentNextRow">对应标签:</td>
+      <td align="center" height="30" class="trContentNextRow">
+        <p align="left"><input id="seldiv" size=5></p>
+      </td>
+    </tr>
+		 <tr>
+      <td align="center" nowrap height="30" class="trContentNextRow">签名域：</td>
+      <td align="center" height="30" class="trContentNextRow">
+        <p align="left"><input type="checkbox" id="qianming"></p>
+      </td>
+    </tr>
+	 <td align="center" nowrap height="30" class="trContentNextRow">保留域：</td>
+      <td align="center" height="30" class="trContentNextRow">
+         <table width="100%" border=0>
+	  <tr>
+        <td><input type="checkbox" id="baoliu" onclick="openBLtype();"></td>
+		<td><select id="getBLname" style="display:none" onchange="doselzihao();">
+	<option selected>请选择</option>
+	  <option value="sendOrg">发文单位</option>
+	  <option value="sendOu">发文部门</option>
+	  <option value="Title">文件标题</option>
+	  <option value="recieveOrg">收文单位</option>
+	 <option value="recieveOu">收文部门</option>
+	  <option value="fileNo">文号</option>
+	   <option value="fileSec">秘级</option>
+		<option value="filePriority">缓急</option>
+		 <option value="mailWord">主题词</option>
+	  <option value="MainRecieve">主送</option>
+	   <option value="draftPerson">拟稿人员</option>
+	   <option value="replicateRecieve">抄送</option>
+	   <option value="date">日期</option>
+  </select>
+  </td></tr></table>
+      </td>
+    </tr>
+
+    <tr>
+      <td  align="middle"  colspan="2" height="30" class="trContentNextRow">
+         <input type="button" value="确定" onclick="modifypro();" >&nbsp;&nbsp;&nbsp;<input type="button" value="取消" onclick="onclose();" >  
+      </td>
+    </tr>
+  </table>
+  </form>
+</body>
+
+</html>

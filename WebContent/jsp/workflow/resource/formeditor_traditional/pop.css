@@ -1,0 +1,6 @@
+td,body,select,div,span,button { font-size: 9pt; font-family:Arial; }
+BUTTON {width:5em; border-width: 1pt; }
+input { font-size: 9pt; padding:1pt 3pt;}
+.title {}
+a:link { color: #0000BB }
+a:visited { color: #0000BB }

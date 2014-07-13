@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+<bean id="organDao" class="net.mast.bsp.organization.dao.jdbc.OrganJdbcDao">
+        <property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+
+
+<bean id="organId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>ORGAN_ID</value></property>
+</bean>
+    
+<bean id="organDomain" class="net.mast.bsp.organization.domain.support.OrganImpl"> 
+         <property name="providers">
+        	<list>
+               		<ref bean="employeeDomain"/>	           
+        	</list>
+ 	    </property>
+</bean>
+
+
+<bean id="ORGANIZE_COLLECTION" class="net.mast.waf.data.SqlCollection">
+	    <property name="sql"><value>SELECT ORGAN_ID,ORGAN_NAME FROM PUB_ORGAN</value></property>
+	    <property name="ds"><ref bean="dataSource"/></property>
+</bean> 
+</beans>
+
+
+
+

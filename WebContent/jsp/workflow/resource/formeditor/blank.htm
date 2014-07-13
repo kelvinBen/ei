@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE> blank</TITLE>
+<META NAME="Generator" CONTENT="EditPlus">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+<script language="javascript" src="DefMbTool.js"></script>
+<script language="javascript" src="wz_jsgraphics.js"></script>
+<script language="javascript" src="key.js"></script>
+<script language="javascript" src="extendString.js"></script>
+
+</HEAD>
+<style>
+table
+{
+table-layout:fixed;
+border-collapse:collapse;
+
+}
+input 
+{
+border:1 solid ;
+}
+
+ td
+{
+vertical-align : top; 
+padding:3px;
+}
+table div
+{
+font-size:9pt;
+text-align:center;
+vertical-align : middle; 
+}
+.noborder
+{
+border:1 dotted ;
+}
+.noborder td
+{
+border:1 dotted ;
+}
+div
+{
+vertical-align:top;
+}
+.taboncss{padding-left:5px;padding-right:5px;font-size:9pt;white-space:nowrap;padding-top:0px;border-left:1px solid #ffffff;border-top:1px solid #ffffff;border-right:1px solid #666666;border-bottom:1px solid #f1f1f1;background-color:#f1f1f1}
+.taboffcss{padding-left:5px;padding-right:5px;font-size:9pt;white-space:nowrap;padding-top:3px;border-left:1px solid #ffffff;border-top:1px solid #f1f1f1;border-right:1px solid #666666;border-bottom:1px solid #ffffff;background-color:#cccccc}
+hr
+{
+height:5px;
+border:5 solid #7F7F7F ;
+}
+.tabtoucss td{
+	background-color:#CCCCCC;
+	border-width: 1px 0px 0px 1px;
+	border-style: solid;
+	filter: Alpha(Opacity=40, FinishOpacity=100, Style=1, StartX=0, StartY=0, FinishX=0, FinishY=50);
+	border-color: #000000;
+	vertical-align:center;
+	white-space:   nowrap;
+	padding-top:3;
+	color: #000000;
+	text-align:center;
+}
+.tabsumcss td{
+	background-color:#E6E6E6;
+	border-width: 1px 0px 0px 1px;
+	border-style: solid;
+	border-color: #000000;
+	vertical-align:center;
+	white-space:   nowrap;
+	padding-top:3;
+	color: #000000;
+	text-align:left;
+}
+
+.fieldsetCss
+{
+width:  100%;
+padding:10;
+font-size:9pt;
+}
+
+</style>
+<SCRIPT LANGUAGE="JScript">
+var OBJ;
+var CurrentTabDiv=null;
+var Line; // 坐标点相对于 div 元素 "myCanvas" 
+
+function init()
+{
+OBJ= new DefFormTool("OBJ");
+Line=new jsGraphics("line"); // 坐标点相对于 div 元素 "myCanvas" 
+}
+function merge()
+{
+var str="";
+var xmlstr=OBJ.Merge();
+	//if(xmlstr!="" && xmlstr!=null)
+//	{
+//	str=OBJ.parseXml(xmlstr);
+//	document.all("page1").innerHTML=str;
+//	OBJ.init();
+//	}
+}
+function split()
+{
+var str="";
+var xmlstr=OBJ.Split();
+	//if(xmlstr!="" && xmlstr!=null)
+	//{
+	//str=OBJ.parseXml(xmlstr);
+	//alert(str);
+	//document.all("page1").innerHTML=str;
+	//OBJ.init();
+	//}
+
+}
+//重绘
+function reDraw(str)
+{
+var str1=OBJ.parseXml(str);
+document.all("page1").innerHTML=str1;
+OBJ.init();
+}
+function doTabpageClick()
+{
+var otd=event.srcElement;
+if(otd==null || otd.tagName!="TD")
+return;
+var tabtab=otd.parentElement.parentElement.parentElement;
+var conspan=tabtab.nextSibling;
+var tabontd=null;
+for(var i=0;i<tabtab.rows[0].cells.length;i++)
+{
+	var ootd=tabtab.rows[0].cells[i];
+		if(ootd.className=="taboncss")
+		{
+		ootd.cardhtml=conspan.innerHTML;
+		tabontd=ootd;
+		}
+		if(otd!=tabontd)
+		ootd.className="taboffcss";
+}
+var cellindex=otd.index;
+if(otd.cardhtml!=null && otd.cardhtml!="" && otd!=tabontd)
+	{
+	conspan.innerHTML=otd.cardhtml;
+	otd.className="taboncss";
+	}
+}
+
+</SCRIPT>
+
+<BODY bgcolor=#FFFFFF  onbeforecut="" onload="init();"   style="margin:0px;overflow:auto"   onkeypress="if(event.keyCode=='13') {document.selection.createRange().text='\n';return false;}">
+<div  CONTENTEDITABLE="true"  unselectable=on  border=0 style="width:100%;height:100%;border:0 solid red;"   style="z-index:1;">
+<table    width="100%" height="100%" cellpadding=10 cellspacing=0 border=0 style="position:;table-layout:auto">
+<tr>
+<td id="pages">
+</td>
+</tr>
+</table></div>
+<span id="line"  unselectable=on   style="width:100;height:50;display:none;z-index:0;position:absolute;"></span>
+<img  unselectable=on  src="images/lrarrow.gif" id="cursorgif" style="position:absolute;z-index:100;display:none">
+</BODY>
+
+</HTML>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://definedFormData.config.wf.loushang.org" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://definedFormData.config.wf.loushang.org">	
+    <xsd:element name="forms">
+        <xsd:annotation>
+        	<xsd:documentation>dcwork自定义的表单集合</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="form"/>                          
+            </xsd:sequence>               
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="form">
+        <xsd:annotation>
+        	<xsd:documentation>dcwork自定义的表单数据</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="1" minOccurs="0" ref="url"/>
+                <xsd:element maxOccurs="1" minOccurs="1" ref="buttons"/>                
+                <xsd:element minOccurs="1" ref="fields"/>                
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>    
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="url">
+        <xsd:annotation>
+        	<xsd:documentation>获取表单的url</xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>	
+    <xsd:element name="buttons">
+      	<xsd:complexType>
+         	<xsd:sequence>
+            	<xsd:element maxOccurs="unbounded" minOccurs="1" ref="button"/>
+         	</xsd:sequence>
+      	</xsd:complexType>
+    </xsd:element>    
+    <xsd:element name="button">
+        <xsd:annotation>
+        	<xsd:documentation>表单上的操作按扭,readonly-show只读显示按钮(即流程办结后默认显示的按钮),isDefault默认显示按钮</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+            <xsd:attribute name="fun-name" type="xsd:string" use="required"/>	
+			<xsd:attribute default="false" name="readonly-show">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:enumeration value="true"/>
+						<xsd:enumeration value="false"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute default="false" name="isDefault">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:enumeration value="true"/>
+						<xsd:enumeration value="false"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>						 
+			<xsd:attribute name="description" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="fields">
+      	<xsd:complexType>
+         	<xsd:sequence>
+            	<xsd:element maxOccurs="unbounded" minOccurs="0" ref="field"/>
+         	</xsd:sequence>
+      	</xsd:complexType>
+    </xsd:element>    
+    <xsd:element name="field">
+        <xsd:annotation>
+        	<xsd:documentation>表单字段,datatype=数据类型,description字段描述,date-time是日期时间字段(可选),select-field是选择域字段(可选)</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="1" minOccurs="0" ref="date-time"/>
+                <xsd:element maxOccurs="1" minOccurs="0" ref="select-field"/>     
+            </xsd:sequence>			
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+            <xsd:attribute name="checkfunction" type="xsd:string" use="optional"/>	
+			<xsd:attribute default="String" name="datatype" use="optional">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:NMTOKEN">
+						<xsd:enumeration value="String"/>
+						<xsd:enumeration value="Float"/>
+						<xsd:enumeration value="Long"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="description" type="xsd:string" use="required"/>        
+        </xsd:complexType>
+    </xsd:element>	
+	<xsd:element name="date-time">
+		<xsd:annotation>
+			<xsd:documentation>时间字段,timestamp只有时间,date只有日期,time日期+时间</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+		<xsd:attribute default="timestamp" name="type">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:token">
+					<xsd:enumeration value="timestamp"/>
+					<xsd:enumeration value="date"/>
+					<xsd:enumeration value="time"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>			
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="select-field">
+		<xsd:annotation>
+			<xsd:documentation>选择域字段,通过对话框取值.select-url=字段取值url,module-key取值对应的业务模块主键</xsd:documentation>
+		</xsd:annotation>		
+		<xsd:complexType>
+			<xsd:attribute name="select-url" type="xsd:string" use="optional"/>
+			<xsd:attribute name="module-key" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>module-key取值对应的业务模块主键,即WfDSystemConfig中定义的针对业务模块配置选项的key</xsd:documentation>
+					<xsd:documentation>配置举例：renliziyuan_radio，renliziyuan表示对应WfDSystemConfig中定义的人力资源模块；_radio表示该字段的取值是单选的，对应WfDSystemConfig中定义的radio-url地址，如果select-url为空则取radio-url地址</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>	
+</xsd:schema>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    
+<!--***************commonQuerySupport.xml**************-->
+
+<!--****viewSupport.xml**************-->
+	<bean id="memoView"  class="net.mast.bsp.base.memo.view.MemoView" singleton="false"/>
+
+
+<!--******commandSupport.xml**********-->
+<!--***********************公共备注cmd配置开始*********************************-->    
+    <bean id="memo" class="net.mast.bsp.base.memo.cmd.MemoCmd" singleton="false">
+	    <property name="memoService"><ref bean="memoService"/></property>
+	    <property name="view"><ref bean="memoView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="memoView"><ref bean="memoforward"/></entry>
+	            
+	        </map>
+		</property>
+		<!--拦截看看是否需要?-->
+    </bean>
+<!--***********************公共备注cmd配置结束*********************************-->
+
+
+
+<!--************daoSupport.xml****************-->
+<bean id="memoDao" class="net.mast.bsp.base.memo.dao.jdbc.MemoJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="pubmemoId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>MEMO_ID</value></property>
+</bean>
+<!--*******************forwardSupport.xml**********************-->
+<!--***********************公共备注  forward配置开始***********************************-->
+    <bean id="memoforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/base/memo/memo_detail.jsp</prop>
+			</props>
+		</property>
+	</bean>
+
+<!--***********************公共备注  forward配置结束***********************************-->
+
+
+
+<!--*******************************serviceSupport.xml******************************************-->
+<bean id="memoService" class="net.mast.bsp.base.memo.service.support.MemoServiceImpl"> 
+	<property name="memoDomain"><ref bean="memoDomain"/></property>   	
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+</bean>
+
+<!--*****************************domainSupport.xml*****************************************-->
+<bean id="memoDomain" class="net.mast.bsp.base.memo.domain.support.MemoImpl"> 
+	<property name="memoDao"><ref bean="memoDao"/></property> 
+	<property name="memoId"><ref bean="pubmemoId"/></property>  	
+</bean>
+
+</beans>

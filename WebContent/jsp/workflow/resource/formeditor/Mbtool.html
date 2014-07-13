@@ -1,0 +1,1485 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>表单定制工具</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+<style>
+.designtablecss
+{
+table-layout:fixed;
+border-collapse:collapse;
+margin-top:5;
+}
+.designtablecss td
+{
+height:25;
+}
+.designtablecss span
+{
+border:1 dotted ;
+width:80%;
+}
+.selectspancss
+{
+border:2 solid #3366FF;
+cursor:move;
+}
+.bgtou{
+	background-image:url('images/top-bj.jpg');
+	background-repeat:repeat-x;
+	filter: Alpha(Opacity=40, FinishOpacity=100, Style=1, StartX=0, StartY=0, FinishX=0, FinishY=50);
+	border-color: #E6E6E6;
+	vertical-align:center;
+	color: #000000;
+	font-size:9pt;
+	padding:5px;
+}
+.bgtou button
+{
+	background-color:#E6E6E6;
+	border:1 solid #E6E6E6;
+	vertical-align:top;
+	color: #000000;
+	font-size:9pt;
+	cursor:hand;
+	height:23;
+}
+.fieldsetCss
+{
+width:  100%;
+padding:10;
+margin-left:12px;
+margin-bottom:4;
+margin-right:12px;
+}
+.xwin {
+	position:absolute;
+	cursor:default;
+	border-width:3px;
+	border-style:outset;
+	padding:0px;
+	font-size:9pt;
+	overflow:hidden;
+	display:block;
+	background-color:menu;
+}
+.xwin.deftitle
+{
+font-size:9pt;
+padding:2px;
+background-color:highlight;
+color:#ffffff;
+}
+.xwin table td
+{
+font-size:9pt;
+}
+
+.xwin input
+{
+border:1 solid ;
+}
+.rightmenutabcss td
+{
+font-size:10pt;
+border:1 solid F0F6FF;
+cursor:hand;
+}
+.rightmenutrcss td
+{
+font-size:10pt;
+border:1 solid #FF9900;
+cursor:hand;
+}
+.taboncss{padding-left:5px;padding-right:5px;font-size:9pt;white-space:nowrap;padding-top:0px;border-left:1px solid #ffffff;border-top:1px solid #ffffff;border-right:1px solid #666666;border-bottom:1px solid #f1f1f1;background-color:#f1f1f1}
+.taboffcss{padding-left:5px;padding-right:5px;font-size:9pt;white-space:nowrap;padding-top:3px;border-left:1px solid #ffffff;border-top:1px solid #f1f1f1;border-right:1px solid #666666;border-bottom:1px solid #ffffff;background-color:#cccccc}
+
+.tabtoucss td{
+	background-color:#CCCCCC;
+	border-width: 1px 0px 0px 1px;
+	border-style: solid;
+	border-color: #000000;
+	vertical-align:center;
+	white-space:   nowrap;
+	padding-top:3;
+	color: #000000;
+	text-align:center;
+}
+.tabsumcss td{
+	background-color:#E6E6E6;
+	border-width: 1px 0px 0px 1px;
+	border-style: solid;
+	border-color: #000000;
+	vertical-align:center;
+	white-space:   nowrap;
+	padding-top:3;
+	color: #000000;
+	text-align:left;
+}
+
+</style>
+</HEAD>
+<script language="javascript" src="wz_jsgraphics.js"></script>
+<script language="javascript" src="DefMbTool.js"></script>
+<script language="javascript">
+var SubFormIndex=1;//子表单名称
+var lineobj=null;
+var linedraw=null;
+var currentInsertPoint=null;//插入点
+var JsObj=null;//全局对象
+var Line;
+//初始化
+function init()
+{
+//		var tabstr='<TABLE id="tab1" width=500 border=1 height=300 unselectable=on   borderColor=#000000 cellSpacing=0 cellPadding=0 bgColor=#ffffff border=1>';
+//		for(var i=0;i<5;i++)
+//		{
+//			tabstr+="<tr>";
+//			for(var j=0;j<6;j++)
+//			{
+//			tabstr+='<td phcol="'+(j+1)+'" phrow="'+(i+1)+'" >'+j+'</td>' ;
+//			}
+//			tabstr+="</tr>";
+//		}
+//		tabstr+="</table>";
+Line=new jsGraphics("line"); // 坐标点相对于 div 元素 "myCanvas" 
+JsObj= new DefFormTool("JsObj");
+JsObj.init();
+//var tabstr='<TABLE id=tabletitle style="BORDER-COLLAPSE: collapse" height=20 cellSpacing=0 cellPadding=0 width="100%" border=1 unselectable="on"> <TBODY> <TR> <TD align=middle> <DIV id=titledesign contentEditable=true>表单标题</DIV></TD></TR> <TR> <TD height=20> <DIV id=subtitledesign contentEditable=true></DIV></TD></TR></TBODY></TABLE> <DIV id=designdiv style="OVERFLOW: auto; WIDTH: 100%; HEIGHT: 100%" formid="aa" hasborder="1"> <DIV style="HEIGHT: 200px" type="tab"> <TABLE onclick=doTabpageClick()> <TBODY> <TR> <TD class=taboncss id=tab1 style="CURSOR: e-resize" unselectable="on" canresizezy="true" index="1" card="1">第1页</TD></TR></TBODY></TABLE> <DIV id=tab2 style="BORDER-RIGHT: 1px solid; BORDER-TOP: 1px solid; BORDER-LEFT: 1px solid; BORDER-BOTTOM: 1px solid; HEIGHT: 100%" index="1" card="2"> <TABLE class=designtablecss id=tab2deftab1 borderColor=#000000 cellSpacing=0 cellPadding=2 width="100%" bgColor=#ffffff border=1 filedlist=""> <COLGROUP> <COL width="17%"> <COL width="17%"> <COL width="17%"> <COL width="17%"> <COL width="17%"> <COL></COLGROUP> <TBODY> <TR> <TD phrow="1" phcol="1"></TD> <TD style="CURSOR: default" canresizezy="false" phrow="1" phcol="2"><TEXTAREA id=tab2deftab1r0c1Field1 fieldtype="textarea" reserveKey="SUMMARY" default-type="none" tooltip="" titlestr=""></TEXTAREA></TD> <TD style="CURSOR: default" canresizezy="false" phrow="1" phcol="3"></TD> <TD style="CURSOR: default" canresizezy="false" phrow="1" phcol="4"><INPUT class=disabled id=tab2deftab1r0c3Field2 style="WIDTH: 80px" maxLength=20 value=字符 fieldtype="text" reserveKey="" default-type="none" tooltip="" titlestr="" restriction="" datatype="String"></TD> <TD style="CURSOR: default" canresizezy="false" phrow="1" phcol="5"></TD> <TD style="CURSOR: e-resize" canresizezy="true" phrow="1" phcol="6"></TD></TR> <TR> <TD phrow="2" phcol="1"></TD> <TD style="CURSOR: default" canresizezy="false" phrow="2" phcol="2"></TD> <TD style="CURSOR: default" canresizezy="false" phrow="2" phcol="3"></TD> <TD style="CURSOR: default" canresizezy="false" phrow="2" phcol="4"></TD> <TD style="CURSOR: e-resize" canresizezy="true" phrow="2" phcol="5"></TD> <TD style="CURSOR: default" canresizezy="false" phrow="2" phcol="6"></TD></TR> <TR> <TD phrow="3" phcol="1"></TD> <TD style="CURSOR: default" canresizezy="false" phrow="3" phcol="2"></TD> <TD style="CURSOR: default" canresizezy="false" phrow="3" phcol="3"></TD> <TD style="CURSOR: default" canresizezy="false" phrow="3" phcol="4"></TD> <TD style="CURSOR: e-resize" canresizezy="true" phrow="3" phcol="5"></TD> <TD style="CURSOR: default" canresizezy="false" phrow="3" phcol="6"></TD></TR></TBODY></TABLE></DIV></DIV></DIV>';
+//setFormHtml(document.all("Ins_html-code").value);
+
+//createFileds();
+}
+//外部getFormXml
+function getFormXml()
+{
+	return	JsObj.getFormXml();
+}
+//外部getFormTemplate
+function getFormTemplate()
+{
+	return	JsObj.getFormTemplate();
+}
+
+//外部getFormHtml
+function getFormHtml()
+{
+	return	JsObj.getFormHtml();
+}
+//外部set另存为
+function reSetFormName()
+{
+JsObj.reSetFormName();
+}
+//外部set大小写
+function setCharType(val)
+{
+JsObj.setCharType(val);
+}
+//外部set字段名，表名只读
+function setReadonlyType(val)
+{
+JsObj.setReadonlyType(val);
+}
+
+//外部get大小写
+function getCharType()
+{
+return JsObj.getCharType();
+}
+
+//外部set url
+function setUrl(url)
+{
+		JsObj.setUrl(url);
+}
+//外部set formtype修改时为1
+function setFormType(val)
+{
+		JsObj.setFormType(val);
+}
+
+//外部set 编辑区HTML
+function setFormHtml(str)
+{
+		JsObj.setFormHtml(str);
+		JsObj.init();
+
+}
+//外部set 打印模板
+function setFormPrintTemplate(str)
+{
+		JsObj.setFormPrintTemplate(str);
+}
+//外部set 正文模板
+function setFormTextTemplate(str)
+{
+		JsObj.setFormTextTemplate(str);
+}
+//用来判断是否填写表单NAME
+function hasFormName()
+{
+	var formnamestr=document.all("designdiv").formid;;
+	if(formnamestr==null || formnamestr=="")
+	return false;
+	else
+	return true;
+}
+  function openMbPer()
+  {
+  var curobj=JsObj.getCurXmlNode();
+  if(curobj==null)
+  {
+  alert("没有选择板块！");
+  return;
+  }
+  window.showModalDialog("bankuai.htm",window,"dialogWidth:300px;dialogHeight:300px;status:no");
+  }
+    function openTdPer()
+  {
+   var curobj=JsObj.getFirstTd();
+  if(curobj==null)
+  {
+  alert("没有选择单元格！");
+  return;
+  }
+  window.showModalDialog("cell_attrib.htm",window,"dialogWidth:400px;dialogHeight:300px;status:no");
+  }
+    function openTdPer()
+  {
+   var curobj=JsObj.getFirstTd();
+  if(curobj==null)
+  {
+  alert("没有选择单元格！");
+  return;
+  }
+  window.showModalDialog("cell_attrib.htm",window,"dialogWidth:400px;dialogHeight:300px;status:no");
+  }
+
+  function showtabwin()
+  {
+    var curobj=JsObj.getTabAll();
+  if(curobj==null)
+  {
+  alert("请选择表格！");
+  return;
+  }
+    window.showModalDialog("template.htm",window,"dialogWidth:450px;dialogHeight:270px;status:no");
+  }
+    function openevent()
+  {
+    var curobj=JsObj.CurControl;
+  if(curobj==null)
+  {
+  alert("请选择域！");
+  return;
+  }
+    window.showModalDialog("event.htm",window,"dialogWidth:450px;dialogHeight:300px;status:no");
+  }
+
+  //单元格属性
+  function opentd()
+  {
+	 window.showModalDialog("cell_attrib.htm",window,"dialogWidth:450px;dialogHeight:180px;status:no");
+  }
+
+  function showformwin()
+  {
+      window.showModalDialog("form.htm",window,"dialogWidth:400px;dialogHeight:180px;status:no");
+
+  }
+  
+  //另存为
+    function showsaveas()
+  {
+     var val=window.showModalDialog("formsaveas.htm",window,"dialogWidth:400px;dialogHeight:400px;status:no");
+	if(val=="true")
+	return "true";
+	else
+	return "false";
+  }
+    
+    function showsubformwin()
+  {
+   var tab=JsObj.getTabAll();
+  if(tab==null || tab.type!="sub")
+  {
+  alert("请选择子表单！");
+  return;
+  }
+      window.showModalDialog("subform.htm",window,"dialogWidth:400px;dialogHeight:180px;status:no");
+
+  }
+
+  function dozoom()
+  {
+  var obj=event.srcElement;
+  document.frames.ff.document.body.style.zoom=obj.options[obj.selectedIndex].value;
+  }
+  function redo()
+  {
+	var str=JsObj.reDo();
+	if(str==null) return;
+	JsObj.reDraw(str,1);
+  }
+  function repeate()
+  {
+  var str=JsObj.repertDo();
+  	if(str==null) return;
+	JsObj.reDraw(str,1);
+  }
+  function noborder()
+  {
+  //alert(document.frames.ff.document.all('tt').outerHTML);
+  var img=window.event.srcElement;
+  var tt=document.frames.ff.document.all('tt');
+  if(tt.className=="noborder")
+  {
+  img.src="images/12.gif";
+  tt.className="";
+  }
+  else
+  {
+    img.src="images/12_h.gif";
+	tt.className="noborder";
+  }
+  }
+  function doview(){
+	tex2.value=ff.document.body.innerHTML;
+	JsObj.makeTabXml();
+  }
+ function dosave()
+ {
+ tex1.value=JsObj.getAllHtmlStr();
+//alert(xmlstr.xml);
+ }
+ function WBTB_format(what,editwhat,opt)
+{
+var insertPoint=document.selection.createRange();
+//alert(insertPoint.parentElement().tagName);
+if(insertPoint.parentElement()!=null && insertPoint.parentElement().tagName!="BODY" )
+{
+if (opt=="removeFormat")
+	{
+		editwhat=opt;
+		opt=null;
+	}
+	if (opt==null)
+	{
+		document.execCommand(editwhat);
+	}else{
+		document.execCommand(editwhat,"",opt);
+	}
+	return;
+}
+return;
+var obj=JsObj.getCurrentDiv();
+	if(obj!=null && obj.tagName=="SPAN")
+	{
+	var str="obj.style."+what+"=='"+opt+"'";
+	if(eval(str))
+		eval("obj.style."+what+"='';");
+	else
+		eval("obj.style."+what+"='"+opt+"';");
+	}
+
+}
+function WBTB_foreColor()
+{
+	//if (!WBTB_validateMode()) return;
+	var arr = showModalDialog("selcolor.html", "", "dialogWidth:20.5em; dialogHeight:20.5em; status:0; help:0");
+	if (arr != null) WBTB_format('','forecolor', arr);
+		document.all('colorspan').style.backgroundColor=arr;
+
+	return;
+	var obj=JsObj.getCurrentDiv();
+	if (arr != null && obj!=null && obj.tagName=="SPAN")
+	{
+	obj.style.color=arr;
+	//obj.style.borderColor="#000000";
+	obj.className="selectspancss";
+	}
+		document.all('colorspan').style.backgroundColor=arr;
+
+}
+function WBTB_foreColor2()
+{
+	WBTB_format('','forecolor', document.all('colorspan').style.backgroundColor);
+	return;
+	var obj=JsObj.getCurrentDiv();
+	if (document.all('colorspan').style.backgroundColor != null && (obj!=null) && obj.tagName=="SPAN")
+	obj.style.color=document.all('colorspan').style.backgroundColor;
+}
+
+function InsertTextFiled()
+{
+var insertPoint=document.frames.ff.document.selection.createRange();
+//alert(insertPoint.parentElement()+","+ insertPoint.parentElement().tagName);
+var otaball=JsObj.getTabAll();
+
+if(otaball==null || document.frames.ff.document.selection.type=="Control" || insertPoint.parentElement()==null || insertPoint.parentElement().tagName!="TD")
+// || !otaball.contains(insertPoint.parentElement()))
+{
+alert("请选择插入位置!");
+return false;
+}
+if(insertPoint.parentElement().children.length>0)
+{
+alert("不能在同一单元格中插入多个域!");
+return false;
+
+}
+var obj=event.srcElement;
+if(obj!=null && obj.tagName=="TD")
+	obj=obj.parentElement;
+if(obj!=null && obj.tagName=="IMG")
+	obj=obj.parentElement.parentElement;
+insertPoint.pasteHTML('<input type="text" fieldtype="'+obj.type+'"/>');
+}
+function DelTextFiled()
+{
+var insertPoint=document.frames.ff.document.selection;
+if(insertPoint.type=="Control")
+	insertPoint.clear();
+}
+function InsertPl()
+{
+var otaball=JsObj.getTabAll();
+var insertPoint=document.frames.ff.document.selection.createRange();
+//alert(insertPoint.parentElement().tagName);
+if(otaball==null || document.frames.ff.document.selection.type=="Control" || insertPoint.parentElement()==null || insertPoint.parentElement().tagName!="TD")
+// || !otaball.contains(insertPoint.parentElement()))
+{
+alert("请选择插入位置!");
+return false;
+}
+if(insertPoint.parentElement().children.length>0)
+{
+alert("不能在同一单元格中插入多个域!");
+return false;
+
+}
+
+if(otaball==null)
+return;
+if(otaball.type=="sub")
+{
+alert("评论域不能插入到子表单!");
+return;
+}
+if(otaball.type=="sub")
+{
+alert("评论域不能插入到子表单!");
+return;
+}
+var areas=document.frames.ff.document.getElementsByTagName("TEXTAREA");
+for(var i=0;i<areas.length;i++)
+{
+	var oarea=areas[i];
+	if(oarea.type=="pl")
+	{
+	alert("表单只能有一个评论域!");
+	return;
+	}
+}
+var insertPoint=document.frames.ff.document.selection.createRange();
+insertPoint.pasteHTML('<textarea type="pl">评论域</textarea>');
+}
+
+function InsertTextArea()
+{
+var insertPoint=document.frames.ff.document.selection.createRange();
+insertPoint.pasteHTML('<textarea></textarea');
+}
+function InsertSelect()
+{
+var insertPoint=document.frames.ff.document.selection.createRange();
+insertPoint.pasteHTML('<select ></select>');
+}
+function insertsubform()
+{
+var tabtab=document.frames.ff.document.all("tabpage");
+var obody=null;
+for(var jj=0;jj<tabtab.rows[0].cells.length;jj++)
+{
+	var otd=tabtab.rows[0].cells[jj];
+	if(otd.className=="taboncss")
+	{
+	obody=document.frames.ff.document.all("page"+(otd.index));
+	break;
+	}
+}
+var tabstr='';
+var fieldsetcount=obody.getElementsByTagName("FIELDSET");
+if(fieldsetcount.length>0)
+	{
+	fieldsetcount=fieldsetcount[fieldsetcount.length-1].getAttribute("fid");
+	if(fieldsetcount==null)
+	fieldsetcount=0;
+	}
+else
+	{
+	fieldsetcount=0;
+//	tabstr+='<hr class="hrcss">';
+	}
+var chartype=getCharType();
+var fomid="sub";
+//if(chartype=="1")
+//fomid="SUB";
+tabstr+='<fieldset fid="'+(parseInt(fieldsetcount)+1)+'"  unselectable=on   class="fieldsetCss" ><legend> 子表单'+(parseInt(fieldsetcount)+1)+' </legend><TABLE   unselectable=on  id="sub'+SubFormIndex+'" formid="${sub'+SubFormIndex+'}"  type="sub" borderColor=#000000 cellSpacing=0 cellPadding=0  bgColor=#ffffff border=1>';
+for(var i=0;i<3;i++)
+{
+if(i==0)
+	tabstr+='<tr class="tabtoucss">';
+else if(i==2)
+	tabstr+='<tr class="tabsumcss">';
+else
+	tabstr+='<tr >';
+	for(var j=0;j<6;j++)
+	{
+	tabstr+='<td phcol="'+(j+1)+'" phrow="'+(i+1)+'" >' ;
+	//if(i==2)
+	//tabstr+='<input  sumtype="col"  style="border:1 solid;width:90%;" value="列合计">';
+	tabstr+="</td>";
+	}
+	
+	tabstr+="</tr>";
+}
+tabstr+="</table></fieldset>";
+obody.insertAdjacentHTML("beforeEnd",tabstr);
+SubFormIndex++;
+
+}
+//删除子表单
+function delsubform()
+{
+var taball=JsObj.getTabAll();
+if(taball==null || taball.tagName!="TABLE")
+	return;
+	if(taball.parentElement!=null && taball.parentElement.tagName=="FIELDSET")
+	{
+	taball.parentElement.removeNode(true);
+	taball=null;
+	}
+}
+var index=1;
+function InsertNewPage()
+{
+var tabtab=document.frames.ff.document.all("tabpage");
+var titletd=document.frames.ff.document.all("titledesign");
+var subtitletd=document.frames.ff.document.all("subtitledesign");
+
+tabtab.style.position="relative";
+for(var jj=0;jj<tabtab.rows[0].cells.length;jj++)
+{
+var otd=tabtab.rows[0].cells[jj];
+if(otd.className=="taboncss")
+{
+otd.tabtitle=titletd.innerHTML;
+otd.tabtitlexml=titletd.innerText;
+if(subtitletd!=null)
+{
+otd.subtabtitle=subtitletd.innerHTML;
+otd.subtabtitlexml=subtitletd.innerText;
+}
+}
+otd.className="taboffcss";
+if(otd.index!=null && otd.index!="")
+index=parseInt(otd.index);
+}
+var ntd=tabtab.rows[0].insertCell();
+//var index=ntd.cellIndex;
+ntd.className="taboncss";
+if(ntd.tabtitle==null || ntd.tabtitle=="")
+titletd.innerText="表单标题";
+else
+titletd.innerText=ntd.tabtitle;
+if(subtitletd!=null)
+{
+if(ntd.subtabtitle==null)
+subtitletd.innerText="";
+else
+subtitletd.innerText=ntd.subtabtitle;
+}
+ntd.innerText="第"+(index+1)+"页";
+ntd.width=50;
+ntd.index=index+1;
+var tabstr='<TABLE   unselectable=on   id="tab'+parseInt(index+1)+'" borderColor=#000000 cellSpacing=0 cellPadding=0  bgColor=#ffffff border=1>';
+		for(var i=0;i<5;i++)
+		{
+			tabstr+="<tr>";
+			for(var j=0;j<6;j++)
+			{
+			tabstr+='<td phcol="'+(j+1)+'" phrow="'+(i+1)+'" ></td>' ;
+			}
+			tabstr+="</tr>";
+		}
+		tabstr+="</table>";
+document.frames.ff.document.all("pages").insertAdjacentHTML("beforeEnd","<div unselectable=on style='position:absolute;z-index:100;width:100%;height:100%' id='page"+(index+1)+"'>"+tabstr+"  <iframe unselectable=on width='100%' frameborder='0' height='100%' style='top:-1;position:absolute;z-index:-1;'></iframe></div>");
+var odiv=document.frames.ff.document.all("page"+(index+1));
+var oldheight=document.frames.ff.document.all("page"+(index)).clientHeight;
+var oheight=odiv.clientHeight;
+//alert(oheight+"<"+oldheight);
+if(oheight<oldheight)
+	odiv.style.height=oldheight;
+index++;
+//var ntab=document.frames.ff.document.all("tab"+parseInt(index+1));
+//if(ntab!=null && ntab.tagName=="TABLE")
+//ntab.rows[0].cells[0].click();
+}
+function delOPage()
+{
+	var tabtab=document.frames.ff.document.all("tabpage");
+	if(tabtab.rows[0].cells.length==1)
+	{
+	return;
+	}
+	for(var jj=0;jj<tabtab.rows[0].cells.length;jj++)
+	{
+	var otd=tabtab.rows[0].cells[jj];
+		if(otd.className=="taboncss")
+		{
+		var ptd=otd.previousSibling;
+		if(ptd!=null && ptd.tagName=="TD")
+		{
+		ptd.className="taboncss";
+		var pdiv=document.frames.ff.document.all("page"+(ptd.index));
+		pdiv.style.zIndex="100";
+		}
+		var odiv=document.frames.ff.document.all("page"+(otd.index));
+		if(odiv!=null)
+		odiv.removeNode(true);
+		otd.removeNode(true);
+		break;
+		}
+	}
+	if(tabtab.rows[0].cells.length==1)
+	{
+	tabtab.style.position="absolute";
+	}
+
+}
+function insertLine()
+{
+var otaball=JsObj.getTabAll();
+var insertPoint=JsObj.getFirstTd();
+if(otaball==null || insertPoint==null || insertPoint.tagName!="TD")
+{
+alert("请选择插入位置!");
+return false;
+}
+
+if(linedraw==null)
+{
+lineobj=document.all("line");
+linedraw=Line;
+}
+if(lineobj==null) return;
+if(lineobj.length>1)
+lineobj=lineobj[0];
+var otd=insertPoint;
+	if(linedraw!=null)
+	{
+	var x1=0;//otd.offsetLeft;
+	var y1=0;//otd.offsetTop;
+	var x2=x1+otd.offsetWidth-1;
+	var y2=y1+otd.offsetHeight-1;
+	linedraw.drawLine(x1, y1, x2, y2); 
+	//alert(x1+","+y1+","+x2+","+y2);
+	linedraw.paint(); 
+	otd.vAlign="top";
+	otd.insertAdjacentHTML("afterBegin","<div style='position:absolute;' unselectable=on>"+lineobj.innerHTML+"</div>");
+	linedraw.clear();
+	}
+}
+//删除斜线
+function delLine()
+{
+var otaball=JsObj.getTabAll();
+var insertPoint=JsObj.getFirstTd();
+if(otaball==null || insertPoint==null || insertPoint.tagName!="TD")
+{
+alert("请选择要删除的斜线!");
+return false;
+
+}
+var otd=insertPoint;
+if(otd==null) return;
+var arrdiv=otd.getElementsByTagName("DIV");
+
+	if(arrdiv.length>5)
+	{
+		for(var i=arrdiv.length-1;i>=0;i--)
+		{
+		arrdiv[i].removeNode();
+		}
+	}
+}
+
+//合计列
+function InsertColSum()
+{
+var otaball=JsObj.getTabAll();
+var insertPoint=document.frames.ff.document.selection.createRange();
+if(otaball==null || document.frames.ff.document.selection.type=="Control" || otaball.type!="sub" || insertPoint.parentElement()==null || insertPoint.parentElement().tagName!="TD")// || !otaball.contains(insertPoint.parentElement()))
+{
+alert("不能在主表单中插入合计列!");
+return false;
+}
+if(insertPoint.parentElement().children.length>0)
+{
+alert("不能在同一单元格中插入多个域!");
+return false;
+
+}
+
+insertPoint.pasteHTML('<input  sumtype="col"  style="border:1 solid;width:90%;" value="列合计">');
+}
+//合计行
+function InsertRowSum()
+{
+var otaball=JsObj.getTabAll();
+var insertPoint=document.frames.ff.document.selection.createRange();
+if(otaball==null || document.frames.ff.document.selection.type=="Control" || otaball.type!="sub" || insertPoint.parentElement()==null || insertPoint.parentElement().tagName!="TD")// || !otaball.contains(insertPoint.parentElement()))
+{
+alert("不能在主表单中插入合计行!");
+return false;
+}
+if(insertPoint.parentElement().children.length>0)
+{
+alert("不能在同一单元格中插入多个域!");
+return false;
+
+}
+
+insertPoint.pasteHTML('<input  sumtype="row"  style="border:1 solid;width:90%;" value="行合计">');
+}
+
+//左边控件菜单
+function doMenuclk()
+{
+////动态生成域列表
+//var modalTab=JsObj.getTabAll();
+//	if(modalTab==null)
+//	{
+//	alert("请选择Table");
+//	return;
+//	}
+//if(modalTab.tagName=="TABLE" && modalTab.filedlist!=null)
+//document.all("divcontrols").innerHTML=modalTab.filedlist;
+var obj=event.srcElement;
+if(obj==null || obj.tagName!="TD")
+return;
+var otr=obj.parentElement;
+var trindex=otr.rowIndex;
+if(trindex===0)
+{
+	otr.nextSibling.nextSibling.nextSibling.style.display="none";
+	otr.nextSibling.style.display="block";
+	}
+else
+{
+	otr.previousSibling.style.display="none";
+	otr.nextSibling.style.display="block";
+}
+//var ntd=otr.nextSibling.children[0];
+//if(ntd.style.display!="none")
+//	return;
+//else
+//	ntd.style.display="";
+
+////遍历tablist，赋值onmouseover事件
+//var tablist=document.all("divcontrols").children[0];
+////alert(tablist.outerHTML);
+//for(var i=0;i<tablist.rows.length;i++)
+//{
+//var otd=tablist.rows[i].cells[0];
+//var fun1=new Function("","event.srcElement.parentElement.className='rightmenutrcss';");
+//var fun2=new Function("","event.srcElement.parentElement.className='';");
+//otd.onmouseover=fun1;
+//otd.onmouseout=fun2;
+//}
+}
+
+//插入自定义表格
+function showDefTable(odiv)
+{
+currentInsertPoint=odiv;
+var deftab=document.all("divtabdef");
+deftab.style.display="block";
+var wid=document.body.clientWidth;
+var hei=document.body.clientHeight;
+var otop=(hei-deftab.clientHeight)/2;
+var oleft=(wid-deftab.clientWidth)/2;
+deftab.style.top=otop;
+deftab.style.left=oleft;
+}
+//显示插入自定义表格
+function insertDefTable()
+{
+var rows=document.all("deftabrow").value;
+var cols=document.all("deftabcol").value;
+var wid='';
+var deftabwidth=document.all("deftabwidth").value;
+var colwid=100;
+if(deftabwidth!="")
+colwid=Math.round(deftabwidth/parseInt(cols));
+var widrao=document.all("deftabrao");
+if(widrao[1].checked)
+{
+wid=deftabwidth+"px";
+colwid=colwid+"px";
+}
+else
+{
+wid=deftabwidth+"%";
+colwid=colwid+"%";
+}
+//根据编辑对象取域列表
+//		var editobject=document.all("editobject");
+//		var localurl=location.pathname;
+//		var aa=localurl.split('/');
+//		
+//		var url='';
+//		if(aa.length==3)
+//		url='/'+aa[1]+'/mofXml.cmd?method=getMofXml&objectId='+editobject.value;
+//		else
+//		url='/mofXml.cmd?method=getMofXml&objectId='+editobject.value;
+//		var allfildstr=createFileds(url);
+var allfildstr="";
+var pname="";
+		if(currentInsertPoint.tagName=="TD")
+			{
+			var ptd=currentInsertPoint.offsetParent;
+			if(ptd.id==null)
+				ptd.id="deftab"+(JsObj.TabIdCount++);
+			pname=ptd.id+"r"+currentInsertPoint.parentElement.rowIndex+"c"+currentInsertPoint.cellIndex;
+			}
+		else if(currentInsertPoint.id!=null && currentInsertPoint.id!="designdiv")
+				pname=currentInsertPoint.id;
+var tabindexstr='';
+for(var i=0;i<currentInsertPoint.getElementsByTagName("TABLE").length;i++)
+{
+var otab=currentInsertPoint.getElementsByTagName("TABLE")[i];
+if(otab.TABCOUNTINDEX!=null)
+	tabindexstr+=otab.TABCOUNTINDEX+',';
+}
+var maxind=1;
+if(tabindexstr!="")
+{
+tabindexstr=tabindexstr.substring(0,tabindexstr.length-1);
+maxind=parseInt(eval('Math.max('+tabindexstr+')'))+1;
+}
+var tablestr='<TABLE  index="'+currentInsertPoint.index+'"  TABCOUNTINDEX="'+maxind+'" id="defcard'+currentInsertPoint.CARDINDEX+'tab'+maxind+'"  filedlist="'+allfildstr+'" width="'+wid+'"   class="designtablecss" borderColor=#000000 cellSpacing=0 cellPadding=2  bgColor=#ffffff border=1>';
+var tabstr='';
+var cosgroupstr='';
+		for(var i=0;i<rows;i++)
+		{
+			tabstr+="<tr>";
+			for(var j=0;j<cols;j++)
+			{
+			tabstr+='<td phcol="'+(j+1)+'" phrow="'+(i+1)+'" ></td>' ;
+			if(i==0)
+			{
+				if(j==cols-1 && widrao[0].checked)
+				cosgroupstr+='<col>';
+				else
+				cosgroupstr+='<col width="'+colwid+'">';
+			}
+			}
+			tabstr+="</tr>";
+		}
+		tablestr+='<colgroup>'+cosgroupstr+'</colgroup>'+tabstr+"</table>";
+		//alert(tablestr);
+		currentInsertPoint.insertAdjacentHTML("beforeEnd",tablestr);
+		document.all("divtabdef").style.display="none";
+		
+}
+//隐藏插入自定义表格
+function cancelInsertDefTable()
+{
+var deftab=document.all("divtabdef");
+deftab.style.display="none";
+}
+//插入重复表格(子表单)
+function showSubTable()
+{
+//showModalDialog("insertTable.html",window,"dialogWidth:180px;dialogHeight:180px;status:no;scroll:no");
+currentInsertPoint=ff.document.selection.createRange();
+if(document.frames.ff.document.selection.type=="Control" || currentInsertPoint.parentElement()==null || currentInsertPoint.parentElement().tagName==null)
+{
+alert("请先选择插入位置!");
+return false;
+}
+//alert(currentInsertPoint.parentElement()+","+ currentInsertPoint.parentElement().tagName);
+//alert(currentInsertPoint.parentElement().innerHTML);
+var deftab=document.all("divtabsub");
+deftab.style.display="block";
+var wid=document.body.clientWidth;
+var hei=document.body.clientHeight;
+var otop=(hei-deftab.clientHeight)/2;
+var oleft=(wid-deftab.clientWidth)/2;
+deftab.style.top=otop;
+deftab.style.left=oleft;
+}
+//显示插入自定义表格
+function insertSubTable()
+{
+var insertPoint=document.frames.ff.document.selection.createRange();
+if(currentInsertPoint!=null && currentInsertPoint.parentElement().tagName!=null)
+insertPoint=currentInsertPoint;
+else
+{
+alert("请先选择插入位置!");
+return false;
+}
+var cols=document.all("subtabcol").value;
+var tablestr='<TABLE type="sub"   unselectable=on   borderColor=#000000 cellSpacing=0 cellPadding=0 bgColor=#ffffff border=1>';
+var tabstr='';
+var cosgroupstr='';
+		for(var i=0;i<3;i++)
+		{
+			tabstr+="<tr>";
+			for(var j=0;j<cols;j++)
+			{
+			tabstr+='<td phcol="'+(j+1)+'" phrow="'+(i+1)+'" >' ;
+			if(i==0)
+			cosgroupstr+='<col width="100">';
+			if(i==1)
+			tabstr+='<input size=8>';
+			tabstr+='</td>';
+			}
+			tabstr+="</tr>";
+		}
+		tablestr+='<colgroup>'+cosgroupstr+'</colgroup>'+tabstr+"</table><iframe width='100%' frameborder='0'  unselectable=on   height='100%' style='top:0;position:absolute;z-index:-1;'></iframe>";
+		insertPoint.pasteHTML(tablestr);
+		document.all("divtabsub").style.display="none";
+}
+//隐藏插入自定义表格
+function cancelInsertSubTable()
+{
+var deftab=document.all("divtabsub");
+deftab.style.display="none";
+}
+//插入选项卡
+function insertDefTabCard()
+{
+var insertPoint=document.frames.ff.document.selection.createRange();
+if(insertPoint!=null && insertPoint.parentElement().tagName!="TD")
+{
+alert("请先选择插入位置!");
+return false;
+}
+var pnode=insertPoint.parentElement();
+if(pnode.type=="card")
+{
+var cardtable=pnode.parentElement.parentElement.parentElement;
+var cardspan=cardtable.parentElement;
+var conspan=cardtable.nextSibling;
+//alert(conspan.parentElement.outerHTML);
+var cardspan=cardtable.parentElement;
+	for(var i=0;i<cardtable.rows[0].cells.length;i++)
+	{
+	var otd=cardtable.rows[0].cells[i];
+	if(otd.className=="taboncss")
+	{
+	otd.cardhtml=conspan.innerHTML;
+	}
+	otd.className="taboffcss";
+	}
+conspan.innerHTML='<TABLE type="tab"   unselectable=on  style="table-layout:auto"  borderColor=#000000 cellSpacing=0 cellPadding=0 bgColor=#ffffff border=2><colgroup><col width="200"></colgroup><tr><td style="overflow:hidden;background-color:"></td></tr></table>';
+var newtd=cardtable.rows[0].insertCell();
+newtd.type="card";
+newtd.className="taboncss";
+newtd.innerText="CARD";
+var cols=cardtable.children[0];
+var newcol=ff.document.createElement("COL");
+newcol.width="50";
+cardtable.children[0].appendChild(newcol);
+return;
+}
+var tablestr='<span  unselectable=on type="tab">';
+//tablestr+='<tr><td  style="padding:-20;background-color:#eeeeee">';
+tablestr+='<TABLE type="tab"   unselectable=on onclick="doTabpageClick();"  borderColor=#000000 cellSpacing=0 cellPadding=0 bgColor=#ffffff border=1>';
+tablestr+='<colgroup><col width="50" ></colgroup><tr><td type="card"  class="taboncss">CARD</td></tr></table>';
+tablestr+='<span   unselectable=on ><TABLE type="tab"   unselectable=on style="table-layout:auto"  borderColor=#000000 cellSpacing=0 cellPadding=0 bgColor=#ffffff border=2>';
+tablestr+='<colgroup><col width="200"></colgroup><tr><td ></td></tr></table>';
+tablestr+='</span></span>';
+insertPoint.pasteHTML(tablestr);
+
+}
+//选项卡操作
+function doTabpageClick()
+{
+var nowtd=event.srcElement;
+var tab=nowtd.offsetParent;
+if(tab==null || tab.tagName!="TABLE") return;
+var titletd=document.all("titledesign");
+var subtitletd=document.all("subtitledesign");
+	for(var i=0;i<tab.rows[0].cells.length;i++)
+	{
+		var ootd=tab.rows[0].cells[i];
+		if(ootd.className=="taboncss")
+		{
+		ootd.tabtitle=titletd.innerHTML;
+		ootd.tabtitlexml=titletd.innerText;
+			if(subtitletd!=null)
+			{
+			ootd.subtabtitle=subtitletd.innerHTML;
+			ootd.subtabtitlexml=subtitletd.innerText;
+			}
+		}
+	}
+var div=tab.parentElement;
+	for(var i=0;i<tab.rows[0].cells.length;i++)
+	{
+	var otd=tab.rows[0].cells[i];
+	otd.className="taboffcss";
+	if(otd!=nowtd)
+	div.children[i+1].style.display="none";
+	else
+	div.children[i+1].style.display="block";
+	}
+nowtd.className="taboncss";
+if(nowtd.tabtitle==null || nowtd.tabtitle=="")
+titletd.innerHTML="表单标题";
+else
+titletd.innerHTML=nowtd.tabtitle;
+if(subtitletd!=null)
+{
+	if(nowtd.subtabtitle==null)
+	subtitletd.innerHTML="";
+	else
+	subtitletd.innerHTML=nowtd.subtabtitle;
+}
+
+}
+//删除控件
+function delObj()
+{
+var obj=JsObj.getCurrentDiv();
+	if(obj)
+	{
+			switch(obj.tagName)
+			{
+			case 'TD':
+					if(confirm("确定要删除当前表格吗？"))
+					obj.offsetParent.removeNode(true);
+					break;
+			case 'DIV':
+					var odiv=obj.parentElement;
+					var otab=odiv.children[0];
+					var ind=null;
+					if(otab.rows[0].cells.length==1)
+						{
+						if(confirm("确定要删除当前选项卡吗？"))
+						odiv.removeNode(true);
+						break;
+						}
+					for(var i=1;i<odiv.children.length;i++)
+					{
+					if(odiv.children[i]==obj)
+					{ind=i;break;}
+					}
+					if(ind)
+					{
+						if(confirm("确定要删除当前选项卡吗？"))
+						{
+						otab.rows[0].cells[ind-1].removeNode(true);
+						obj.removeNode(true);
+						otab.rows[0].cells[0].fireEvent("onclick");
+						}
+					}
+
+					break;
+			case 'INPUT':
+					if(confirm("确定要删除当前控件吗？"))
+					obj.removeNode(true);
+					break;
+			case 'TEXTAREA':
+					if(confirm("确定要删除当前控件吗？"))
+					obj.removeNode(true);
+					break;
+			case 'SELECT':
+					if(confirm("确定要删除当前控件吗？"))
+					obj.removeNode(true);
+					break;
+			case 'SPAN':
+					var str="确定要删除当前文字标签吗？";
+					if(obj.fixed)
+					str="确定要删除当前分隔栏吗？"
+					if(confirm(str))
+					obj.removeNode(true);
+					break;
+			//case 'TD':
+				
+						
+			}
+	}
+	JsObj.clearCurrentObj();
+}
+//加载域的xml，生成域列表
+function createFileds(url)
+{
+url="mof_table.xml";
+var xmldoc=loadData(url,1);
+var tabstr="<TABLE width='100%' border=0 cellspacing=0 cellpadding=2 class='rightmenutabcss'>";
+//alert(xmldoc.selectNodes('table')[0].selectNodes('column').length);onmouseover='this.className=\"rightmenutrcss\";' onmouseout='this.className=\"\";'
+for(var i=0;i<xmldoc.selectNodes('table')[0].selectNodes('column').length;i++)
+	{
+	var onode=xmldoc.selectNodes('table')[0].selectNodes('column')[i];
+	tabstr+="<tr   type='text'>";
+	tabstr+="<td valign=middle COLUMNNAME='"+onode.getAttribute("COLUMNNAME")+"'  MOF_COLUMN_ID='"+onode.getAttribute("MOF_COLUMN_ID")+"'  MOF_REFERENCE_ID='"+onode.getAttribute("MOF_REFERENCE_ID")+"'   DESCRIPTION='"+onode.getAttribute("DESCRIPTION")+"' banshitype='text'><img src='images/list.gif' align='absmiddle'  banshitype='text'>&nbsp;"+onode.getAttribute("COLUMNNAME")+"</td></tr>";
+	}
+return tabstr+"</table>";
+
+//document.all("divcontrols").innerHTML=tabstr+'</table>';
+}
+//xml读取数据，数据来自一个xml文件，参数是这个xml文件的url
+function loadData (url,param) {
+	var xmlDoc = new ActiveXObject("Msxml.DOMDocument");
+	xmlDoc.async = false;
+	xmlDoc.preserveWhiteSpace = true;
+	if (param == null)
+	{
+		var restr=/>\s</g;
+		url=url.replace(restr,"");
+	  xmlDoc.loadXML(url);
+	 }
+	else
+	  //xmlDoc.load(window.location.protocol + "//" + window.location.host+url);
+	   xmlDoc.load(url);
+	if(xmlDoc.childNodes[1]!=null)
+		return xmlDoc.childNodes[1];
+}
+//根据隐藏iframe里面的select来填充当前页面的编辑对象select
+function fillDate(selobj)
+{
+if(selobj==null || selobj.tagName!="SELECT")
+return;
+document.all("editobjectdiv").innerHTML=selobj.outerHTML;
+}
+
+</script>
+<BODY topmargin=0 onload="init();"  ondragstart="return false;">
+<!--<textarea id=ttt></textarea>-->
+<TABLE width="100%" border=1 height="100%" cellspacing=0 cellpadding=0>
+<TR>
+	<TD   colspan=2 width="100%" height="25" class="bgtou">
+	<!--	<img border="0" src="images/01.gif" title="保存" onclick="dosave();">
+		<img border="0" src="images/02.gif" title="预览" onclick="doview();alert(getFormXml());alert(getFormTemplate());">-->
+		<img  onclick="showformwin();"  border="0" src="images/05.gif" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   title="表单属性">
+		<img  onclick="showsubformwin();"  border="0" src="images/subform.gif" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   title="子表单属性">
+		<img border="0" src="images/04.gif"  onclick="showtabwin();" id="05" title="表格属性"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;" >
+		<img border="0" src="images/03.gif"  title="单元格属性" onclick="opentd()"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;" >
+		<img onclick="JsObj.Merge();"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/06.gif" title="合并单元格">
+		<img onclick="JsObj.Split();"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/07.gif" title="拆分单元格">
+		<img onclick="JsObj.addRow();"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/insertrow.gif" title="插入一行">
+		<img onclick="JsObj.delRow();"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0"  title="删除一行" src="images/deleterow.gif">
+		<img onclick="JsObj.addCol();"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/insertcolumn.gif"  title="插入一列">
+		<img onclick="JsObj.delCol();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/deletecolumn.gif"  title="删除一列">
+		<img onclick="delObj();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/dele_h.gif"  title="删除控件">
+		<img  src="images/hr.gif" onclick="insertLine();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;" title="插入斜线">
+		<img border="0" src="images/delhr.gif" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;" onclick="delLine();"  title="去掉斜线">
+		<span id="colorspan" style="background-color:red"><img    style="border:1 #E6E6E6 solid;"   border="0"   usemap="#divimg" title="字体颜色" src="images/def_fontcolor2.gif"></span>
+		<img onclick="WBTB_format('','justifyleft');"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/left.gif"  title="左对齐">
+		<img onclick="WBTB_format('','justifycenter');"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/center.gif"  title="居中">
+		<img onclick="WBTB_format('','justifyright');"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/right.gif"  title="右对齐">
+		
+		<img onclick="WBTB_format('fontWeight','bold');"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/bold.gif" title="粗体">
+		<img  onclick="WBTB_format('fontStyle','italic');"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/italic.gif" title="斜体">
+		<img onclick="WBTB_format('textDecoration ','underline');"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/underline.gif" title="下划线">
+	<!--<select name="zoom" onchange="dozoom();" title="缩放比例"><option value="50%">50%</option><option value="75%">75%</option><option value="100%" selected>100%</option><option value="150%">150%</option><option value="200%">200%</option><option value="250%">250%</option><option value="300%">300%</option></select>-->
+<select language="javascript" class="WBTB_TBGen" id="FontName" onchange="WBTB_format('fontFamily','fontname',this[this.selectedIndex].value);this.options[0].selected=true;"> 
+							<option class="heading" selected>字体
+							<option value="宋体">宋体
+							<option value="黑体">黑体
+							<option value="楷体_GB2312">楷体
+							<option value="仿宋_GB2312">仿宋
+							<option value="隶书">隶书
+							<option value="幼圆">幼圆
+							<option value="新宋体">新宋体
+							<option value="细明体">细明体
+							<option value="Arial">Arial
+							<option value="Arial Black">Arial Black
+							<option value="Arial Narrow">Arial Narrow
+							<option value="Bradley Hand ITC">Bradley Hand ITC
+							<option value="Brush Script	MT">Brush Script MT
+							<option value="Century Gothic">Century Gothic
+							<option value="Comic Sans MS">Comic Sans MS
+							<option value="Courier">Courier
+							<option value="Courier New">Courier New
+							<option value="MS Sans Serif">MS Sans Serif
+							<option value="Script">Script
+							<option value="System">System
+							<option value="Times New Roman">Times New Roman
+							<option value="Viner Hand ITC">Viner Hand ITC
+							<option value="Verdana">Verdana
+							<option value="Wide Latin">Wide Latin
+							<option value="Wingdings">Wingdings</option>
+						</select>
+	<select language="javascript" class="WBTB_TBGen" id="FontSize" onchange="WBTB_format('fontSize','fontsize',this[this.selectedIndex].value);this.options[0].selected=true;">
+							<option class="heading" selected>字号
+							<option value="1">1
+							<option value="2">2
+							<option value="3">3
+							<option value="4">4
+							<option value="5">5
+							<option value="6">6 
+							<option value="7">7</option>
+						</select><span id="line"  unselectable=on   style="width:100;height:50;display:none;z-index:0;position:absolute;"></span>
+</TD>
+
+	
+</TR>
+<TR id="desiangTr" >
+	<TD width="90%" id="biaodan" >
+		<table width="100%" height="100%" cellspacing=0 cellpadding=0>
+		<tr><td height=40 >
+		<table id="tabletitle" unselectable=on cellpadding=0 cellspacing=0 style="border-collapse:collapse;" height=40 width="100%" border=1><tr><td align=center ><div contenteditable=true   id="titledesign">表单标题</div></td></tr><tr><td  height=20><div contenteditable=true  id="subtitledesign"></div></td></tr></table>
+		</td></tr>
+		<tr><td>
+		<div id="designdiv"  formname="${pages}" style="width:100%;height:100%;overflow:auto;background-color:" ></div>
+		</td></tr>
+		</table>
+	</TD>
+	<TD width="130" nowrap>
+	<TABLE width="100%" border=1 height="100%" cellspacing=0 cellpadding=2 bgcolor="F0F6FF" style="border-collapse:collapse;">
+	<tr>
+	<td  style="background-image:url('images/right-dh.jpg');color:#3366FF" height="20" onclick="doMenuclk();">
+	<img src="images/banshi.gif">&nbsp;版式
+	</td>
+	</tr>
+	<tr>
+	<td valign=top>
+	<div style="overflow:auto;height:100%;border:1 solid #0099FF">
+	<TABLE width="100%" border=0 cellspacing=2  cellpadding=2 style="" class="rightmenutabcss">
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';">
+	<td  banshitype="deftab" nowrap>
+	<img src="images/tabcard.gif"   align="absmiddle"  >&nbsp;选项卡
+	</td>
+	</tr>
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';">
+	<td valign=top nowrap  banshitype="deftable">
+	<img src="images/deftable.gif" height="20" align="absmiddle" banshitype="deftable">
+	自定义表格
+	</td>
+	</tr>
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';">
+	<td   banshitype="defsubtab"  nowrap >
+	<img src="images/chongfubiao.gif"   banshitype="defsubtab"   align="absmiddle"  >
+	子表单
+	</td>
+	</tr>
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';">
+	<td  banshitype="defsplitdiv" nowrap>
+	<img src="images/biaoqian.gif"   banshitype="defsplitdiv"   align="absmiddle"  >
+	分隔栏
+	</td>
+	</tr>
+
+	</table>
+	</div>
+	</td>
+	</tr>
+	<tr>
+	<td style="background-image:url('images/right-dh.jpg');color:#3366FF"  height="20"    onclick="doMenuclk();">
+	<img src="images/kongjian.gif">&nbsp;控件
+	</td>
+	</tr>
+	<tr style="display:none">
+	<td  valign=top >
+	<div id="divcontrols" style="overflow:auto;height:100%;border:1 solid #0099FF">
+<TABLE width="100%" border=0 cellspacing=2 cellpadding=2 style="" class="rightmenutabcss">
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';">
+	<td  banshitype="defdiv" nowrap>
+	<img src="images/biaoqian.gif"   banshitype="defdiv"   align="absmiddle"  >
+	文字标签
+	</td>
+	</tr>
+
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';" type="text" >
+	<td  type="text" banshitype="text" nowrap>
+	<img src="images/input.gif" align="absmiddle" banshitype="text" type="text">
+		文本框
+	</td>
+	</tr>
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';" type="hidden" >
+	<td  banshitype="text" type="hidden" nowrap>
+	<img src="images/input.gif" align="absmiddle" banshitype="text" type="hidden" >
+	
+	隐藏域
+	</td>
+	</tr>
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';" type="check" >
+	<td banshitype="text" type="check" nowrap>
+	<img src="images/checkbox.gif"  align="absmiddle" banshitype="text" type="check">
+	
+	复选框
+	</td>
+	</tr>
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"   type="radio" >
+	<td banshitype="text" type="radio" nowrap>
+	<img src="images/radio.gif"  align="absmiddle" banshitype="text" type="radio" >
+	
+	单选框
+	</td>
+	</tr><tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"  type="drop-down" >
+	<td banshitype="text"  type="drop-down" nowrap>
+	<img src="images/select.gif"  align="absmiddle" banshitype="text"   type="drop-down" >
+	
+	下拉框
+	</td>
+	</tr><tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"  type="textarea" >
+	<td banshitype="text" type="textarea" nowrap>
+	<img src="images/textarea.gif"  align="absmiddle" banshitype="text" type="textarea" >
+	
+	文本区
+	</td>
+	</tr><tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';" type="date-time" >
+	<td banshitype="text" type="date-time" nowrap>
+	<img src="images/date.gif"  align="absmiddle" banshitype="text" type="date-time" >
+	
+	日期选择框
+	</td>
+	</tr>
+	<!--
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"  type="image" >
+	<td banshitype="text" type="image" nowrap>
+	<img src="images/image.gif"  align="absmiddle" banshitype="text" type="image" >
+	
+	图片
+	</td>
+	</tr>-->
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"  type="hyperlink" >
+	<td banshitype="text"  type="hyperlink" nowrap>
+	<img src="images/link.gif"  align="absmiddle" banshitype="text"  type="hyperlink">
+	
+	链接
+	</td>
+	</tr>
+	<!--<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';" type="file" >
+	<td banshitype="text" type="file" >
+	<img src="images/input.gif"  align="absmiddle" banshitype="text" type="file" >
+
+	上传文件
+	</td>
+	</tr>
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"  type="calculate" >
+	<td banshitype="text" type="calculate" nowrap>
+	<img src="images/input.gif"  align="absmiddle" banshitype="text" type="calculate">
+	
+	计算
+	</td>
+	</tr>
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"  type="display" >
+	<td banshitype="text" type="display" nowrap>
+	<img src="images/input.gif"  align="absmiddle" banshitype="text" type="display">
+	
+	显示
+	</td>
+	</tr>-->
+	
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"  type="select-field" >
+	<td banshitype="text" type="select-field" nowrap>
+	<img src="images/input.gif"  align="absmiddle" banshitype="text" type="select-field">
+	
+	选择域
+	</td>
+	</tr>
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"  type="edit-field" >
+	<td banshitype="text" type="edit-field" nowrap>
+	<img src="images/input.gif"  align="absmiddle" banshitype="text" type="edit-field">
+	
+	编辑域
+	</td>
+	</tr>
+		<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"  type="special-edit" >
+	<td banshitype="text" type="special-edit" nowrap>
+	<img src="images/input.gif"  align="absmiddle" banshitype="text" type="special-edit">
+	
+	特殊编辑域
+	</td>
+	</tr>
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"  type="sumrow" >
+	<td banshitype="text" type="sumrow" nowrap>
+	<img src="images/input.gif"  align="absmiddle" banshitype="text" type="sumrow">
+	
+	行合计
+	</td>
+	</tr>
+		<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"  type="sumcol" >
+	<td banshitype="text" type="sumcol" nowrap>
+	<img src="images/input.gif"  align="absmiddle" banshitype="text" type="sumcol">
+	
+	列合计
+	</td>
+	</tr>
+	<tr  onmouseover="this.className='rightmenutrcss';" onmouseout="this.className='';"  type="pinglun" >
+	<td banshitype="text" type="pinglun" nowrap>
+	<img src="images/input.gif"  align="absmiddle" banshitype="text" type="pinglun">
+	
+	评论域
+	</td>
+	</tr>
+	</table>
+	</div>
+	</td>
+	</tr>
+	</table>
+	</td>
+</TR></TABLE>
+<div id="divtabdef" class="xwin" style="width:300;position:absolute;display:none">
+<span class="deftitle"  style="width:300">自定义表格</span>
+<table width="100%">
+<tr>
+<td width=50>行数:
+</td>
+<td><input name="deftabrow" size=5 value=3>
+</td>
+</tr>
+<tr>
+<td>列数:
+</td>
+<td><input name="deftabcol" size=5 value="6">
+</td>
+</tr>
+<tr>
+<td>宽度:
+</td>
+<td><input name="deftabwidth" size=5 value="840">&nbsp;<input type="radio" name=deftabrao style="display:none" value="1"   onclick="document.all('deftabwidth').value=100;" title="百分比">&nbsp;<input type="radio" style="display:none"  value="2" checked  name=deftabrao onclick="document.all('deftabwidth').value=600;">象素
+</td>
+</tr>
+<tr>
+<td colspan=2 align=center>
+<button onclick="insertDefTable();">确定</button>&nbsp;<button onclick="cancelInsertDefTable();">取消</button>
+</td>
+</tr>
+</table>
+</div>
+<div id="divtabsub" class="xwin" style="width:300;position:absolute;display:none">
+<span class="deftitle"  style="width:300">重复表格</span>
+<table width="100%">
+<tr>
+<td>列数:
+</td>
+<td><input name="subtabcol" size=5 value="6">
+</td>
+</tr>
+<tr>
+<td colspan=2 align=center>
+<button onclick="insertSubTable();">确定</button>&nbsp;<button onclick="cancelInsertSubTable();">取消</button>
+</td>
+</tr>
+</table>
+</div>
+
+<map name="divimg">
+	<area shape="rect" coords="0,0,22,24" HIDEFOCUS="true" UNSELECTABLE="true"  onmousedown="WBTB_foreColor2();">
+	<area shape="rect" coords="23,0,35,24" HIDEFOCUS="true" UNSELECTABLE="true" onmousedown="WBTB_foreColor();">
+</map>
+</BODY>
+</HTML>

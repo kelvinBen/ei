@@ -1,0 +1,4 @@
+#Thu Oct 11 16:00:36 CST 2012
+eclipse.preferences.version=1
+validator.Checked=test/jdbcSupport.xml,WebContent,target,src/excelXMLConfig/excelMappingMail.xml,backup
+validator.Unchecked=WebContent/js/jsjava/text,WebContent/jsp/cnooc/prw/prapply/common/prw_prapply_forSubPositionUpdate2.jsp,WebContent/jsp/loginRemote.jsp,WebContent/jsp/cnooc/prw/prapply/common/prw_prapply_forSubPositionUpdate.jsp

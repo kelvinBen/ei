@@ -1,0 +1,566 @@
+ 
+
+
+
+
+
+
+
+<script language=javascript>
+function check_form(thiswins,items)
+{
+	thiswin = thiswins
+	items = items + ",";
+	
+	for(i=1;i<=thiswin.length;i++)
+	{
+	tmpname = thiswin.elements[i-1].name;
+	tmpvalue = thiswin.elements[i-1].value;
+    if(tmpvalue==null){
+        continue;
+    }
+	while(tmpvalue.indexOf(" ") == 0)
+		tmpvalue = tmpvalue.substring(1,tmpvalue.length);
+	
+	if(tmpname!="" &&items.indexOf(tmpname+",")!=-1 && tmpvalue == ""){
+		 alert("必要信息不完整");
+		 return false;
+		}
+
+	}
+	return true;
+}
+
+function isdel(){
+   if(!confirm("确定要删除吗？")){
+       return false;
+   }
+       return true;
+   } 
+
+
+function issubmit(){
+   if(!confirm("确定要提交吗？")){
+       return false;
+   }
+       return true;
+   } 
+</script>
+
+
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=GBK">
+</HEAD></HTML>
+<html>
+<head>
+<meta NAME="GENERATOR" CONTENT="Microsoft Visual Studio 6.0">
+<title></title>
+
+<!-- Styles -->
+<link REL="stylesheet" TYPE="text/css" HREF="toolbars.css">
+
+
+<!-- Script Functions and Event Handlers -->
+<script LANGUAGE="JavaScript" SRC="dhtmled.js">
+</script>
+<script LANGUAGE="JavaScript" SRC="Edit.js">
+</script>
+
+<script LANGUAGE="javascript" FOR="tbContentElement" EVENT="DisplayChanged">
+<!--
+return tbContentElement_DisplayChanged()
+//-->
+</script>
+
+<script LANGUAGE="javascript" FOR="tbContentElement" EVENT="DocumentComplete">
+<!--
+return tbContentElement_DocumentComplete()
+//-->
+</script>
+
+<script LANGUAGE="javascript" FOR="tbContentElement" EVENT="ShowContextMenu">
+<!--
+//return tbContentElement_ShowContextMenu()
+//-->
+</script>
+
+<script LANGUAGE="javascript" FOR="tbContentElement" EVENT="ContextMenuAction(itemIndex)">
+<!--
+//return tbContentElement_ContextMenuAction(itemIndex)
+//-->
+</script>
+
+</head>
+<body LANGUAGE="javascript" onload="return window_onload()">
+<!-- Toolbars -->
+<div class="tbToolbar" ID="FormatToolbar">
+  <select ID="FontName" class="tbGeneral" style="width:140" TITLE="Font Name" LANGUAGE="javascript" onchange="return FontName_onchange()">
+     <option value="Agency FB">Agency FB
+<option value="Algerian">Algerian
+<option value="Arial">Arial
+<option value="Arial Black">Arial Black
+<option value="Arial Narrow">Arial Narrow
+<option value="Arial Rounded MT Bold">Arial Rounded MT Bold
+<option value="Arial Unicode MS">Arial Unicode MS
+<option value="Basemic">Basemic
+<option value="Basemic Symbol">Basemic Symbol
+<option value="Basemic Times">Basemic Times
+<option value="Baskerville Old Face">Baskerville Old Face
+<option value="Batang">Batang
+<option value="BatangChe">BatangChe
+<option value="Bauhaus 93">Bauhaus 93
+<option value="Bell MT">Bell MT
+<option value="Berlin Sans FB">Berlin Sans FB
+<option value="Berlin Sans FB Demi">Berlin Sans FB Demi
+<option value="Bernard MT Condensed">Bernard MT Condensed
+<option value="Blackadder ITC">Blackadder ITC
+<option value="Bodoni MT">Bodoni MT
+<option value="Bodoni MT Black">Bodoni MT Black
+<option value="Bodoni MT Condensed">Bodoni MT Condensed
+<option value="Bodoni MT Poster Compressed">Bodoni MT Poster Compressed
+<option value="Book Antiqua">Book Antiqua
+<option value="Bookman Old Style">Bookman Old Style
+<option value="Bookshelf Symbol 7">Bookshelf Symbol 7
+<option value="Bradley Hand ITC">Bradley Hand ITC
+<option value="Britannic Bold">Britannic Bold
+<option value="Broadway">Broadway
+<option value="Brush Script MT">Brush Script MT
+<option value="Californian FB">Californian FB
+<option value="Calisto MT">Calisto MT
+<option value="Castellar">Castellar
+<option value="Centaur">Centaur
+<option value="Century">Century
+<option value="Century Gothic">Century Gothic
+<option value="Century Schoolbook">Century Schoolbook
+<option value="Chiller">Chiller
+<option value="Colonna MT">Colonna MT
+<option value="Comic Sans MS">Comic Sans MS
+<option value="Cooper Black">Cooper Black
+<option value="Copperplate Gothic Bold">Copperplate Gothic Bold
+<option value="Copperplate Gothic Light">Copperplate Gothic Light
+<option value="Courier New">Courier New
+<option value="CourierThai">CourierThai
+<option value="Curlz MT">Curlz MT
+<option value="Default">Default
+<option value="Dialog">Dialog
+<option value="DialogInput">DialogInput
+<option value="Dotum">Dotum
+<option value="DotumChe">DotumChe
+<option value="Edwardian Script ITC">Edwardian Script ITC
+<option value="Elephant">Elephant
+<option value="Engravers MT">Engravers MT
+<option value="Eras Bold ITC">Eras Bold ITC
+<option value="Eras Demi ITC">Eras Demi ITC
+<option value="Eras Light ITC">Eras Light ITC
+<option value="Eras Medium ITC">Eras Medium ITC
+<option value="Estrangelo Edessa">Estrangelo Edessa
+<option value="Felix Titling">Felix Titling
+<option value="Footlight MT Light">Footlight MT Light
+<option value="Forte">Forte
+<option value="Franklin Gothic Book">Franklin Gothic Book
+<option value="Franklin Gothic Demi">Franklin Gothic Demi
+<option value="Franklin Gothic Demi Cond">Franklin Gothic Demi Cond
+<option value="Franklin Gothic Heavy">Franklin Gothic Heavy
+<option value="Franklin Gothic Medium">Franklin Gothic Medium
+<option value="Franklin Gothic Medium Cond">Franklin Gothic Medium Cond
+<option value="Freestyle Script">Freestyle Script
+<option value="French Script MT">French Script MT
+<option value="Garamond">Garamond
+<option value="Gautami">Gautami
+<option value="Georgia">Georgia
+<option value="Gigi">Gigi
+<option value="Gill Sans MT">Gill Sans MT
+<option value="Gill Sans MT Condensed">Gill Sans MT Condensed
+<option value="Gill Sans MT Ext Condensed Bold">Gill Sans MT Ext Condensed Bold
+<option value="Gill Sans Ultra Bold">Gill Sans Ultra Bold
+<option value="Gill Sans Ultra Bold Condensed">Gill Sans Ultra Bold Condensed
+<option value="Gloucester MT Extra Condensed">Gloucester MT Extra Condensed
+<option value="Goudy Old Style">Goudy Old Style
+<option value="Goudy Stout">Goudy Stout
+<option value="Gulim">Gulim
+<option value="GulimChe">GulimChe
+<option value="Gungsuh">Gungsuh
+<option value="GungsuhChe">GungsuhChe
+<option value="Haettenschweiler">Haettenschweiler
+<option value="Harlow Solid Italic">Harlow Solid Italic
+<option value="Harrington">Harrington
+<option value="High Tower Text">High Tower Text
+<option value="Impact">Impact
+<option value="Imprint MT Shadow">Imprint MT Shadow
+<option value="Informal Roman">Informal Roman
+<option value="Jokerman">Jokerman
+<option value="Juice ITC">Juice ITC
+<option value="Kingsoft Phonetic Plain">Kingsoft Phonetic Plain
+<option value="Kristen ITC">Kristen ITC
+<option value="Kunstler Script">Kunstler Script
+<option value="Latha">Latha
+<option value="Lucida Bright">Lucida Bright
+<option value="Lucida Calligraphy">Lucida Calligraphy
+<option value="Lucida Console">Lucida Console
+<option value="Lucida Fax">Lucida Fax
+<option value="Lucida Handwriting">Lucida Handwriting
+<option value="Lucida Sans">Lucida Sans
+<option value="Lucida Sans Typewriter">Lucida Sans Typewriter
+<option value="Lucida Sans Unicode">Lucida Sans Unicode
+<option value="Magneto">Magneto
+<option value="Maiandra GD">Maiandra GD
+<option value="Mangal">Mangal
+<option value="Marlett">Marlett
+<option value="Matura MT Script Capitals">Matura MT Script Capitals
+<option value="Microsoft Sans Serif">Microsoft Sans Serif
+<option value="Mistral">Mistral
+<option value="Modern No. 20">Modern No. 20
+<option value="Monospaced">Monospaced
+<option value="Monotype Corsiva">Monotype Corsiva
+<option value="MS Gothic">MS Gothic
+<option value="MS Mincho">MS Mincho
+<option value="MS Outlook">MS Outlook
+<option value="MS PGothic">MS PGothic
+<option value="MS PMincho">MS PMincho
+<option value="MS Reference Sans Serif">MS Reference Sans Serif
+<option value="MS Reference Specialty">MS Reference Specialty
+<option value="MS UI Gothic">MS UI Gothic
+<option value="MV Boli">MV Boli
+<option value="Niagara Engraved">Niagara Engraved
+<option value="Niagara Solid">Niagara Solid
+<option value="OCR A Extended">OCR A Extended
+<option value="Old English Text MT">Old English Text MT
+<option value="Onyx">Onyx
+<option value="Palace Script MT">Palace Script MT
+<option value="Palatino Linotype">Palatino Linotype
+<option value="Papyrus">Papyrus
+<option value="Parchment">Parchment
+<option value="Perpetua">Perpetua
+<option value="Perpetua Titling MT">Perpetua Titling MT
+<option value="Playbill">Playbill
+<option value="Poor Richard">Poor Richard
+<option value="Pristina">Pristina
+<option value="Raavi">Raavi
+<option value="Rage Italic">Rage Italic
+<option value="Ravie">Ravie
+<option value="Rockwell">Rockwell
+<option value="Rockwell Condensed">Rockwell Condensed
+<option value="Rockwell Extra Bold">Rockwell Extra Bold
+<option value="SansSerif">SansSerif
+<option value="Script MT Bold">Script MT Bold
+<option value="Serif">Serif
+<option value="Showcard Gothic">Showcard Gothic
+<option value="Shruti">Shruti
+<option value="Snap ITC">Snap ITC
+<option value="Stencil">Stencil
+<option value="Sylfaen">Sylfaen
+<option value="Symbol">Symbol
+<option value="Tahoma">Tahoma
+<option value="Tempus Sans ITC">Tempus Sans ITC
+<option value="Thonburi">Thonburi
+<option value="Times New Roman">Times New Roman
+<option value="Trebuchet MS">Trebuchet MS
+<option value="Tunga">Tunga
+<option value="Tw Cen MT">Tw Cen MT
+<option value="Tw Cen MT Condensed">Tw Cen MT Condensed
+<option value="Tw Cen MT Condensed Extra Bold">Tw Cen MT Condensed Extra Bold
+<option value="Verdana">Verdana
+<option value="Viner Hand ITC">Viner Hand ITC
+<option value="Vivaldi">Vivaldi
+<option value="Vladimir Script">Vladimir Script
+<option value="Webdings">Webdings
+<option value="Wide Latin">Wide Latin
+<option value="Wingdings">Wingdings
+<option value="Wingdings 2">Wingdings 2
+<option value="Wingdings 3">Wingdings 3
+<option value="World Wind dings">World Wind dings
+<option value="ZWAdobeF">ZWAdobeF
+<option value="仿宋_GB2312">仿宋_GB2312
+<option value="华文中宋">华文中宋
+<option value="华文仿宋">华文仿宋
+<option value="华文宋体">华文宋体
+<option value="华文彩云">华文彩云
+<option value="华文新魏">华文新魏
+<option value="华文楷体">华文楷体
+<option value="华文琥珀">华文琥珀
+<option value="华文细黑">华文细黑
+<option value="华文行楷">华文行楷
+<option value="华文隶书">华文隶书
+<option value="宋体">宋体
+<option value="宋体-方正超大字符集">宋体-方正超大字符集
+<option value="幼圆">幼圆
+<option value="新宋体">新宋体
+<option value="新細明體">新細明體
+<option value="方正姚体">方正姚体
+<option value="方正舒体">方正舒体
+<option value="楷体_GB2312">楷体_GB2312
+<option value="細明體">細明體
+<option value="隶书">隶书
+<option value="黑体">黑体
+  </select>
+  <select ID="FontSize" class="tbGeneral" style="width:40" TITLE="Font Size" LANGUAGE="javascript" onchange="return FontSize_onchange()">
+    <option value="1">1
+    <option value="2">2
+    <option value="3">3
+    <option value="4">4
+    <option value="5">5
+    <option value="6">6
+    <option value="7">7
+  </select>
+  <div class="tbSeparator"></div>
+
+  <div class="tbButton" ID="DECMD_BOLD" TITLE="粗体" TBTYPE="toggle" LANGUAGE="javascript" onclick="return DECMD_BOLD_onclick()"  >
+    <img class="tbIcon" src="images/bold.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_ITALIC" TITLE="斜体" TBTYPE="toggle" LANGUAGE="javascript" onclick="return DECMD_ITALIC_onclick()">
+    <img class="tbIcon" src="images/italic.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_UNDERLINE" TITLE="下划线" TBTYPE="toggle" LANGUAGE="javascript" onclick="return DECMD_UNDERLINE_onclick()">
+    <img class="tbIcon" src="images/under.gif"  TITLE="下划线"  WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  
+  <div class="tbSeparator"></div>
+
+  <div class="tbButton" ID="DECMD_SETFORECOLOR" TITLE="字体颜色" LANGUAGE="javascript" onclick="return DECMD_SETFORECOLOR_onclick()">
+    <img class="tbIcon" src="images/fgcolor.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_SETBACKCOLOR" TITLE="字体背景颜色" LANGUAGE="javascript" onclick="return DECMD_SETBACKCOLOR_onclick()">
+    <img class="tbIcon" src="images/bgcolor.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  </div>
+
+<div class="tbToolbar" ID="StandardToolbar">
+
+  <div class="tbButton" ID="DECMD_JUSTIFYLEFT" TITLE="左对齐" TBTYPE="toggle" NAME="Justify" LANGUAGE="javascript" onclick="return DECMD_JUSTIFYLEFT_onclick()">
+    <img class="tbIcon" src="images/left.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_JUSTIFYCENTER" TITLE="居中" TBTYPE="toggle" NAME="Justify" LANGUAGE="javascript" onclick="return DECMD_JUSTIFYCENTER_onclick()">
+    <img class="tbIcon" src="images/center.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_JUSTIFYRIGHT" TITLE="右对齐" TBTYPE="toggle" NAME="Justify" LANGUAGE="javascript" onclick="return DECMD_JUSTIFYRIGHT_onclick()">
+    <img class="tbIcon" src="images/right.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+
+  <div class="tbSeparator"></div>
+
+  <div class="tbButton" ID="DECMD_ORDERLIST" TITLE="编号" TBTYPE="toggle" LANGUAGE="javascript" onclick="return DECMD_ORDERLIST_onclick()">
+    <img class="tbIcon" src="images/numlist.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_UNORDERLIST" TITLE="项目符号" TBTYPE="toggle" LANGUAGE="javascript" onclick="return DECMD_UNORDERLIST_onclick()">
+    <img class="tbIcon" src="images/bullist.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  
+  <div class="tbSeparator"></div>
+
+  <div class="tbButton" ID="DECMD_OUTDENT" TITLE="减少缩进" LANGUAGE="javascript" onclick="return DECMD_OUTDENT_onclick()">
+    <img class="tbIcon" src="images/deindent.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_INDENT" TITLE="增加缩进" LANGUAGE="javascript" onclick="return DECMD_INDENT_onclick()">
+    <img class="tbIcon" src="images/inindent.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+
+  <div class="tbSeparator"></div>
+
+  <div class="tbButton" ID="DECMD_HYPERLINK" TITLE="超链接" LANGUAGE="javascript" onclick="return DECMD_HYPERLINK_onclick()">
+    <img class="tbIcon" src="images/link.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <!--<div class="tbButton" ID="DECMD_IMAGE" TITLE="插入图片" LANGUAGE="javascript" onclick="parent.showImg();">
+    <img class="tbIcon" src="images/image.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>-->
+</div>
+
+<div class="tbToolbar" ID="StandardToolbar">
+<!--
+  <div class="tbButton" ID="MENU_FILE_NEW" TITLE="New File" LANGUAGE="javascript" onclick="return MENU_FILE_NEW_onclick()">
+    <img class="tbIcon" src="images/newdoc.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="MENU_FILE_OPEN" TITLE="Open File" LANGUAGE="javascript" onclick="return MENU_FILE_OPEN_onclick()">
+    <img class="tbIcon" src="images/open.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="MENU_FILE_SAVE" TITLE="Save File" LANGUAGE="javascript" onclick="return MENU_FILE_SAVE_onclick()">
+    <img class="tbIcon" src="images/save.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  
+  <div class="tbSeparator"></div>
+-->
+  <div class="tbButton" ID="DECMD_CUT" TITLE="剪切" LANGUAGE="javascript" onclick="return DECMD_CUT_onclick()">
+    <img class="tbIcon" src="images/cut.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_COPY" TITLE="复制" LANGUAGE="javascript" onclick="return DECMD_COPY_onclick()">
+    <img class="tbIcon" src="images/copy.gif" WIDTH="23" HEIGHT="22"  onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_PASTE" TITLE="粘贴" LANGUAGE="javascript" onclick="return DECMD_PASTE_onclick()">
+    <img class="tbIcon" src="images/paste.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+
+  <div class="tbSeparator"></div>
+
+  <div class="tbButton" ID="DECMD_UNDO" TITLE="撤销" LANGUAGE="javascript" onclick="return DECMD_UNDO_onclick()">
+    <img class="tbIcon" src="images/undo.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_REDO" TITLE="恢复" LANGUAGE="javascript" onclick="return DECMD_REDO_onclick()">
+    <img class="tbIcon" src="images/redo.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+
+  <div class="tbSeparator"></div>
+
+  <div class="tbButton" ID="DECMD_FINDTEXT" TITLE="查找" LANGUAGE="javascript" onclick="return DECMD_FINDTEXT_onclick()">
+    <img class="tbIcon" src="images/find.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+</div>
+
+<div class="tbToolbar" ID="TableToolbar">
+  <div class="tbButton" ID="DECMD_INSERTTABLE" TITLE="插入表格" LANGUAGE="javascript" onclick="return TABLE_INSERTTABLE_onclick()">
+    <img class="tbIcon" src="images/instable.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+
+  <div class="tbSeparator"></div>
+
+  <div class="tbButton" ID="DECMD_INSERTROW" TITLE="插入行" LANGUAGE="javascript" onclick="return TABLE_INSERTROW_onclick()">
+    <img class="tbIcon" src="images/insrow.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_DELETEROWS" TITLE="删除行" LANGUAGE="javascript" onclick="return TABLE_DELETEROW_onclick()">
+    <img class="tbIcon" src="images/delrow.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+ 
+  <div class="tbSeparator"></div>
+
+  <div class="tbButton" ID="DECMD_INSERTCOL" TITLE="插入列" LANGUAGE="javascript" onclick="return TABLE_INSERTCOL_onclick()">
+    <img class="tbIcon" src="images/inscol.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_DELETECOLS" TITLE="删除列" LANGUAGE="javascript" onclick="return TABLE_DELETECOL_onclick()">
+    <img class="tbIcon" src="images/delcol.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  
+  <div class="tbSeparator"></div>
+
+  <div class="tbButton" ID="DECMD_INSERTCELL" TITLE="插入单元格" LANGUAGE="javascript" onclick="return TABLE_INSERTCELL_onclick()">
+    <img class="tbIcon" src="images/inscell.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_DELETECELLS" TITLE="删除单元格" LANGUAGE="javascript" onclick="return TABLE_DELETECELL_onclick()">
+    <img class="tbIcon" src="images/delcell.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_MERGECELLS" TITLE="合并单元格" LANGUAGE="javascript" onclick="return TABLE_MERGECELL_onclick()">
+    <img class="tbIcon" src="images/mrgcell.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_SPLITCELL" TITLE="拆分单元格" LANGUAGE="javascript" onclick="return TABLE_SPLITCELL_onclick()">
+    <img class="tbIcon" src="images/spltcell.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+</div>
+
+<div class="tbToolbar" ID="AbsolutePositioningToolbar">
+  <div class="tbButton" ID="DECMD_VISIBLEBORDERS" TITLE="显示表格边框" TBTYPE="toggle" LANGUAGE="javascript" onclick="return DECMD_VISIBLEBORDERS_onclick()">
+    <img class="tbIcon" src="images/borders.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_SHOWDETAILS" TITLE="全部显示" TBTYPE="toggle" LANGUAGE="javascript" onclick="return DECMD_SHOWDETAILS_onclick()">
+    <img class="tbIcon" src="images/details.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div class="tbButton" ID="DECMD_SNAPTOGRID" TITLE="对齐到栅格" TBTYPE="toggle" LANGUAGE="javascript" onclick="return DECMD_SNAPTOGRID_onclick()">
+    <img class="tbIcon" src="images/snapgrid.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div style="display: none" class="tbSeparator"></div>
+  <div style="display: none" class="tbButton" ID="DECMD_MAKE_ABSOLUTE" TBTYPE="toggle" LANGUAGE="javascript" TITLE="绝对定位" onclick="return DECMD_MAKE_ABSOLUTE_onclick()">
+    <img class="tbIcon" src="images/abspos.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div style="display: none" class="tbButton" ID="DECMD_LOCK_ELEMENT" TBTYPE="toggle" LANGUAGE="javascript" TITLE="锁定" onclick="return DECMD_LOCK_ELEMENT_onclick()">
+    <img class="tbIcon" src="images/lock.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div style="display: none" class="tbSeparator"></div>
+  <div style="display: none" class="tbSeparator"></div>
+  <div style="display: none" class="tbButton" ID="DECMD_BRINGTOFRONT" TITLE="置于顶层" LANGUAGE="javascript" onclick="return DECMD_BRINGTOFRONT_onclick()">
+    <img class="tbIcon" src="images/top.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div style="display: none" class="tbButton" ID="DECMD_SENDTOBACK" TITLE="置于底层" LANGUAGE="javascript" onclick="return DECMD_SENDTOBACK_onclick()">
+    <img class="tbIcon" src="images/bottom.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div style="display: none" class="tbSeparator"></div>
+  <div style="display: none" class="tbButton" ID="DECMD_BRINGFORWARD" TITLE="上移一层" LANGUAGE="javascript" onclick="return DECMD_BRINGFORWARD_onclick()">
+    <img class="tbIcon" src="images/forward.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div style="display: none" class="tbButton" ID="DECMD_SENDBACKWARD" TITLE="下移一层" LANGUAGE="javascript" onclick="return DECMD_SENDBACKWARD_onclick()">
+    <img class="tbIcon" src="images/back.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div style="display: none" class="tbSeparator"></div>
+  <div style="display: none" class="tbButton" ID="DECMD_BRINGABOVETEXT" TITLE="置于文字之上" LANGUAGE="javascript" onclick="return DECMD_BRINGABOVETEXT_onclick()">
+    <img class="tbIcon" src="images/abovetext.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  <div style="display: none" class="tbButton" ID="DECMD_SENDBELOWTEXT" TITLE="置于文字之下" LANGUAGE="javascript" onclick="return DECMD_SENDBELOWTEXT_onclick()">
+    <img class="tbIcon" src="images/belowtext.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+</div>
+
+<!--自定义元素-->
+<div style="display: none" class="tbToolbar" ID="InfoToolbar">
+  <div class="tbButton" ID="INFO_INSERTCLASS" TITLE="插入栏目元素" LANGUAGE="javascript" onclick="return INFO_INSERTCLASS_onclick()">
+    <img class="tbIcon" src="images/class.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+
+  <div class="tbButton" ID="INFO_INSERTSCROLL" TITLE="插入滚动元素" LANGUAGE="javascript" onclick="return INFO_INSERTSCROLL_onclick()">
+    <img class="tbIcon" src="images/scroll.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  
+  <div class="tbButton" ID="INFO_INSERTSTATIC" TITLE="插入静态元素" LANGUAGE="javascript" onclick="return INFO_INSERTSTATIC_onclick()">
+    <img class="tbIcon" src="images/static.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+
+  <div class="tbButton" ID="INFO_INSERTFLOAT" TITLE="插入浮动元素" LANGUAGE="javascript" onclick="return INFO_INSERTFLOAT_onclick()">
+    <img class="tbIcon" src="images/float.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+  
+  <div class="tbSeparator"></div>
+  <div class="tbButton" ID="INFO_INSERTCELL" TITLE="插入单元元素" LANGUAGE="javascript" onclick="return INFO_INSERTCELL_onclick()">
+    <img class="tbIcon" src="images/cell.gif" WIDTH="23" HEIGHT="22" onmouseover="showtitle()" onmouseout="hidetitle();">
+  </div>
+</div>
+
+<!-- DHTML Editing control Object. This will be the body object for the toolbars. -->
+<object ID="tbContentElement" CLASS="tbContentElement" CLASSID="clsid:2D360201-FFF5-11d1-8D03-00A0C959BC0A" VIEWASTEXT>
+	<param name=Scrollbars value=true>
+</object>
+
+<!-- DEInsertTableParam Object -->
+<object ID="ObjTableInfo" CLASSID="clsid:47B0DFC7-B7A3-11D1-ADC5-006008A5848C" VIEWASTEXT>
+</object>
+
+<!-- DEGetBlockFmtNamesParam Object -->
+<object ID="ObjBlockFormatInfo" CLASSID="clsid:8D91090E-B955-11D1-ADC5-006008A5848C" VIEWASTEXT>
+</object>
+
+<!-- DHTML Editing control Object. This will be the body object for the save. -->
+<object ID="tbSave" CLASS="tbSave" style="display:none" CLASSID="clsid:2D360201-FFF5-11d1-8D03-00A0C959BC0A" VIEWASTEXT>
+	<param name=Scrollbars value=true>
+</object>
+
+<!-- Toolbar Code File. Note: This must always be the last thing on the page -->
+<script LANGUAGE="Javascript" SRC="toolbars.js">
+</script>
+<div id="titlediv" style="display:none;position:absolute;border:1 solid ;height:20;width:50;background-color:#FFFFCC;z-index:100;font-size:9pt;padding:3px;" align=center><iframe frameborder=0 style="width:100%;height:100%;top:0;position:absolute;z-index:-1;"></iframe></div>
+</body>
+<script LANGUAGE="Javascript">
+ function getDom()
+ {
+ alert(document.all.tbContentElement);
+ return document.all.tbContentElement.DOM;
+ }
+ function showtitle()
+ {
+ var odiv=document.all("titlediv");
+var obj=event.srcElement;
+var oleft=0;
+var pobj;
+pobj=obj;
+while(pobj.tagName!="BODY")
+{
+oleft+=pobj.offsetLeft;
+pobj=pobj.offsetParent;
+}
+if(obj.tagName=="IMG")
+obj=obj.parentElement;
+odiv.innerText=obj.title;
+odiv.style.top=obj.offsetTop+obj.offsetHeight;
+odiv.style.left=oleft+obj.offsetWidth;
+ odiv.style.display="block";
+ }
+ function hidetitle()
+ {
+ var odiv=document.all("titlediv");
+ odiv.style.display="none";
+ }
+</script>
+
+</html>

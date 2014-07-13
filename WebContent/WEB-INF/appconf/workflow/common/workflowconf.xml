@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+<!-- ******************audit相关dao*********************** -->
+<!--一般通用 start-->
+<bean id="accreditEventAuditDao" class="net.mast.workflow.audit.dao.jdbc.AccreditEventAuditJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="assignmentEventAuditDao" class="net.mast.workflow.audit.dao.jdbc.AssignmentEventAuditJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="activityEventAuditDao"  class="net.mast.workflow.audit.dao.jdbc.ActivityEventAuditJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="createProcessEventAuditDao" class="net.mast.workflow.audit.dao.jdbc.CreateProcessEventAuditJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="dataEventAuditDao" class="net.mast.workflow.audit.dao.jdbc.DataEventAuditJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="eventAuditDao" class="net.mast.workflow.audit.dao.jdbc.EventAuditJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="responsibleAuditDao" class="net.mast.workflow.audit.dao.jdbc.ResponsibleAuditJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="stateEventAuditDao" class="net.mast.workflow.audit.dao.jdbc.StateEventAuditJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<!--一般通用 end-->
+
+<!-- sql server专用  start
+<bean id="accreditEventAuditDao" class="net.mast.workflow.audit.dao.jdbc.AccreditEventAuditJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="assignmentEventAuditDao" class="net.mast.workflow.audit.dao.jdbc.AssignmentEventAuditJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="activityEventAuditDao"  class="net.mast.workflow.audit.dao.jdbc.ActivityEventAuditJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="createProcessEventAuditDao" class="net.mast.workflow.audit.dao.jdbc.CreateProcessEventAuditJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="dataEventAuditDao" class="net.mast.workflow.audit.dao.jdbc.DataEventAuditJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="eventAuditDao" class="net.mast.workflow.audit.dao.jdbc.EventAuditJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="responsibleAuditDao" class="net.mast.workflow.audit.dao.jdbc.ResponsibleAuditJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="stateEventAuditDao" class="net.mast.workflow.audit.dao.jdbc.StateEventAuditJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>-->
+<!--sql server专用 end-->
+<!-- ******************instance相关dao*********************** -->
+<bean id="activityEndDao" class="net.mast.workflow.instance.dao.jdbc.ActivityEndJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<!--一般通用 start-->
+<bean id="activityDao" class="net.mast.workflow.instance.dao.jdbc.ActivityJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="activityVariableDao" class="net.mast.workflow.instance.dao.jdbc.ActivityVariableJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="assignmentDao" class="net.mast.workflow.instance.dao.jdbc.AssignmentJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="processDao" class="net.mast.workflow.instance.dao.jdbc.ProcessJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="processMgrDao" class="net.mast.workflow.instance.dao.jdbc.ProcessMgrJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="processVariableDao" class="net.mast.workflow.instance.dao.jdbc.ProcessVariableJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="resActTaskInfoDao" class="net.mast.workflow.instance.dao.jdbc.ResActTaskInfoDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="taskInfoDao" class="net.mast.workflow.instance.dao.jdbc.TaskInfoJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<!--一般通用 end-->
+
+<!-- sql server专用 start
+<bean id="activityDao" class="net.mast.workflow.instance.dao.jdbc.ActivityJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="activityVariableDao" class="net.mast.workflow.instance.dao.jdbc.ActivityVariableJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="assignmentDao" class="net.mast.workflow.instance.dao.jdbc.AssignmentJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="processMgrDao" class="net.mast.workflow.instance.dao.jdbc.ProcessMgrJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="processVariableDao" class="net.mast.workflow.instance.dao.jdbc.ProcessVariableJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="resActTaskInfoDao" class="net.mast.workflow.instance.dao.jdbc.ResActTaskInfoMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="processDao" class="net.mast.workflow.instance.dao.jdbc.ProcessJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="taskInfoDao" class="net.mast.workflow.instance.dao.jdbc.TaskInfoJdbcMSDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>-->
+<!--sqlserver专用 end-->
+
+<bean id="andJoinEntryDao" class="net.mast.workflow.instance.dao.jdbc.AndJoinEntryJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="assignmentEndDao" class="net.mast.workflow.instance.dao.jdbc.AssignmentEndJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="deadlineDao" class="net.mast.workflow.instance.dao.jdbc.DeadlineJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="endTaskInfoDao" class="net.mast.workflow.instance.dao.jdbc.EndTaskInfoJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="processEndDao" class="net.mast.workflow.instance.dao.jdbc.ProcessEndJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="wfresourceDao" class="net.mast.workflow.instance.dao.jdbc.ResourceJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<!-- ******************mapping相关dao*********************** -->
+<bean id="entityApplicationMapDao" class="net.mast.workflow.mapping.dao.jdbc.EntityApplicationMapJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<bean id="entityParticipantMapDao" class="net.mast.workflow.mapping.dao.jdbc.EntityParticipantMapJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<!-- ******************repository相关dao*********************** -->
+<bean id="entityRepositoryDao" class="net.mast.workflow.repository.dao.jdbc.EntityRepositoryJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<!-- ******************requester相关dao*********************** -->
+<bean id="requesterDao" class="net.mast.workflow.requester.dao.jdbc.RequesterJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>    
+<bean id="wfOrganDao" class="net.mast.workflow.wfclient.wfdefinition.dao.jdbc.WfOrganJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>  
+<bean id="wfDataRefDao" class="net.mast.workflow.wfclient.data.support.DataRefImpl">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>   
+</beans>

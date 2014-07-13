@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+<!--***********************cmd配置开始*********************************-->   
+<bean id="mailaddresscategoryquery" class="net.mast.waf.mvc.CommonQueryCommand">
+	<property name="mappings">
+		<props>
+			<prop key="success">jsp/bsp/mail/address/mail_address_category_query.jsp</prop>
+		</props>
+	</property>     
+	<property name="collection"><ref bean="sqlPageCollection"/></property>
+</bean>
+
+<bean id="mailaddressquery" class="net.mast.waf.mvc.CommonQueryCommand">
+	<property name="mappings">
+		<props>
+			<prop key="success">jsp/bsp/mail/address/mail_address_query.jsp</prop>
+		</props>
+	</property>     
+	<property name="collection"><ref bean="sqlPageCollection"/></property>
+</bean>
+
+<bean id="mailaccountgeneryquery" class="net.mast.bsp.mail.address.cmd.MailAccountGeneryQueryCmd" singleton="false">
+	<property name="mailAddressService"><ref bean="mailAddressService"/></property>
+	<property name="pageSize"><value>15</value></property>
+	<property name="forwards">
+	        <map>
+	            <entry key="mailaccountView"><ref bean="mailaddressforward"/></entry>    
+	        </map>
+		</property> 
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="mail_address_interceptor"/>	           
+	        </list>
+     	</property>   
+</bean>
+
+    <bean id="mailaddresscategory" class="net.mast.bsp.mail.address.cmd.MailAddressCategoryCmd" singleton="false">
+	    <property name="mailAddressCategoryService"><ref bean="mailAddressCategoryService"/></property>
+	    <property name="view"><ref bean="mailAddressCategoryView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="mailaddresscategoryView"><ref bean="mailaddresscategoryforward"/></entry>
+	            <entry key="mailaddresscategoryViewChain"><ref bean="mailaddresscategoryforwardchain"/></entry>
+	        </map>
+		</property>
+    </bean>
+
+    <bean id="mailaddress" class="net.mast.bsp.mail.address.cmd.MailAddressCmd" singleton="false">
+	    <property name="mailAddressService"><ref bean="mailAddressService"/></property>
+	    <property name="mailAddressCategoryService"><ref bean="mailAddressCategoryService"/></property>
+	    <property name="struService"><ref bean="struService"/></property>
+	    <property name="userService"><ref bean="userService"/></property>
+	    <property name="view"><ref bean="mailAddressView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="mailaddressView"><ref bean="mailaddressforward"/></entry>
+	            <entry key="mailaddressViewChain"><ref bean="mailaddressforwardchain"/></entry>
+	        </map>
+		</property>
+     	<property name="afterIntercept">
+	    	<list>
+	           <ref bean="mailAddress_categoryId_intercepter"/>
+	        </list>	        
+	    </property>
+    </bean>
+
+	<bean id="mailblacklist" class="net.mast.bsp.mail.address.cmd.MailBlacklistCmd" singleton="false">
+	    <property name="mailBlacklistService"><ref bean="mailBlacklistService"/></property>
+	    <property name="view"><ref bean="mailBlacklistView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="mailblacklistView"><ref bean="mailblacklistforward"/></entry>
+	            <entry key="mailblacklistViewChain"><ref bean="mailblcaklistforwardchain"/></entry>
+	            <entry key="inboxmailresourceForBlackListViewChain"><ref bean="inboxmailqueryforwardchain"/></entry>
+	        </map>
+		</property>
+    </bean>
+
+	<bean id="mailblacklistquery" class="net.mast.bsp.mail.address.cmd.MailBlackListQueryCmd">
+	<property name="mailBlacklistService"><ref bean="mailBlacklistService"/></property>
+	<property name="pageSize"><value>15</value></property>
+	<property name="forwards">
+	<map>
+	<entry key="query"><ref bean="querymailblacklistforward"/></entry>
+	</map>
+	</property>
+</bean>
+
+	<bean id="mailgroupcardref" class="net.mast.bsp.mail.address.cmd.MailGroupCardRefCmd" singleton="false">
+	    <property name="mailGroupCardRefService"><ref bean="mailGroupCardRefService"/></property>
+	    <property name="view"><ref bean="mailGroupCardRefView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="mailgroupcardrefView"><ref bean="mailgroupcardrefforward"/></entry>
+	            <entry key="mailgroupcardrefViewChain"><ref bean="mailgroupcardrefforwardchain"/></entry>
+	        </map>
+		</property>
+    </bean>
+
+	<bean id="mailgroupcardrefquery" class="net.mast.waf.mvc.CommonQueryCommand">
+	<property name="mappings">
+		<props>
+			<prop key="success">jsp/bsp/mail/address/mail_group_card_ref_query.jsp</prop>
+		</props>
+	</property>     
+	<property name="collection"><ref bean="sqlPageCollection"/></property>
+</bean>
+
+	<bean id="defmailconfig" class="net.mast.bsp.mail.mail.cmd.DefMailConfigCmd"> 
+		<property name="defMailConfigService"><ref bean="defMailConfigService"/></property>
+		<property name="view"><ref bean="defMailConfigView"/></property>
+		<property name="forwards">
+			<map>
+				<entry key="defMailConfigView"><ref bean="defmailconfigforward"/></entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="mailaccount" class="net.mast.bsp.mail.mail.cmd.MailAccountCmd" singleton="false">
+		<property name="mailAccountService"><ref bean="mailAccountService"/></property>
+		<property name="view"><ref bean="mailAccountView"/></property>
+		<property name="forwards">
+			<map>
+				<entry key="mailaccountView"><ref bean="mailaccountforward"/></entry>
+			</map>
+		</property>		
+	</bean>
+
+	<bean id="mailfoldertree" class="net.mast.bsp.mail.mail.cmd.MailFolderTreeCmd" singleton="false">
+		<property name="mailAccountService"><ref bean="mailAccountService"/></property>
+		<property name="forwards">
+			<map>
+				<entry key="mailcountView"><ref bean="mailaccountforward"/></entry>
+			</map>
+		</property>		
+	</bean>
+
+	<!--Portal页面收件邮箱未读邮件查询CMD-->
+<bean id="portalinboxquery" class="net.mast.bsp.mail.mail.cmd.PortalInBoxQueryCmd">
+	<property name="mailFolderService"><ref bean="mailFolderService"/></property>
+	<property name="forwards">
+	<map>
+	<entry key="query"><ref bean="inboxmailqueryforward"/></entry>
+	</map>
+	</property>
+</bean>
+<!--收件邮箱查询CMD-->
+<bean id="inboxmailquery" class="net.mast.bsp.mail.mail.cmd.MailFolderQueryCmd" singleton="false">
+	<property name="mailFolderService"><ref bean="mailFolderService"/></property>
+	<property name="mailUserData"><ref bean="mailUserData"/></property>
+	<property name="forwards">
+	<map>
+	<entry key="query"><ref bean="inboxmailqueryforward"/></entry>
+	</map>
+	</property>
+</bean>
+<!--用户自定义文件夹查询CMD-->
+<bean id="custommailquery" class="net.mast.bsp.mail.mail.cmd.CustomFolderQueryCmd" singleton="false">
+	<property name="mailResourceService"><ref bean="mailResourceService"/></property>
+	<property name="forwards">
+	<map>
+	<entry key="query"><ref bean="custommailqueryforward"/></entry>
+	</map>
+	</property>
+</bean>
+<!--邮箱状态查询CMD-->
+<bean id="mailstatusquery" class="net.mast.bsp.mail.mail.cmd.MailStatusQueryCmd">
+	<property name="mailFolderService"><ref bean="mailFolderService"/></property>
+	<property name="mailAccountService"><ref bean="mailAccountService"/></property>
+	<property name="forwards">
+	<map>
+	<entry key="query"><ref bean="inboxmailqueryforward"/></entry>
+	</map>
+	</property>
+</bean>
+<!--自动接收邮件CMD-->
+<bean id="mailfolder" class="net.mast.bsp.mail.mail.cmd.MailFolderCmd"> 
+	<property name="mailFolderService"><ref bean="mailFolderService"/></property>
+	<property name="dictService"><ref bean="DictService"/></property>
+	<property name="forwards">
+	<map>
+	<entry key="mailfolderView"><ref bean="mailfolderforward"/></entry>
+	</map>
+	</property>
+</bean>
+
+<bean id="mailresourcegeneryquery" class="net.mast.bsp.mail.mail.cmd.MailResourceGeneryQueryCmd" singleton="false">
+	<property name="mailResourceService"><ref bean="mailResourceService"/></property>
+	<property name="mailAccountService"><ref bean="mailAccountService"/></property>
+	<property name="pageSize"><value>15</value></property>
+	<property name="forwards">
+	        <map>
+	            <entry key="mailresourceView"><ref bean="mailresourceforward"/></entry>    
+	        </map>
+		</property>  
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="mail_resource_interceptor"/>	           
+	        </list>
+     	</property>  
+</bean>
+
+<bean id="mailresource" class="net.mast.bsp.mail.mail.cmd.MailResourceCmd" singleton="false">
+	<property name="mailResourceService"><ref bean="mailResourceService"/></property>
+	<property name="mailAccountService"><ref bean="mailAccountService"/></property>
+	<property name="mailUserData"><ref bean="mailUserData"/></property> 
+	<property name="view"><ref bean="mailResourceView"/></property>
+	<property name="forwards">
+	<map>
+	<entry key="mailresourceView"><ref bean="mailresourceforward"/></entry>
+	<entry key="mailresourceViewChain"><ref bean="mailresourceforwardchain"/></entry>
+	<entry key="sendmailresourceViewChain"><ref bean="sendmailresourceforwardchain"/></entry>
+	<entry key="garbagemailresourceViewChain"><ref bean="garbagemailresourceforwardchain"/></entry>
+	<entry key="alreadysendmailresourceViewChain"><ref bean="alreadysendmailresourceforwardchain"/></entry>
+	<entry key="mailresourcegeneryViewChain"><ref bean="mailresourcegeneryforwardchain"/></entry>
+	<entry key="custommailresourceViewChain"><ref bean="custommailresourceforwardchain"/></entry>
+	<entry key="inboxmailresourceViewChain"><ref bean="inboxmailqueryforwardchain"/></entry>
+	<entry key="mailstatusViewChain"><ref bean="mailstatusforwardchain"/></entry>
+	</map>
+	</property>
+	<property name="beforIntercept">
+	<list>
+	<ref bean="mail_resource_interceptor"/>
+	</list>
+     	</property>
+</bean>
+
+<bean id="draftmailquery" class="net.mast.bsp.mail.mail.cmd.DraftMailQueryCommand" singleton="false">
+	<property name="mailResourceService"><ref bean="mailResourceService"/></property>
+	<property name="forwards">
+	<map>
+	<entry key="query"><ref bean="querymailforward"/></entry>
+	</map>
+	</property>
+</bean>
+
+<bean id="sendmailquery" class="net.mast.bsp.mail.mail.cmd.SendMailQueryCmd" singleton="false">
+	<property name="mailResourceService"><ref bean="mailResourceService"/></property>
+	<property name="forwards">
+	<map>
+	<entry key="sendquery"><ref bean="sendquerymailforward"/></entry>
+	</map>
+	</property>
+</bean>
+
+<bean id="garbagemailquery" class="net.mast.bsp.mail.mail.cmd.GarbageMailQueryCmd" singleton="false">
+	<property name="mailResourceService"><ref bean="mailResourceService"/></property>
+	<property name="pageSize"><value>15</value></property>
+	<property name="forwards">
+	<map>
+	<entry key="garbagequery"><ref bean="garbagequerymailforward"/></entry>
+	</map>
+	</property>
+</bean>
+
+<bean id="alreadysendmailquery" class="net.mast.bsp.mail.mail.cmd.AlreadySendMailQueryCmd" singleton="false">
+	<property name="mailResourceService"><ref bean="mailResourceService"/></property>
+	<property name="pageSize"><value>15</value></property>
+	<property name="forwards">
+	<map>
+	<entry key="alreadysendquery"><ref bean="alreadysendquerymailforward"/></entry>
+	</map>
+	</property>
+</bean>
+<!--***********************cmd配置结束*********************************-->   
+<!--***********************service配置开始*********************************-->   
+<bean id="mailAddressCategoryService" class="net.mast.bsp.mail.address.service.support.MailAddressCategoryServiceImpl"> 
+	<property name="mailAddressCategoryDao"><ref bean="mailAddressCategoryDao"/></property>   
+	<property name="mailGroupCardRefDao"><ref bean="mailGroupCardRefDao"/></property>  	
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	<property name="mailAddressCategoryId"><ref bean="mailAddressCategoryId"/></property>
+	<property name="mailAddressId"><ref bean="mailAddressId"/></property> 
+	<property name="mailAddressDao"><ref bean="mailAddressDao"/></property>
+</bean>
+
+<bean id="mailAddressService" class="net.mast.bsp.mail.address.service.support.MailAddressServiceImpl"> 
+	<property name="mailAddressDao"><ref bean="mailAddressDao"/></property>   	
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	<property name="mailAddressId"><ref bean="mailAddressId"/></property> 
+	<property name="mailAddressRefId"><ref bean="mailAddressRefId"/></property>   
+	<property name="mailGroupCardRefDao"><ref bean="mailGroupCardRefDao"/></property>
+	<property name="mailAddressCategoryDao"><ref bean="mailAddressCategoryDao"/></property>    	
+	<property name="userDomain"><ref bean="userDomain"/></property>	
+</bean>
+
+<bean id="mailBlacklistService" class="net.mast.bsp.mail.address.service.support.MailBlacklistServiceImpl"> 
+	<property name="mailBlacklistDao"><ref bean="mailBlacklistDao"/></property>
+	<property name="blacklistId"><ref bean="blacklistId"/></property>    	
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+</bean>
+
+<bean id="mailGroupCardRefService" class="net.mast.bsp.mail.address.service.support.MailGroupCardRefServiceImpl"> 
+	<property name="mailGroupCardRefDao"><ref bean="mailGroupCardRefDao"/></property>   	
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	<property name="mailAddressRefId"><ref bean="mailAddressRefId"/></property>   
+</bean>
+
+<bean id="defMailConfigService" class="net.mast.bsp.mail.mail.service.support.DefMailConfigService"> 
+	<property name="commonParmsDao"><ref bean="commonParmsDao"/></property>
+	<property name="dictService"><ref bean="DictService"/></property>
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+</bean>
+
+<bean id="mailAccountService" class="net.mast.bsp.mail.mail.service.support.MailAccountServiceImpl"> 
+	<property name="mailAccountDao"><ref bean="mailAccountDao"/></property>
+	<property name="mailAccountId"><ref bean="mailAccountId"/></property>
+	<property name="mailUserData"><ref bean="mailUserData"/></property>
+	<property name="dictService"><ref bean="DictService"/></property>
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+</bean>
+
+<bean id="mailFolderService" class="net.mast.bsp.mail.mail.service.support.MailFolderService"> 
+	<property name="mailResourceDomain"><ref bean="mailResourceDomain"/></property>
+	<property name="mailAccountDao"><ref bean="mailAccountDao"/></property> 
+	<property name="mailResourceDao"><ref bean="mailResourceDao"/></property> 
+	<property name="mailUserData"><ref bean="mailUserData"/></property> 
+	<property name="mailBlacklistDao"><ref bean="mailBlacklistDao"/></property> 
+	<property name="dictService"><ref bean="DictService"/></property>
+	<property name="mailNumPerReceive"><value>5</value></property> 
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	<property name="mailAccountService"><ref bean="mailAccountService"/></property>
+	<property name="mailResourceService"><ref bean="mailResourceService"/></property>
+</bean>
+
+<bean id="mailResourceService" class="net.mast.bsp.mail.mail.service.support.MailResourceServiceImpl"> 
+	<property name="mailResourceDomain"><ref bean="mailResourceDomain"/></property>   	
+	<property name="mailUserData"><ref bean="mailUserData"/></property> 
+	<property name="docContentDomain"><ref bean="docContentDomain"/></property> 
+	<property name="mailResourceDao"><ref bean="mailResourceDao"/></property> 
+	<property name="mailGroupCardRefDao"><ref bean="mailGroupCardRefDao"/></property>   
+	<property name="dictService"><ref bean="DictService"/></property> 	
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	<property name="mailAccountService"><ref bean="mailAccountService"/></property>	
+	<property name="mailFolderService"><ref bean="mailFolderService"/></property>
+</bean>
+
+<bean id="mailScheduleService" class="net.mast.bsp.mail.mail.service.support.MailScheduleServiceImpl"> 
+	<property name="mailAccountDao"><ref bean="mailAccountDao"/></property>
+	<property name="mailResourceDomain"><ref bean="mailResourceDomain"/></property>
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	<property name="mailResourceService"><ref bean="mailResourceService"/></property>
+</bean>
+<!--***********************service配置结束*********************************-->  
+<!--***********************domain配置开始*********************************-->  
+<bean id="mailUserData" class="net.mast.bsp.mail.mail.domain.support.MailUserDataImpl"> 
+	<property name="mailAccountDao"><ref bean="mailAccountDao"/></property>
+</bean>
+
+<bean id="mailResourceDomain" class="net.mast.bsp.mail.mail.domain.support.MailResourceDomainImpl"> 
+	<property name="mailResourceDao"><ref bean="mailResourceDao"/></property>
+	<property name="mailResourceId"><ref bean="mailResourceId"/></property>
+	<property name="mailAttachmentRefId"><ref bean="mailAttachmentRefId"/></property> 
+	<property name="mailAttachmentRefDao"><ref bean="mailAttachmentRefDao"/></property>
+	<property name="docContentDomain"><ref bean="docContentDomain"/></property>
+</bean>
+<!--***********************domain配置结束*********************************-->  
+<!--***********************dao配置开始*********************************-->  
+<bean id="commonParmsDao" class="net.mast.bsp.base.common.dao.jdbc.CommonParmsJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+ 
+<bean id="mailAddressCategoryDao" class="net.mast.bsp.mail.address.dao.jdbc.MailAddressCategoryJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<bean id="mailAddressDao" class="net.mast.bsp.mail.address.dao.jdbc.MailAddressJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<bean id="mailBlacklistDao" class="net.mast.bsp.mail.address.dao.jdbc.MailBlacklistJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<bean id="mailGroupCardRefDao" class="net.mast.bsp.mail.address.dao.jdbc.MailGroupCardRefJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<bean id="mailAccountDao" class="net.mast.bsp.mail.mail.dao.jdbc.MailAccountJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<bean id="mailAttachmentRefDao" class="net.mast.bsp.mail.mail.dao.jdbc.MailAttachmentRefJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<bean id="mailResourceDao" class="net.mast.bsp.mail.mail.dao.jdbc.MailResourceJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<bean id="mailResourceOracleDao" class="net.mast.bsp.mail.mail.dao.jdbc.MailResourceOracleJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+<!--***********************dao配置结束*********************************-->  
+<!--***********************view配置开始*********************************-->   
+<bean id="mailAddressCategoryView"  class="net.mast.bsp.mail.address.view.MailAddressCategoryView" singleton="false"/>
+
+<bean id="mailAddressView"  class="net.mast.bsp.mail.address.view.MailAddressView" singleton="false"/>
+
+<bean id="mailBlacklistView"  class="net.mast.bsp.mail.address.view.MailBlacklistView" singleton="false"/>
+
+<bean id="mailGroupCardRefView"  class="net.mast.bsp.mail.address.view.MailGroupCardRefView" singleton="false"/>
+
+<bean id="mailAccountView"  class="net.mast.bsp.mail.mail.view.MailAccountView" singleton="false"/>
+
+<bean id="defMailConfigView"  class="net.mast.bsp.mail.mail.view.DefMailConfigView" singleton="false"/>
+
+<bean id="mailResourceView"  class="net.mast.bsp.mail.mail.view.MailResourceView"/>
+<!--***********************view配置结束*********************************-->  
+<!--***********************foward配置开始*********************************-->   
+<bean id="mailaddresscategoryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/mail/address/mail_address_category_detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/mail/address/mail_address_category_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/mail/address/mail_address_category_forupdate.jsp</prop>
+			    <prop key="gettreeroot">jsp/bsp/mail/address/mail_address_category_tree_root.jsp</prop>
+			    <prop key="gettreeparent">jsp/bsp/mail/address/mail_address_category_tree_parent.jsp</prop>
+			</props>
+		</property>
+	</bean>
+
+    <bean id="mailaddresscategoryforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="mailaddresscategoryquery"/></entry>
+			</map>
+		</property>
+    </bean>
+
+	<bean id="mailaddressforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>	
+			    <!--显示部门内人员EMAIL--> 
+			    <prop key="fortocategoryroot">jsp/bsp/mail/address/mail_address_group_detail2.jsp</prop>
+				<!--查看地址分组-->    		    
+			    <prop key="detail0">jsp/bsp/mail/address/mail_address_group_detail.jsp</prop>
+			    <!--查看联系人-->
+			    <prop key="detail1">jsp/bsp/mail/address/mail_address_card_detail.jsp</prop>
+			    <!--接收邮件页面查看联系人(增加了地址类别和关闭按钮)-->
+			    <prop key="detail2">jsp/bsp/mail/address/inbox_mail_address_card_detail.jsp</prop>
+			    <!--添加地址分组-->
+			    <prop key="forinsert0">jsp/bsp/mail/address/mail_address_group_forinsert.jsp</prop>
+			    <!--添加联系人-->
+			    <prop key="forinsert1">jsp/bsp/mail/address/mail_address_card_forinsert.jsp</prop>
+			    <!--在地址分组上添加联系人-->
+			    <prop key="forinsert2">jsp/bsp/mail/address/mail_address_cardInGroup_forinsert.jsp</prop>
+			    <!--接收邮件页面添加联系人-->
+			    <prop key="forInboxCardInsert">jsp/bsp/mail/address/inbox_mail_address_card_forinsert.jsp</prop>
+			    <prop key="forupdate0">jsp/bsp/mail/address/mail_address_group_forupdate.jsp</prop>
+			    <prop key="forupdate1">jsp/bsp/mail/address/mail_address_card_forupdate.jsp</prop>
+			    <prop key="gettreebranch">jsp/bsp/mail/address/mail_address_tree_branch.jsp</prop>
+			    <prop key="gettreeroot_category_card">jsp/bsp/mail/address/gettreeroot_category_card.jsp</prop>
+			    <prop key="gettreebranch_category_card">jsp/bsp/mail/address/gettreebranch_category_card.jsp</prop>
+			    <!--选择联系人-->
+			    <prop key="choiceRoot">jsp/bsp/mail/address/mail_selectAddress_person_root.jsp</prop>
+			    <prop key="choiceNode">jsp/bsp/mail/address/mail_selectAddress_person_node.jsp</prop>
+			    <prop key="personRoot">jsp/bsp/mail/address/mail_selectAddress_person_root_last.jsp</prop>
+			    <prop key="personNode">jsp/bsp/mail/address/mail_selectAddress_person_node_last.jsp</prop>
+			    <prop key="main">jsp/bsp/mail/address/mail_address_main.jsp</prop>
+			    <prop key="query">jsp/bsp/mail/address/mail_address_genery_query.jsp</prop>
+			    <prop key="addorgtoteamRoot">jsp/bsp/mail/address/mail_address_orgtoteam_root.jsp</prop>
+			    <prop key="addorgtoteamNode">jsp/bsp/mail/address/mail_address_orgtoteam_node.jsp</prop>
+			    <prop key="tocategoryroot">jsp/bsp/mail/address/tocategoryroot_query.jsp</prop>
+				<prop key="userRoot">jsp/bsp/mail/address/mail_address_user_root.jsp</prop>
+				<prop key="userRootInsert">jsp/bsp/mail/address/mail_address_user_root_insert.jsp</prop>
+				<prop key="userChild">jsp/bsp/mail/address/mail_address_user_child.jsp</prop>
+				<!--把收件(抄送)人添加到组-->
+				<prop key="forward">jsp/bsp/mail/address/mail_address_group_forward.jsp</prop>
+				<prop key="success">jsp/bsp/mail/address/mail_address_group_success.jsp</prop>
+				<prop key="forgroupoptions">jsp/bsp/mail/address/mail_address_groupoptions.jsp</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="mailaddressforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="mailaddressquery"/></entry>
+			</map>
+		</property>
+    </bean>
+
+	<bean id="querymailblacklistforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+		<property name="mappings">
+		<props>		    		    
+			<prop key="mailblacklistquery">jsp/bsp/mail/address/mail_blacklist_query.jsp</prop>
+		</props>
+		</property>
+	</bean>
+
+<bean id="mailblcaklistforwardchain" class="net.mast.waf.mvc.ChainForward">
+	<property name="mappings">
+	<map>
+	<entry key="success"><ref bean="mailblacklistquery"/></entry>
+	</map>
+	</property>
+</bean>
+
+ <bean id="mailblacklistforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="forinsert">jsp/bsp/mail/address/mail_blacklist_forinsert.jsp</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="mailgroupcardrefforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/mail/address/mail_group_card_ref_detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/mail/address/mail_group_card_ref_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/mail/address/mail_group_card_ref_forupdate.jsp</prop>
+			</props>
+		</property>
+	</bean>
+
+    <bean id="mailgroupcardrefforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="mailgroupcardrefquery"/></entry>
+			</map>
+		</property>
+    </bean>
+
+	<bean id="defmailconfigforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+		<property name="mappings">
+			<props>		    		    
+				<prop key="forupdate">jsp/bsp/mail/mail/defmailconfig_forupdate.jsp</prop>
+			<prop key="update">jsp/bsp/mail/mail/defmailconfig_forupdate.jsp</prop>
+		</props>
+	</property>
+</bean>    
+
+<bean id="mailaccountforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	<property name="mappings">
+	<props>		 
+	<prop key="serverTypePop3">jsp/bsp/mail/mail/mailFolderTree.jsp</prop>
+	<prop key="serverTypeImap">jsp/bsp/mail/mail/mailImapFolderTree.jsp</prop>   		    
+	<prop key="forupdate">jsp/bsp/mail/mail/mail_account_forupdate.jsp</prop>
+	<prop key="reFresh">jsp/bsp/mail/mail/mailImapFolderTree_reFresh.jsp</prop>
+	<prop key="getTreeBranch">jsp/bsp/mail/mail/mailImapFolderTree_getTreeBranch.jsp</prop>
+	</props>
+	</property>
+</bean>
+
+<bean id="inboxmailqueryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	<property name="mappings">
+	<props>		    		    
+	<prop key="inboxmailquery">jsp/bsp/mail/mail/inbox_mail_query.jsp</prop>
+	<prop key="notReadMailQuery">jsp/bsp/mail/mail/notRead_mail_query.jsp</prop>
+	<prop key="portalinboxquery">jsp/bsp/mail/mail/portal_inbox_query.jsp</prop>
+	<prop key="mailstatusquery">jsp/bsp/mail/mail/mail_status_query.jsp</prop>
+	<prop key="inboximapmailquery">jsp/bsp/mail/mail/inbox_imap_mail_query.jsp</prop>
+	<prop key="notReadImapMailQuery">jsp/bsp/mail/mail/notRead_imap_mail_query.jsp</prop>
+	<prop key="imapmailstatusquery">jsp/bsp/mail/mail/mail_imap_status_query.jsp</prop>
+	</props>
+	</property>
+</bean>
+
+<bean id="inboxmailqueryforwardchain" class="net.mast.waf.mvc.ChainForward">
+	<property name="mappings">
+	<map>
+	<entry key="success"><ref bean="inboxmailquery"/></entry>
+	</map>
+	</property>
+</bean>
+
+<bean id="custommailqueryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	<property name="mappings">
+	<props>		    		    
+	<prop key="custommailquery">jsp/bsp/mail/mail/custom_mail_query.jsp</prop>
+	</props>
+	</property>
+</bean>
+
+<bean id="custommailresourceforwardchain" class="net.mast.waf.mvc.ChainForward">
+	<property name="mappings">
+	<map>
+	<entry key="success"><ref bean="custommailquery"/></entry>
+	</map>
+	</property>
+</bean>
+
+<bean id="mailfolderforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	<property name="mappings">
+	<props>		    		    
+	<prop key="forautoreceivemail">jsp/bsp/mail/mail/mail_auto_receive.jsp</prop>
+	<prop key="getnewmessagecount">jsp/bsp/mail/mail/mail_get_newmessage_count.jsp</prop>
+	</props>
+	</property>
+</bean>    
+
+<bean id="mailresourcegeneryforwardchain" class="net.mast.waf.mvc.ChainForward">
+			<property name="mappings">
+			<map>
+			<entry key="success"><ref bean="mailresourcegeneryquery"/></entry>
+			</map>
+			</property>
+</bean>
+
+<bean id="mailresourceforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	<property name="mappings">
+	<props>		    		    
+	<prop key="detail">jsp/bsp/mail/mail/mail_resource_detail.jsp</prop>
+	<prop key="forinsert">jsp/bsp/mail/mail/mail_resource_forinsert.jsp</prop>
+	<prop key="forupdate">jsp/bsp/mail/mail/mail_resource_forupdate.jsp</prop>
+	<prop key="fortransmit">jsp/bsp/mail/mail/mail_resource_fortransmit.jsp</prop>
+	<prop key="query">jsp/bsp/mail/mail/mail_resource_genery_query.jsp</prop>
+	<!--回复-->
+	<prop key="forback">jsp/bsp/mail/mail/mail_resource_forback.jsp</prop>	
+	<prop key="forupdatetransmit">jsp/bsp/mail/mail/mail_resource_forupdatetransmit.jsp</prop>	
+	<prop key="forupdateback">jsp/bsp/mail/mail/mail_resource_forupdatetransmit.jsp</prop>	
+	<prop key="forupdateinsert">jsp/bsp/mail/mail/mail_resource_forupdateinsert.jsp</prop>
+	<prop key="foremailaddresses">jsp/bsp/mail/address/mail_address_emailaddresses.jsp</prop>
+	<prop key="folderlist">jsp/bsp/mail/mail/mail_folder_list_help.jsp</prop>
+	<prop key="detailAttach">jsp/bsp/doc/doc/doc_content_detail.jsp</prop>
+	</props>
+	</property>
+</bean>
+
+<bean id="querymailforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	<property name="mappings">
+	<props>		    		    
+	<prop key="draftmailquery">jsp/bsp/mail/mail/draft_mail_query.jsp</prop>
+	</props>
+	</property>
+</bean>
+
+<bean id="mailresourceforwardchain" class="net.mast.waf.mvc.ChainForward">
+	<property name="mappings">
+	<map>
+	<entry key="success"><ref bean="draftmailquery"/></entry>
+	</map>
+	</property>
+</bean>
+
+<bean id="sendquerymailforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	<property name="mappings">
+	<props>		    		    
+	<prop key="sendmailquery">jsp/bsp/mail/mail/send_mail_query.jsp</prop>
+	</props>
+	</property>
+</bean>
+
+<bean id="sendmailresourceforwardchain" class="net.mast.waf.mvc.ChainForward">
+	<property name="mappings">
+	<map>
+	<entry key="success"><ref bean="sendmailquery"/></entry>
+	</map>
+	</property>
+</bean>
+
+<bean id="garbagequerymailforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	<property name="mappings">
+	<props>		    		    
+	<prop key="garbagemailquery">jsp/bsp/mail/mail/garbage_mail_query.jsp</prop>
+	</props>
+	</property>
+</bean>
+
+<bean id="garbagemailresourceforwardchain" class="net.mast.waf.mvc.ChainForward">
+	<property name="mappings">
+	<map>
+	<entry key="success"><ref bean="garbagemailquery"/></entry>
+	</map>
+	</property>
+</bean>
+
+<bean id="alreadysendquerymailforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	<property name="mappings">
+	<props>		    		    
+	<prop key="alreadysendmailquery">jsp/bsp/mail/mail/alreadysend_mail_query.jsp</prop>
+	</props>
+	</property>
+</bean>
+
+<bean id="alreadysendmailresourceforwardchain" class="net.mast.waf.mvc.ChainForward">
+	<property name="mappings">
+	<map>
+	<entry key="success"><ref bean="alreadysendmailquery"/></entry>
+	</map>
+	</property>
+</bean>
+
+<bean id="mailstatusforwardchain" class="net.mast.waf.mvc.ChainForward">
+	<property name="mappings">
+	<map>
+	<entry key="success"><ref bean="mailstatusquery"/></entry>
+	</map>
+	</property>
+</bean>
+<!--***********************foward配置结束*********************************-->  
+<!--***********************EnumCollection配置开始*********************************--> 
+<bean id="MAILADDRESS_ADDRESSTYPE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+	    <property name="enumName"><value>MAILADDRESS.ADDRESSTYPE</value></property>
+	    <property name="enumService"><ref bean="enumService"/></property>
+</bean>
+
+<bean id="MAILRESOURCE_PRIORITY_COLLECTION" class="net.mast.waf.data.EnumCollection">
+	    <property name="enumName"><value>MAILRESOURCE.PRIORITY</value></property>
+	    <property name="enumService"><ref bean="enumService"/></property>
+</bean>
+
+<bean id="MAILRESOURCE_MAILTYPE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+	    <property name="enumName"><value>MAILRESOURCE.MAILTYPE</value></property>
+	    <property name="enumService"><ref bean="enumService"/></property>
+</bean>
+
+<bean id="MAILRESOURCE.ISATTACHMENT_COLLECTION" class="net.mast.waf.data.EnumCollection">
+	    <property name="enumName"><value>MAILRESOURCE.ISATTACHMENT</value></property>
+	    <property name="enumService"><ref bean="enumService"/></property>
+</bean>
+
+<bean id="MAILRESOURCE_MAILTYPE_ALL_COLLECTION" class="net.mast.waf.data.EnumCollection">
+	    <property name="enumName"><value>MAILRESOURCE.MAILTYPE_ALL</value></property>
+	    <property name="enumService"><ref bean="enumService"/></property>
+</bean>
+
+<bean id="MAILRESOURCE_PRIORITY_ALL_COLLECTION" class="net.mast.waf.data.EnumCollection">
+	    <property name="enumName"><value>MAILRESOURCE.PRIORITY_ALL</value></property>
+	    <property name="enumService"><ref bean="enumService"/></property>
+</bean>
+<!--***********************EnumCollection配置结束*********************************--> 
+<!--***********************CollectionInterceptor配置开始*********************************--> 
+<bean id="MAILADDRESS_CATEGORY_COLLECTION" class="net.mast.waf.data.SqlCollectionRequestAware" singleton="false">		    
+	    <property name="parameters">
+	    <list>
+	    <value>MAIL_ADDRESS_CATEGORY.USER_ID,VARCHAR</value>	    
+	    </list>
+	    </property>
+	    <property name="sql"><value>SELECT CATEGORY_ID,CATEGORY_NAME FROM PUB_MAIL_ADDRESS_CATEGORY WHERE USER_ID=?</value></property>
+	    <property name="ds"><ref bean="dataSource"/></property>	    	    	
+</bean>
+
+<bean id="mail_address_interceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+	    	<property name="collections">
+    	    	<map>
+				<entry key="MAILADDRESS_ADDRESSTYPE_COLLECTION"><ref bean="MAILADDRESS_ADDRESSTYPE_COLLECTION"/></entry>
+			</map>
+    	</property>
+	</bean>
+
+	<bean id="mailAddress_categoryId_intercepter" class="net.mast.waf.interceptor.CollectionInterceptor">
+	    	<property name="collections">
+    	    	<map>
+				<entry key="MAILADDRESS_CATEGORY_COLLECTION"><ref bean="MAILADDRESS_CATEGORY_COLLECTION"/></entry>
+			</map>
+    	</property>
+	</bean>
+
+	<bean id="mail_resource_interceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+	<property name="collections">
+	<map>	
+	<entry key="MAILRESOURCE_PRIORITY_COLLECTION"><ref bean="MAILRESOURCE_PRIORITY_COLLECTION"/></entry>
+	<entry key="MAILRESOURCE_MAILTYPE_COLLECTION"><ref bean="MAILRESOURCE_MAILTYPE_COLLECTION"/></entry>
+	<entry key="MAILRESOURCE.ISATTACHMENT_COLLECTION"><ref bean="MAILRESOURCE.ISATTACHMENT_COLLECTION"/></entry>
+	<entry key="MAILRESOURCE_MAILTYPE_ALL_COLLECTION"><ref bean="MAILRESOURCE_MAILTYPE_ALL_COLLECTION"/></entry>
+	<entry key="MAILRESOURCE_PRIORITY_ALL_COLLECTION"><ref bean="MAILRESOURCE_PRIORITY_ALL_COLLECTION"/></entry>
+	</map>
+	</property>
+</bean>
+<!--***********************CollectionInterceptor配置结束*********************************--> 
+<!--***********************最大号表配置开始*********************************-->   
+<bean id="mailAddressCategoryId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>MAIL_ADDRESS_CATEGORY</value></property>
+</bean>
+
+<bean id="mailAddressId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>MAIL_ADDRESS</value></property>
+</bean>
+
+<bean id="blacklistId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>MAIL_BLACKLIST</value></property>
+</bean>
+
+<bean id="mailAddressRefId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>MAIL_ADDRESS_REF</value></property>
+</bean>
+
+<bean id="mailAccountId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>MAIL_ACCOUNT</value></property>
+</bean>
+
+<bean id="mailAttachmentRefId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>MAIL_ATTACHMENT_REF</value></property>
+</bean>
+
+<bean id="mailResourceId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>MAIL_RESOURCE</value></property>
+</bean>
+<!--***********************最大号表配置结束*********************************-->  
+</beans>

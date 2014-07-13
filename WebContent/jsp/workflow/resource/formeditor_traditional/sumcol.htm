@@ -1,0 +1,241 @@
+<HTML>
+<HEAD>
+<TITLE>列计算</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<Link rel="stylesheet" type="text/css" href="pop.css">
+<script>
+var topwin=window.dialogArguments;
+var modalObj=topwin.OBJ.CurControl;
+var modalTd=topwin.OBJ.CurControl.parentElement;
+var tabAll=modalTd.offsetParent;
+function init()
+{
+if(tabAll==null || tabAll.type!="sub")
+return;
+var FieldStr='';
+var ii=0;
+var arrTabs=topwin.document.all("pages");
+for(var i=0;i<arrTabs.children.length;i++)
+{
+	if(arrTabs.children[i]==tabAll.parentElement.parentElement)
+	{
+	ii=i;
+	break;
+	}
+}
+for(var j=0;j<tabAll.rows[1].cells.length;j++)
+					{
+						var otd=tabAll.rows[1].cells[j];
+						if(otd==null) continue;
+						var content=otd.children[0];
+						if(content!=null && (content.tagName=="INPUT" || content.tagName=="SELECT" || content.tagName=="TEXTAREA"))
+						{
+						//if(content.sumtype!=null)
+						//continue;
+						if(content==modalObj)
+						continue;
+						var titlestr=content.getAttribute("titlestr");
+						if(titlestr==null)
+							 titlestr="";
+						var seltedstr="";
+						if(modalTd.cellIndex==j)
+						seltedstr=" selected ";
+						var nam='tab'+ii+'defr1'+'c'+j+tabAll.id;
+						if(content.id!=null && content.id!="")
+						nam=content.id;
+						FieldStr+='<option '+seltedstr+' value="'+nam+'">'+titlestr+'</option>';
+						}
+					}
+		if(FieldStr!="")
+		document.all("selTd").innerHTML='<select  name="selField">'+FieldStr+'</select>';
+		document.all("parentFieldTd").innerHTML=topwin.OBJ.getTabSelect();
+		if(modalObj.parentField!=null)
+		{
+		selected("defMainfield",modalObj.parentField);
+		}
+		var sumhtml=(modalObj.sumHtml);
+		//var restr1=/&gt;/g;
+		//var restr2=/&lt;/g;
+		//sumhtml=sumhtml.replace(restr1,">");
+		//sumhtml=sumhtml.replace(restr2,"<");
+		if(sumhtml!=null && sumhtml!="")
+		document.frames.biaoda.document.body.innerHTML=sumhtml;
+		document.frames.biaoda.document.body.focus();
+var titlestr=modalObj.getAttribute("titlestr");
+if(titlestr!=null)
+document.all("txtname").value=titlestr;
+if(modalObj.FUNC!=null)
+	{
+	selected("selfunction",modalObj.FUNC);
+	if(modalObj.FUNARG!=null)
+	document.all("modval").value=modalObj.FUNARG;
+	}
+}
+function doblur()
+{
+document.frames.biaoda.document.body.focus();
+}
+function dosave()
+{
+var odiv=document.frames.biaoda.document.body;
+if(odiv.children[0]!=null && odiv.children[0].tagName=="P")
+odiv=odiv.children[0];
+
+var biaoda='';
+var biaodastr='';
+for(var i=0;i<odiv.children.length;i++)
+{
+biaoda=0;
+var od=odiv.children[i];
+//alert(od.outerHTML);
+if(od.type=="shuzi")
+	{
+
+	if(od.innerText!=null && od.innerText!=="")
+	biaoda=od.innerText;
+	}
+else
+if(od.text!=null && od.text!="")
+	biaoda=od.text;
+//alert(biaoda);
+//if(od.type=="field" ||od.type=="shuzi")
+biaodastr+=biaoda;
+}
+modalObj.titlestr=document.all("txtname").value;
+modalObj.style.backgroundColor="#eeeeee";
+modalObj.value=document.all("txtname").value+"("+biaodastr+")";
+if(topwin.OBJ.getCharType()==1)
+modalObj.sumField=biaodastr.toUpperCase();
+else
+modalObj.sumField=biaodastr.toLowerCase();
+var odivstr=(odiv.innerHTML);
+//var restr1=/>/g;
+//var restr2=/</g;
+//odivstr=odivstr.replace(restr1,"&gt;");
+//odivstr=odivstr.replace(restr2,"&lt;");
+modalObj.sumHtml=odivstr;
+var selPfield=document.all("parentFieldTd").children[0];
+if(selPfield!=null && selPfield.value!="")
+	modalObj.parentField=selPfield.value;
+var sel=document.all("selfunction");
+if(sel.value!=null)
+{
+	var selectedval=sel.value;
+	modalObj.FUNC=selectedval;
+	modalObj.FUNARG=document.all("modval").value;
+}
+window.close();
+}
+function inserfield()
+{
+document.frames.biaoda.document.body.focus();
+var sel=document.all("selField");
+if(sel==null) return;
+	if(sel.value=="")
+	{
+	alert("请选择一个域!");
+	return;
+	}
+var insertp=document.frames.biaoda.document.selection.createRange();
+insertp.pasteHTML('<input    style="border:1 solid #ffffff;width:40px" value="'+sel.options[sel.selectedIndex].innerText+'" text="{'+sel.value+'}">');
+document.frames.biaoda.document.body.focus();
+
+}
+function inserjia()
+{
+document.frames.biaoda.document.body.focus();
+var obj=window.event.srcElement;
+var odiv=document.all("biaoda");
+var insertp=document.frames.biaoda.document.selection.createRange();
+insertp.pasteHTML('<input   value="'+obj.innerText+'"  style="border:1 solid #ffffff;width:20px" text="'+obj.key+'">');
+document.frames.biaoda.document.body.focus();
+}
+function insershu()
+{
+document.frames.biaoda.document.body.focus();
+var obj=window.event.srcElement;
+var insertp=document.frames.biaoda.document.selection.createRange();
+insertp.pasteHTML('<span type="shuzi" style="border:1 solid;width:30;"></span>');
+document.frames.biaoda.document.body.focus();
+}
+function doselfunchange()
+{
+var sel=document.all("selfunction");
+if(sel.value=="MOD")
+document.all("funarg").style.display="inline";
+else
+document.all("funarg").style.display="none";
+}
+//根据下拉域的ＮＡＭＥ，选项使该项selected
+function selected(sel,opi)
+{
+var select=document.all(sel);
+if(select==null || select.tagName!="SELECT")
+	return;
+	for(var i=0;i<select.options.length;i++)
+	{
+	if(select.options[i].value==opi)
+		select.options[i].selected=true;
+	}
+	if(select.onchange!=null)
+	select.onchange();
+}
+
+</script>
+</HEAD>
+
+<BODY bgcolor=buttonface onload="init();">
+<fieldset  class="radiogroup" style="padding:10px;"><legend class=title>计算列</legend>
+<table border="0" height="100%" width="90%" cellspacing="0" cellpadding="0" style="padding-left:10px">
+<tr>
+	<td width="50" nowrap>
+	名称:
+	</td>
+	<td >
+	<input name="txtname">
+	</td>
+</tr>
+
+<tr>
+	<td width="50" nowrap>
+	表达式:
+	</td>
+	<td ><iframe id="biaoda" height="30" width="100%" src="blankDiv.htm"></iframe>
+	</td>
+</tr>
+
+<tr>
+	<td nowrap>
+	工具栏:
+	</td>
+	<td ><span id="selTd"></span><button onclick="inserfield();">插入域</button>&nbsp;<button style="width:15" onclick="inserjia();" key="+">＋</button>&nbsp;<button style="width:15" onclick="inserjia();" key="-">－</button>&nbsp;<button style="width:15" onclick="inserjia();" key="*">×</button>&nbsp;<button style="width:15" onclick="inserjia();" key="/">÷</button>&nbsp;<button style="width:15" onclick="inserjia();" key="=">＝</button>&nbsp;<button style="width:15" onclick="inserjia();" key="(">（</button>&nbsp;<button style="width:15" onclick="inserjia();" key=")">）</button>&nbsp;<button onclick="insershu();">加入数字</button>
+	</td>
+</tr>
+<tr>
+	<td  nowrap>
+	数学函数:
+	</td>
+	<td >
+	<select id="selfunction" onchange="doselfunchange();"><option>--无--</option><option  value="AVE">平均</option><option value="MAX">最大值</option><option  value="MIN">最小值</option><option value="MOD">取余</option></select><SPAN ID="funarg" style="display:none">取余参数:<input size=5 name="modval"></span>
+	</td>
+</tr>
+
+<tr>
+	<td width="100" nowrap>
+	对应主表单字段:
+	</td>
+	<td >
+	<span id="parentFieldTd"></span>
+	</td>
+</tr>
+
+<tr>
+	<td colspan=2 align=center>
+	<br>
+	<BUTTON ID=Ok TYPE=SUBMIT onclick="dosave();">确定</BUTTON>&nbsp; &nbsp; <BUTTON ONCLICK="window.close();">取消</BUTTON>
+	</td>
+</tr>
+</table>
+</fieldset>
+</BODY>   
+</HTML>

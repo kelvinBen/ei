@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+<!--***********************翻页初始化特殊查询配置开始*************-->
+	<bean id="proposaluserquery_page_init" class="org.proposal.proposaluser.action.ProposalUserQueryPageInitAction">
+	    <property name="proposalUserService"><ref bean="proposalUserService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="speQuery"><ref bean="proposaluserforward"/></entry>
+	        </map>
+        </property>
+<!--        
+-->
+        <property name="pageSize">
+        	<value>15</value>
+        </property>
+	</bean>
+
+<!--***********************视图对象View配置****************************************-->
+	<bean id="proposalUserView"  class="org.proposal.proposaluser.view.ProposalUserView" singleton="false"/>
+
+<!--***********************action配置开始*********************************************-->
+    <bean id="proposaluser" class="org.proposal.proposaluser.action.ProposalUserAction" singleton="false">
+	    <property name="proposalUserService"><ref bean="proposalUserService"/></property>
+	    <property name="view"><ref bean="proposalUserView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="proposaluserView"><ref bean="proposaluserforward"/></entry>
+	            <entry key="proposaluserViewChain"><ref bean="proposaluserforwardchain"/></entry>
+	        </map>
+		</property>
+    </bean>
+<!--
+
+
+-->
+<!--***********************action配置结束*******************************-->
+
+<!--***********************界面转向配置开始*************************-->
+    <bean id="proposaluserforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/proposal/proposaluser/proposal_user_detail.jsp</prop>
+			    <prop key="forinsert">jsp/proposal/proposaluser/proposal_user_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/proposal/proposaluser/proposal_user_forupdate.jsp</prop>
+			    <prop key="queryPageInit">jsp/proposal/proposaluser/proposal_user_query_init.jsp</prop>  
+			    <prop key="forupdatemyself">jsp/proposal/proposaluser/proposal_user_forupdatemyself.jsp</prop>
+
+			</props>
+		</property>
+	</bean>
+    <bean id="proposaluserforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="proposaluserquery_page_init"/></entry>
+			</map>
+		</property>
+    </bean>
+    
+    	<bean id="PROPOSALUSER_CONSTITUENCYCODE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALUSER.CONSTITUENCYCODE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALUSER_FIRSTPARTYCODE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALUSER.FIRSTPARTYCODE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALUSER_SECONDPARTYCODE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALUSER.SECONDPARTYCODE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALUSER_SESSIONTYPECODE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALUSER.SESSIONTYPECODE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALUSER_USERAREACODE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALUSER.USERAREACODE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+</beans>

@@ -1,0 +1,1 @@
+var sortedlist_msg_1="每次只能移动一项！";

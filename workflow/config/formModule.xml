@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	
+	<module id="edocregister" selFieldId="" workformId="" isReserveKey="true">
+		<field bsId="EDOC_TYPE" formFieldId="EDOC_TYPE" isReserveKey="true"/>
+		<field bsId="AFFAIR" formFieldId="AFFAIR" isReserveKey="true"/>
+		<field bsId="SECRET_LEVEL" formFieldId="SECRET_LEVEL" isReserveKey="true"/>
+		<field bsId="KEEP_SECRET_TIME" formFieldId="KEEP_SECRET_TIME" isReserveKey="true"/>
+		<field bsId="INSTANT_LEVEL" formFieldId="INSTANT_LEVEL" isReserveKey="true"/>
+		<field bsId="WORD_NUMBER" formFieldId="WORD_NUMBER" isReserveKey="true"/>
+		<field bsId="SUBJECT" formFieldId="SUBJECT" isReserveKey="true"/>
+		<field bsId="KEYWORD" formFieldId="KEYWORD" isReserveKey="true"/>
+		<field bsId="ANNOTATION" formFieldId="ANNOTATION" isReserveKey="true"/>
+		<field bsId="ADJUNCT" formFieldId="ADJUNCT" isReserveKey="true"/>
+		<field bsId="CREATE_DATE" formFieldId="CREATE_DATE" isReserveKey="true"/>
+		<field bsId="DRAFTER_ID" formFieldId="DRAFTER_ID" isReserveKey="true"/>
+		<field bsId="CORRECTOR_ID" formFieldId="CORRECTOR_ID" isReserveKey="true"/>
+		<field bsId="APPROVE_USER_ID" formFieldId="APPROVE_USER_ID" isReserveKey="true"/>
+		<field bsId="APPROVE_DATE" formFieldId="APPROVE_DATE" isReserveKey="true"/>
+		<field bsId="CONTACT" formFieldId="CONTACT" isReserveKey="true"/>
+		<field bsId="CREATE_ORGAN" formFieldId="CREATE_ORGAN" isReserveKey="true"/>
+		<field bsId="MAIN_SEND_ORGAN" formFieldId="MAIN_SEND_ORGAN" isReserveKey="true"/>
+		<field bsId="COPY_SEND_ORGAN" formFieldId="COPY_SEND_ORGAN" isReserveKey="true"/>
+		<field bsId="REPORT_SEND_ORGAN" formFieldId="REPORT_SEND_ORGAN" isReserveKey="true"/>
+		<field bsId="OUTER_SEND_ORGAN" formFieldId="OUTER_SEND_ORGAN" isReserveKey="true"/>
+		<field bsId="SEND_DATE" formFieldId="SEND_DATE" isReserveKey="true"/>
+		<field bsId="ARRIVE_DATE" formFieldId="ARRIVE_DATE" isReserveKey="true"/>
+		<field bsId="PRINT_ORGAN" formFieldId="PRINT_ORGAN" isReserveKey="true"/>
+		<field bsId="PRINT_DATE" formFieldId="PRINT_DATE" isReserveKey="true"/>
+		<field bsId="ALLOW_PRINT_NUM" formFieldId="ALLOW_PRINT_NUM" isReserveKey="true"/>
+		<field bsId="PAGE_NUM" formFieldId="PAGE_NUM" isReserveKey="true"/>
+		<field bsId="UNDERTAKE_ORGAN" formFieldId="UNDERTAKE_ORGAN" isReserveKey="true"/>
+		<field bsId="UNDERTACKER_ID" formFieldId="UNDERTACKER_ID" isReserveKey="true"/>
+		<field bsId="DUBAN_PROCID" formFieldId="DUBAN_PROCESS_ID" isReserveKey="true"/>
+		<field bsId="EDOC_RELATE_EDOC" formFieldId="EDOC_RELATE_EDOC" isReserveKey="true"/>
+		<field bsId="ACCEPT_REG_ID" formFieldId="ACCEPT_REG_ID" isReserveKey="true"/>
+		<field bsId="SIGN_TIME" formFieldId="SIGN_TIME" isReserveKey="true"/>
+	</module>
+</config>

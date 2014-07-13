@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="forms">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="unbounded" ref="form" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="form">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" ref="tabs" />
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="sub-fields-entity">
+
+					<xs:annotation>
+						<xs:documentation>表单上定义的子表</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="field">
+					<xs:annotation>
+						<xs:documentation>字段</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="print-template" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>表单的打印模版</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="text-template" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>表单的正文模版</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+			</xs:sequence>
+			<xs:attributeGroup ref="attlist.form" />
+
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.form">
+		<xs:attribute name="process-type" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>表单所属类型</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:boolean" name="keep-histroy" use="optional" default="false">
+			<xs:annotation>
+				<xs:documentation>是否保留运行时历史版本，若此参数为true，则流转中的每个环节将保留一条表单数据，否则不保留。</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="name" use="required" />
+		<xs:attribute name="type" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="single">
+						<xs:annotation>
+							<xs:documentation>简单的表格,表单上没有用户定义的子表</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+
+					<xs:enumeration value="list">
+						<xs:annotation>
+							<xs:documentation>列表风格的表单,暂时不用</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+
+		<xs:attribute type="xs:string" name="template">
+			<xs:annotation>
+				<xs:documentation>模板位置,即表单定制产生的外形文件</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		<xs:attribute name="create-by" default="tool">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="tool">
+						<xs:annotation>
+							<xs:documentation>工具产生</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+
+					<xs:enumeration value="hand">
+						<xs:annotation>
+							<xs:documentation>手工产生</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+
+		<xs:attribute type="xs:string" name="title">
+			<xs:annotation>
+				<xs:documentation>表单的标题</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="default-entity-name">
+			<xs:annotation>
+				<xs:documentation>表单在数据库中的表名称</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="readonly-when">
+			<xs:annotation>
+				<xs:documentation>只读条件.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="organize-id" use="optional">
+			<xs:annotation>
+				<xs:documentation>表单所属部门的ID</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="organize-name" use="optional">
+			<xs:annotation>
+				<xs:documentation>表单所属部门的名称</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="form-id" use="required">
+			<xs:annotation>
+				<xs:documentation>表单的唯一标示</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="html-code" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>HTMl源代码位置，用于表单的编辑和修改</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="overtime" type="xs:int" use="optional" default="5">
+			<xs:annotation>
+				<xs:documentation>表单数据锁定的超时时长，单位为分钟</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<!-- 区分新旧表单的标志 -->
+		<xs:attribute name="form-version" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>新表单加上此标记，旧表单无此标记</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+
+	<xs:element name="sub-fields-entity">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="field" />
+			</xs:sequence>
+			<xs:attributeGroup ref="attlist.sub-fields-entity" />
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.sub-fields-entity">
+
+		<xs:attribute type="xs:string" name="entity-name" use="required" />
+		<xs:attribute type="xs:string" name="sub-name" use="optional" />
+		<xs:attribute type="xs:string" name="title" use="optional" />
+		<xs:attribute type="xs:string" name="list-name">
+			<xs:annotation>
+				<xs:documentation>字表单的列表数据属性名称,即显示表单时候在环境变量中保存自表单查询结果的key</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:positiveInteger" name="tab-index" default="1" use="optional">
+			<xs:annotation>
+				<xs:documentation>子表单的分组索引，用来分组显示子表单(在哪个tab页显示).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="use-when" use="optional" default="readOnlyFieldList.contains(&quot;${subEntityName}&quot;)">
+			<xs:annotation>
+				<xs:documentation>隐藏条件.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="readonly-when" default="hiddenFieldList.contains(&quot;${subEntityName}&quot;)" use="optional">
+			<xs:annotation>
+				<xs:documentation>只读条件.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+	</xs:attributeGroup>
+
+
+	<!-- ================== TABS ==================== -->
+	<xs:element name="tabs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="tab" />
+			</xs:sequence>
+			<xs:attributeGroup ref="attlist.tabs" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="tab">
+		<xs:complexType>
+			<xs:attributeGroup ref="attlist.tab" />
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.tab">
+		<xs:attribute type="xs:string" name="securityId">
+			<xs:annotation>
+				<xs:documentation>权限ID</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="securityClass">
+			<xs:annotation>
+				<xs:documentation>特殊权限实现的类</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:positiveInteger" name="index" use="required" />
+		<xs:attribute type="xs:string" name="title" use="required">
+
+			<xs:annotation>
+				<xs:documentation>tab页面或者表单区域的标题,这些信息主要是为了在没有外观模板的情况下可以render表单</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="form-title">
+
+			<xs:annotation>
+				<xs:documentation>定义tab页的标题</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="form-subtitle">
+
+			<xs:annotation>
+				<xs:documentation>定义tab页的副标题</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="attlist.tabs">
+		<xs:attribute type="xs:positiveInteger" name="default-select-index" default="1" />
+		<xs:attribute type="xs:string" name="on-style">
+			<xs:annotation>
+				<xs:documentation>tab页选中的风格</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="off-style">
+			<xs:annotation>
+				<xs:documentation>tab页没有选中的风格</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+
+
+	<!-- ================== 字段 ==================== -->
+	<xs:element name="field">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" ref="check" maxOccurs="1" />
+				<xs:element minOccurs="0" ref="date-time" maxOccurs="1" />
+				<xs:element minOccurs="0" ref="calculate" maxOccurs="1" />
+				<xs:element minOccurs="0" ref="display" maxOccurs="1" />
+				<xs:element minOccurs="0" ref="drop-down" maxOccurs="1" />
+				<xs:element minOccurs="0" ref="hidden" maxOccurs="1" />
+				<xs:element minOccurs="0" ref="hyperlink" maxOccurs="1" />
+				<xs:element minOccurs="0" ref="image" maxOccurs="1" />
+				<xs:element minOccurs="0" ref="radio" maxOccurs="1" />
+				<xs:element minOccurs="0" ref="text" maxOccurs="1" />
+				<xs:element minOccurs="0" ref="textarea" maxOccurs="1" />
+				<xs:element minOccurs="0" ref="file" maxOccurs="1" />
+				<xs:element ref="special-edit" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="edit-field" minOccurs="0" maxOccurs="1" />
+				<xs:element ref="select-field" minOccurs="0" maxOccurs="1" />
+			</xs:sequence>
+			<xs:attributeGroup ref="attlist.field" />
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.field">
+		<xs:attribute type="xs:string" name="name" use="required">
+			<xs:annotation>
+				<xs:documentation>字段唯一名称.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="notnull-when" use="optional">
+			<xs:annotation>
+				<xs:documentation>字段不可为空的条件.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="securityId">
+			<xs:annotation>
+				<xs:documentation>权限ID</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="securityClass">
+			<xs:annotation>
+				<xs:documentation>特殊权限实现的类</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="type" default="String">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="String" />
+					<xs:enumeration value="Float" />
+					<xs:enumeration value="Long" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+
+		<xs:attribute type="xs:string" name="tab-index">
+			<xs:annotation>
+				<xs:documentation>字段的分组索引，用来分组显示字段(在那个tab页显示).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="entity-name">
+			<xs:annotation>
+				<xs:documentation>字段所属的实体名称,不写就是default.暂不使用</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="field-name">
+			<xs:annotation>
+				<xs:documentation>实体字段名称,不写就是name，即默认字段名称是name.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		<xs:attribute type="xs:string" name="parameter-name">
+			<xs:annotation>
+				<xs:documentation>web中的参数名称,默认是name，在冲突的时候可以单独指定.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="title">
+			<xs:annotation>
+				<xs:documentation>标题.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="reserveKey" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>保留域标示，若此属性为空，表示该域非保留域.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="restriction" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>约束设置，此属性为一个以“,”分隔的字符串， 其中第一部分为函数名称，后面依次为第二个参数开始的参数列表， 因校验函数的第一个参数为本域的域名，故不在参数列表中列出</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		<xs:attribute type="xs:string" name="tooltip">
+			<xs:annotation>
+				<xs:documentation>提示信息.暂不使用</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		<xs:attribute type="xs:string" name="edit-url" default="id">
+			<xs:annotation>
+				<xs:documentation>编辑界面.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="use-when">
+			<xs:annotation>
+				<xs:documentation>隐藏条件.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="readonly-when">
+			<xs:annotation>
+				<xs:documentation>只读条件.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="default-type" use="optional" default="none">
+			<xs:annotation>
+				<xs:documentation>默认值类型，若选择无默认值，则此属性值为none；若是固定默认值，则为fixed；若是动态默认值，则为dynamic</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="none" />
+					<xs:enumeration value="fixed" />
+					<xs:enumeration value="dynamic" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="default-value" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>域默认值，固定默认值即为用户设定的值，动态默认值则为获取该默认值的实现类全名，此类必须实现com.ntmast.workform.manager.defaults.DefaultValue接口。</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="is-sign" use="optional" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>是否签名域，是则为true，否则为false</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		<xs:attribute name="is-pk" default="false">
+			<xs:annotation>
+				<xs:documentation>是否主键，暂不使用</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="true" />
+					<xs:enumeration value="false" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="reserved" default="false" type="xs:boolean" use="optional">
+			<xs:annotation>
+				<xs:documentation>保留字段，若reserved为true，则在流程定制时不可见。</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+
+		<xs:attribute name="sumField" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>页面js合计字段。</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="FUNC" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>页面js函数字段。</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="FUNARG" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>页面js函数字段。</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<!-- ================== 字段类型==================== -->
+	<xs:element name="edit-field">
+		<xs:complexType>
+			<xs:attribute name="edit-url" type="xs:string" use="optional" />
+			<xs:attribute name="key" type="xs:string" use="optional" />
+			<xs:attribute name="style" type="xs:string" use="optional">
+				<xs:annotation>
+					<xs:documentation>新添样式</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="select-field">
+		<xs:complexType>
+			<xs:attribute name="edit-url" type="xs:string" use="optional" />
+			<xs:attribute name="key" type="xs:string" use="optional" />
+			
+			<xs:attribute name="style" type="xs:string" use="optional">
+				<xs:annotation>
+					<xs:documentation>新添样式</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="special-edit">
+		<xs:complexType>
+			<xs:attribute name="edit-url" type="xs:string" use="optional" />
+			<xs:attribute name="key" type="xs:string" use="optional" />
+			<xs:attribute name="show-class" type="xs:string" use="optional" />
+			
+			<xs:attribute name="style" type="xs:string" use="optional">
+				<xs:annotation>
+					<xs:documentation>新添样式</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="check">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="option" />
+				</xs:choice>
+			</xs:sequence>
+			<xs:attributeGroup ref="attlist.check" />
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.check">
+		
+		<xs:attribute name="style" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>新添样式</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		
+		<xs:attribute type="xs:string" name="dictionaryName">
+			<xs:annotation>
+				<xs:documentation>字典名称</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="dictionaryClass">
+			<xs:annotation>
+				<xs:documentation>特殊数据实现类</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<xs:element name="date-time">
+		<xs:annotation>
+			<xs:documentation>时间字段</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attributeGroup ref="attlist.date-time" />
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.date-time">
+		<xs:attribute type="xs:positiveInteger" name="size" default="25" />
+		
+		<xs:attribute name="style" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>新添样式</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="type" default="timestamp">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="timestamp" />
+					<xs:enumeration value="date" />
+					<xs:enumeration value="time" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<xs:element name="display">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attributeGroup ref="attlist.display"></xs:attributeGroup>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.display">
+		<xs:attribute name="relative-field" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>关联主表的字段</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	
+	<xs:element name="drop-down">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="option" />
+				</xs:choice>
+			</xs:sequence>
+			<xs:attributeGroup ref="attlist.drop-down" />
+			
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.drop-down">
+		<xs:attribute type="xs:positiveInteger" name="size" default="25" />
+		
+		<xs:attribute name="style" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>新添样式</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		
+		<xs:attribute name="allow-empty" default="false">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="true" />
+					<xs:enumeration value="false" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+
+		<xs:attribute type="xs:string" name="no-current-selected-key">
+			<xs:annotation>
+				<xs:documentation>默认不选择任何值.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="dictionaryName">
+			<xs:annotation>
+				<xs:documentation>字典名称</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="dictionaryClass">
+			<xs:annotation>
+				<xs:documentation>特殊数据实现类</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="current-description" />
+		<xs:attribute type="xs:string" name="Enumeration-Type" />
+	</xs:attributeGroup>
+
+	<xs:element name="file">
+		<xs:complexType />
+	</xs:element>
+
+	<xs:element name="hidden">
+		<xs:complexType>
+			<xs:attributeGroup ref="attlist.hidden" />
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.hidden"></xs:attributeGroup>
+	<xs:element name="hyperlink">
+		<xs:complexType>
+			<xs:attributeGroup ref="attlist.hyperlink" />
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.hyperlink">
+
+		<xs:attribute type="xs:string" name="target" use="optional">
+			<xs:annotation>
+				<xs:documentation>目标地址.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="description">
+			<xs:annotation>
+				<xs:documentation>显示文字.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="target-window" />
+	</xs:attributeGroup>
+
+	<xs:element name="image">
+		<xs:complexType>
+
+			<xs:attributeGroup ref="attlist.image" />
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.image">
+		<xs:attribute type="xs:nonNegativeInteger" name="border" default="0" />
+		<xs:attribute type="xs:positiveInteger" name="width" />
+		<xs:attribute type="xs:positiveInteger" name="height" />
+		<xs:attribute type="xs:string" name="value" />
+	</xs:attributeGroup>
+	
+	<xs:element name="radio">
+		<xs:complexType>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="option" />
+			</xs:choice>
+			<xs:attributeGroup ref="attlist.radio" />
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.radio">
+		<xs:attribute name="style" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>新添样式</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="dictionaryName">
+			<xs:annotation>
+				<xs:documentation>字典名称</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="dictionaryClass">
+			<xs:annotation>
+				<xs:documentation>特殊数据实现类</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="no-current-selected-key" />
+		<xs:attribute type="xs:string" name="Enumeration-Type" />
+	</xs:attributeGroup>
+	
+	<xs:element name="text">
+		<xs:complexType>
+			<xs:attributeGroup ref="attlist.text" />
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.text">
+		<xs:attribute name="style" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>新添样式</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:positiveInteger" name="size" default="25" />
+		<xs:attribute type="xs:positiveInteger" name="maxlength" />
+	</xs:attributeGroup>
+	
+	<xs:element name="textarea">
+		<xs:complexType>
+			<xs:attributeGroup ref="attlist.textarea" />
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.textarea">
+		<xs:attribute type="xs:positiveInteger" name="cols" default="60" />
+		<xs:attribute type="xs:positiveInteger" name="rows" default="3" />
+		<xs:attribute name="style" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>新添样式</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<!--	<xs:attributeGroup name="attlist.select-data">
+		<xs:attribute type="xs:string" name="ref_url">
+		<xs:annotation>
+		<xs:documentation>相关url.</xs:documentation>
+		</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="ref_field">
+		<xs:annotation>
+		<xs:documentation>相关字段.</xs:documentation>
+		</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="ref_param" default="id">
+		<xs:annotation>
+		<xs:documentation>参数名称.</xs:documentation>
+		</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="select-url">
+		<xs:annotation>
+		<xs:documentation>编辑时选择数据的url.</xs:documentation>
+		</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:string" name="permission-id">
+		<xs:annotation>
+		<xs:documentation>察看数据的权限id.</xs:documentation>
+		</xs:annotation>
+		</xs:attribute>
+		</xs:attributeGroup>-->
+	<xs:element name="calculate">
+		<xs:complexType>
+			<xs:attribute name="style" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>新添样式</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- ================== 字段子元素 ==================== -->
+	<xs:element name="option">
+		<xs:complexType>
+			<xs:attributeGroup ref="attlist.option" />
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attlist.option">
+		<xs:attribute type="xs:string" name="key" use="required" />
+		<xs:attribute type="xs:string" name="description">
+			<xs:annotation>
+				<xs:documentation>显示属性.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute type="xs:boolean" name="selected" default="false">
+			<xs:annotation>
+				<xs:documentation>是否为选中,option中只能有一个为true</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:element name="print-template">
+		<xs:complexType>
+			<xs:attribute name="file-name" type="xs:string" use="optional" default="PrintTemplate.doc">
+				<xs:annotation>
+					<xs:documentation>磁盘上的文件名,不包含路径信息</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="text-template">
+		<xs:complexType>
+			<xs:attribute name="file-name" type="xs:string" use="optional" default="blank.doc">
+				<xs:annotation>
+					<xs:documentation>磁盘上的文件名,不包含路径信息</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="name" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>正文模版的显示名</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="type" type="xs:string" use="optional" default="doc">
+				<xs:annotation>
+					<xs:documentation>模版文件的类型，比如doc等</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+
+
+</xs:schema>

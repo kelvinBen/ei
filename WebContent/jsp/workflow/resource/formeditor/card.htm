@@ -1,0 +1,81 @@
+<HTML>
+<HEAD>
+<TITLE>表单属性</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<Link rel="stylesheet" type="text/css" href="pop.css">
+
+<script>
+var topwin,modalTd;
+function init()
+{
+topwin=window.dialogArguments;
+modalTd=topwin.JsObj.CurControl;
+var cardname=document.all("cardname");
+cardname.value=modalTd.innerText;
+//securityClass,securityId
+	var securityClass=document.all("securityClass");
+	if(modalTd.securityClass!=null && modalTd.securityClass!="")
+		securityClass.value=modalTd.securityClass;
+	var securityId=document.all("securityId");
+	if(modalTd.securityId!=null && modalTd.securityId!="")
+		securityId.value=modalTd.securityId;
+
+}
+function dosave()
+{
+var cardname=document.all("cardname");
+if(cardname.value==null || cardname.value=="")
+{
+alert("选项卡名称不能为空!");
+return false;
+}
+modalTd.innerText=cardname.value;
+//securityId,securityClass
+var securityId=document.all("securityId");
+		modalTd.securityId=securityId.value;
+	var securityClass=document.all("securityClass");
+		modalTd.securityClass=securityClass.value;
+
+window.close();
+}
+</script>
+</HEAD>
+
+<BODY bgcolor=buttonface onload="init();">
+<fieldset  class="radiogroup" style="padding:10px;"><legend class=title>选项卡</legend>
+<table border="0" height="100%" width="90%" cellspacing="0" cellpadding="0" style="padding-left:10px">
+<tr>
+	<td >
+	选项卡名称:
+	</td>
+	<td >
+	<input size=20 name="cardname">
+	</td>
+	</tr>
+	<tr>
+	<td >
+	securityClass:
+	</td>
+	<td >
+	<input size=20 name="securityClass">
+	</td>
+	</tr>
+	<tr>
+	<td nowrap>
+	securityId:
+	</td>
+	<td >
+	<input size=20 name="securityId">
+	</td>
+</tr>
+
+<tr>
+	<td colspan=2 align=center>
+	<br>
+	<BUTTON ID=Ok TYPE=SUBMIT onclick="dosave();">确定</BUTTON>&nbsp; &nbsp; <BUTTON ONCLICK="window.close();">取消</BUTTON>
+	</td>
+</tr>
+</table>
+</fieldset>
+</BODY>   
+</HTML>

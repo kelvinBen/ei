@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+
+
+
+	<bean id="employeeView"  class="net.mast.bsp.demo.organization.view.EmployeeView" singleton="false"/>
+
+
+    <bean id="employee" class="net.mast.bsp.demo.organization.cmd.EmployeeCmd" singleton="false">
+	    <property name="employeeService"><ref bean="employeeService"/></property>
+	    <property name="view"><ref bean="employeeView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="employeeView"><ref bean="employeeforward"/></entry>
+	            <entry key="struView"><ref bean="struforward"/></entry>
+	        </map>
+		</property>
+		<property name="beforIntercept">
+	        <list>
+	        <ref bean="struinsertinterceptor"/>
+	        <ref bean="hreventtypelistinterceptor"/>
+	        </list>
+        </property>
+    </bean>
+
+
+<bean id="employeeDao" class="net.mast.bsp.demo.organization.dao.jdbc.EmployeeJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+
+    <bean id="employeeforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/demo/organization/employee/detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/demo/organization/employee/forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/demo/organization/employee/forupdate.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	
+
+<bean id="employeeService" class="net.mast.bsp.demo.organization.service.support.EmployeeServiceImpl"> 	
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	<property name="struViewUtils"><ref bean="employeeViewUtils"/></property>
+</bean>
+
+<bean id="employeeDomain" class="net.mast.bsp.demo.organization.domain.support.EmployeeImpl"> 
+	<property name="employeeDao"><ref bean="employeeDao"/></property>   	
+</bean>
+
+<bean id="employeeViewUtils" class="net.mast.bsp.demo.organization.utils.EmployeeViewUtils"> 
+</bean>
+</beans>

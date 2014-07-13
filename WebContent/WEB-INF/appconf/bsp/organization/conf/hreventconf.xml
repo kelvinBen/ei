@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean id="hrEventDao" class="net.mast.bsp.organization.dao.jdbc.HrEventJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+
+
+	<bean id="hrEventDomain" class="net.mast.bsp.organization.domain.support.HrEventImpl"> 
+		<property name="hrEventDao"><ref bean="hrEventDao"/></property>   
+		<property name="hrEventTypeDomain"><ref bean="hrEventTypeDomain"/></property>  	
+	</bean>
+
+
+	<bean id="hrEventService" class="net.mast.bsp.organization.service.support.HrEventServiceImpl"> 
+		<property name="hrEventDomain"><ref bean="hrEventDomain"/></property>   	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+
+
+	<bean id="hreventquery" class="net.mast.bsp.organization.cmd.HrEventQuery">
+	<property name="hrEventService"><ref bean="hrEventService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="hreventforward"/></entry>
+	        </map>
+        </property>  
+	</bean>
+
+	<bean id="hrEventView"  class="net.mast.bsp.organization.view.HrEventView" singleton="false"/>
+
+
+    <bean id="hrevent" class="net.mast.bsp.organization.cmd.HrEventCmd" singleton="false">
+	    <property name="hrEventService"><ref bean="hrEventService"/></property>
+	    <property name="view"><ref bean="hrEventView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="hrEventView"><ref bean="hreventforward"/></entry>
+	             <entry key="hrEventViewChain"><ref bean="hreventforwardchain"/></entry>
+	        </map>
+		</property>
+    </bean>
+
+
+
+    <bean id="hreventforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/organization/event/detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/organization/event/forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/organization/event/forupdate.jsp</prop>
+			    <prop key="queryforhelp">jsp/bsp/organization/event/query.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	
+	    <bean id="hreventforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="hreventquery"/></entry>
+			</map>
+		</property>
+    </bean>
+
+</beans>

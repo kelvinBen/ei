@@ -1,0 +1,26 @@
+##可以使用的变量$field,$disp
+#set ($ref=$field.getMofReference())
+	    <html:label name="$field.getFormName()" type="text"
+#if ($disp.isOutValue()) 
+		      property="$field.getFormName()"
+#else
+	          value=""
+#end
+	          collection="${field.getFormName()}.Collection"
+			  labelProperty="Name" labelKey="ID" size="$field.getLength()"
+		      readonly="true"  styleClass="txtReadOnly"
+#if ($disp.hasChangedField()||$disp.hasLimitField())
+		     onchange="${field.getFormName()}_change()"
+#end
+ 		/>
+#if ($disp.isMandatory()&&!$disp.isReadOnly())
+		<font color="#FF0000">*</font>
+#end
+#if(!$disp.isReadOnly())
+    #if ($disp.hasChangedField())
+    	  $ref.getChangeScript($field,$field.getChangeField())
+    #elseif($disp.hasLimitField())
+    	  $ref.getFillInvokeScript($field,$field.getLimitFields(),false)
+    #end
+          $ref.getCustomEvent($field,$ref.hasDisplayTextField())
+#end

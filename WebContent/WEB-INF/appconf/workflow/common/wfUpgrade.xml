@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+<!--***********************dao配置***********************************************-->
+	<bean id="upgradeDao" class="net.mast.workflow.upgrade.dao.jdbc.UpgradeJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	
+<!--***********************service配置*******************************************-->
+
+	<bean id="upgradeService" class="net.mast.workflow.upgrade.service.support.UpgradeServiceImpl">
+		<property name="upgradeDao"><ref bean="upgradeDao"/></property>
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+	
+<!--***********************视图对象View配置****************************************-->
+	<bean id="upgradeView"  class="net.mast.workflow.upgrade.view.UpgradeView" singleton="false"/>
+
+<!--***********************cmd配置开始*********************************************-->
+    <bean id="upgrade" class="net.mast.workflow.upgrade.cmd.UpgradeCmd" singleton="false">
+	    <property name="upgradeService"><ref bean="upgradeService"/></property>
+	    <property name="view"><ref bean="upgradeView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="upgradeView"><ref bean="upgradeforward"/></entry>
+	        </map>
+		</property>
+		  
+    </bean>
+
+<!--***********************cmd配置结束*********************************************-->
+
+<!--***********************界面转向forward配置开始***********************************-->
+    <bean id="upgradeforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="main">jsp/workflow/upgrade/wfUpgrade.jsp</prop>
+			    <prop key="resp">jsp/workflow/upgrade/wfUpgradeResp.jsp</prop>
+			</props>
+		</property>
+	</bean>
+   
+    
+<!--***********************界面转向forward配置结束***********************************-->
+
+
+</beans>

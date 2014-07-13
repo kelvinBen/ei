@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+<!-- 流程文件列表-->
+<!--***********************jdbcdao配置************-->
+	<bean id="wfProcessFilesDao" class="net.mast.workflow.wfclient.processmanage.processfiles.dao.impl.WfProcessFilesJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+<!--***********************service配置***********-->
+	<bean id="wfProcessFilesService" parent="jdbcTransactionProxy">
+		<property name="target">
+		<bean  class="net.mast.workflow.wfclient.processmanage.processfiles.service.impl.WfProcessFilesServiceImpl"> 
+			<property name="wfProcessFilesDao"><ref bean="wfProcessFilesDao"/></property>   	
+		</bean>
+		</property>
+	</bean>
+
+</beans>

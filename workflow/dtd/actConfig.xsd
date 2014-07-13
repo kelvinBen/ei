@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://actConfig.workflow.loushang.org"
+			xmlns="http://actConfig.workflow.loushang.org"
+			elementFormDefault="qualified">
+	<xsd:element name="act-cfg">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="operations" />
+				<xsd:element ref="field" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element ref="actions" minOccurs="0" />
+			</xsd:sequence>
+			<xsd:attribute name="Id" type="xsd:string" use="required" />
+            <xsd:attribute name="Name" type="xsd:string" use="optional"/>
+            <xsd:attribute name="Url"  type="xsd:string" use="optional"/>
+		</xsd:complexType>
+	</xsd:element>
+      	<xsd:element name="action">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:any namespace="##any" minOccurs="0" maxOccurs="unbounded" processContents="lax" />
+			</xsd:sequence>
+			<xsd:attribute name="type" type="xsd:string" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="actions">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="action" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="condition">
+		<xsd:complexType>
+                    <xsd:attribute name="CondiStr" type="xsd:string" use="optional"/>
+                    <xsd:attribute name="CondiXml" type="xsd:string" use="optional"/>
+               </xsd:complexType>
+	</xsd:element>
+	<xsd:element name="field">
+		<xsd:complexType>
+		   <xsd:attribute name="Id" type="xsd:string" use="required" />
+		   <xsd:attribute name="restrict"  use="optional" >
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:enumeration value="common" />
+						<xsd:enumeration value="readonly" />
+						<xsd:enumeration value="readonly-edit" />
+						<xsd:enumeration value="hidden" />
+						<xsd:enumeration value="hidden-edit" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="verify-fun" type="xsd:string" use="optional" />
+                        <xsd:attribute name="name" type="xsd:string" use="required"/>
+			<xsd:attribute name="isnull"  use="optional">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:enumeration value="false" />
+						<xsd:enumeration value="true" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="operation">
+		<xsd:complexType>
+			<xsd:sequence>
+				 <xsd:element ref="condition" minOccurs="0" maxOccurs="1" />
+			</xsd:sequence>
+			<xsd:attribute name="Id" type="xsd:string" use="required" />
+			<xsd:attribute name="title" type="xsd:string" use="optional" />
+                        <xsd:attribute name="fun-name" type="xsd:string" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="operations">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="operation" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="pro-cfg">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="act-cfg"  minOccurs="1" maxOccurs="unbounded" />
+			</xsd:sequence>
+			<xsd:attribute name="Id" type="xsd:string" use="required" />
+                        <xsd:attribute name="Name" type="xsd:string" use="optional"/>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

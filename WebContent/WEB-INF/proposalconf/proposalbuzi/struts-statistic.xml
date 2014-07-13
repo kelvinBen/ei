@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="proposalstatisticDao" class="org.proposal.statistic.dao.StatisticDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+<!--***********************翻页初始化特殊查询配置开始***************************-->
+	<bean id="proposalstatisticquery_page_init" class="org.proposal.statistic.StatisticQueryCmd">
+	    <property name="forwards">
+	        <map>
+	            <entry key="stastics"><ref bean="proposalstatisticforward"/></entry>
+	        </map>
+        </property>
+		<property name="statisticDao"><ref bean="proposalstatisticDao"/></property>
+	</bean>
+
+	<bean id="proposalcountbyuser" class="org.proposal.statistic.CountByuserAction">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="proposalstatisticforward"/></entry>
+	        </map>
+        </property>
+		<property name="statisticDao"><ref bean="proposalstatisticDao"/></property>
+	</bean>
+	<bean id="proposalcountbydept" class="org.proposal.statistic.CountByDeptAction">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="proposalstatisticforward"/></entry>
+	        </map>
+        </property>
+		<property name="statisticDao"><ref bean="proposalstatisticDao"/></property>
+	</bean>	
+	
+	<bean id="gjproppsalQueryAction" class="org.proposal.statistic.GJproppsalQueryAction">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="proposalstatisticforward"/></entry>
+	        </map>
+        </property>
+		<property name="statisticDao"><ref bean="proposalstatisticDao"/></property>
+	</bean>
+	
+	<bean id="smproppsalQueryAction" class="org.proposal.statistic.SmproppsalQueryAction">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="proposalstatisticforward"/></entry>
+	        </map>
+        </property>
+		<property name="statisticDao"><ref bean="proposalstatisticDao"/></property>
+	</bean>
+		
+    <!--***********************界面转向forward配置开始***********************************-->
+    <bean id="proposalstatisticforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="bailijindu">jsp/proposal/statistic/bailijindu_statistic_query_init.jsp</prop>	
+			    <prop key="manyidu">jsp/proposal/statistic/manyidu_statistic_query_init.jsp</prop>
+			    <prop key="satisfy">jsp/proposal/statistic/satisfy_statistic_query.jsp</prop>			    	    
+			    <prop key="proppsalQuery">jsp/proposal/statistic/proposal_query_init.jsp</prop>		
+			    <prop key="smproppsalQuery">jsp/proposal/statistic/simpleproposal_query_init.jsp</prop>		    	    
+				<prop key="relytype">jsp/proposal/statistic/relytype_statistic.jsp</prop>
+				<prop key="CATEGORY">jsp/proposal/statistic/CATEGORY_statistic.jsp</prop>
+				<prop key="TYPE">jsp/proposal/statistic/TYPE_statistic.jsp</prop>
+				<prop key="countbyuser">jsp/proposal/statistic/countbyuser_table.jsp</prop>
+				<prop key="countbydept">jsp/proposal/statistic/countbydept_table.jsp</prop>
+
+			</props>
+		</property>
+	</bean>	
+	
+	
+	
+</beans>	

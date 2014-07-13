@@ -1,0 +1,149 @@
+<HTML>
+<HEAD>
+<TITLE>另存为...</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<Link rel="stylesheet" type="text/css" href="pop.css">
+<script language="javascript" src="extendString.js"></script>
+
+<script>
+function IsDigit()
+{
+  return ((event.keyCode >= 48) && (event.keyCode <= 57));
+}
+function WBTB_selColor(obj)
+{
+	var arr = showModalDialog("selcolor.html", "", "dialogWidth:18.5em; dialogHeight:17.5em; status:0; help:0");
+	if (arr != null && arr != "") obj.value=arr;
+}
+//旧表名
+var oldformname="";
+function init()
+{
+var win=window.dialogArguments;
+var divall=win.ff.document.all("pages");
+var formname=document.all("formname");
+var defformid=document.all("datatabname");
+//if(win.ff.OBJ.getReadonlyType()=="1")
+	//document.all("datatabname").disabled=true;
+
+var formnamestr=divall.formid;
+var defformidstr=divall.formname;
+if(formnamestr==null)
+formnamestr="";
+if(defformidstr==null || defformidstr=="${pages}")
+defformidstr="";
+else
+oldformname=defformidstr;
+formname.value=formnamestr;
+defformid.value=defformidstr;
+//if(win.ff.OBJ.getFormType()==1)
+//defformid.readOnly=true;
+var hasborderstr=divall.hasborder;
+var hasborder=document.all("hasborder");
+if(hasborderstr==0)
+{
+hasborder.options[1].selected=true;
+}
+else
+hasborder.options[0].selected=true;
+
+}
+function dosave()
+{
+var win=window.dialogArguments;
+var divall=win.ff.document.all("pages");
+var formname=document.all("formname");
+var datatabname=document.all("datatabname").value;
+if(datatabname=="")
+{
+			alert("表名不能为空！");
+			document.all("datatabname").focus();
+			return false;
+}
+
+if(typeof(win.ff.KEYS)!="undefined")
+		{
+		if(win.ff.KEYS.indexOf('"'+datatabname.toUpperCase()+'"')>=0)
+			{
+			alert("表名不能使用关键字！");
+			document.all("datatabname").focus();
+			return false;
+			}
+		}
+if(datatabname!="" && !datatabname.isWord())
+			{
+			alert("表名请不要使用特殊字符！");
+			document.all("datatabname").focus();
+			return false;
+			}
+if(oldformname!="" && oldformname==datatabname)
+{
+			alert("表名请不要和原表名相同！");
+			document.all("datatabname").focus();
+			return false;
+}
+
+if(datatabname!=null && datatabname!="")
+{
+divall.setAttribute("defformid",datatabname);
+divall.setAttribute("formname",datatabname);
+}
+divall.setAttribute("formid",formname.value);
+var hasborder=document.all("hasborder");
+divall.setAttribute("hasborder",hasborder.value);
+//divall.setAttribute("formtitle",formtitle.value);
+window.returnValue="true";
+window.close();
+}
+function yulan()
+{
+var odiv=document.all("yulan");
+var fontsize=document.all("fontsize").value;
+
+var fontcolor=document.all("fontcolor").value;
+var fontname=document.all("fontname").value;
+odiv.style.fontSize=fontsize;
+odiv.style.color=fontcolor;
+odiv.style.fontFamily =fontname;
+}
+</script>
+</HEAD>
+
+<BODY bgcolor=buttonface onload="init();">
+<fieldset  class="radiogroup" style="padding:10px;"><legend class=title>表单</legend>
+<table border="0" height="100%" width="90%" cellspacing="0" cellpadding="0" style="padding-left:10px">
+<tr>
+	<td >
+	表单名称:
+	</td>
+	<td >
+	<input size=20 name="formname">
+	</td>
+	</tr>
+	<tr>
+	<td nowrap>
+	表单数据表名:
+	</td>
+	<td >
+	<input size=20 name="datatabname">
+	</td>
+</tr>
+<tr  style="display:none">
+	<td nowrap>
+	显示表格线:
+	</td>
+	<td >
+	<select name="hasborder"><option value=1>显示</option><option value=0>不显示</option></select>
+	</td>
+</tr>
+
+<tr>
+	<td colspan=2 align=center>
+	<br>
+	<BUTTON ID=Ok TYPE=SUBMIT onclick="dosave();">确定</BUTTON>&nbsp; &nbsp; <BUTTON ONCLICK="window.close();">取消</BUTTON>
+	</td>
+</tr>
+</table>
+</fieldset>
+</BODY>   
+</HTML>

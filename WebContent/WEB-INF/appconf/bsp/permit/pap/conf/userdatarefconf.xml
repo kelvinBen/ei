@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>	
+	<bean id="userdataref" class="net.mast.bsp.permit.pap.cmd.UserDataReferenceCmd" singleton="false">
+		<property name="userDataRefService"><ref bean="userDataRefService"/></property>
+		<property name="view"><ref bean="userDataRefView"/></property>
+		<property name="forwards">
+			<map>
+				<entry key="userDataRefView"><ref bean="userdatarefforward"/></entry>
+				<entry key="userDataRefViewChain"><ref bean="userdatarefforwardchain"/></entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="userdatarefforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+		<property name="mappings">
+			<props>    
+				<prop key="insert">jsp/bsp/permit/pap/user/iframe.jsp</prop>
+			</props>
+		</property>
+	</bean> 
+	<bean id="userdatarefforwardchain" class="net.mast.waf.mvc.ChainForward">
+	         <property name="mappings">
+			        <map>
+			               <entry key="success"><ref bean="userdatarefquery"/></entry>
+			        </map>
+		     </property>
+        </bean>
+	<bean id="userdatarefquery" class="net.mast.bsp.permit.pap.cmd.UserDataReferenceQueryCmd">
+		<property name="userDataRefService"><ref bean="userDataRefService"/></property>
+		<property name="dataResTypeService"><ref bean="dataResTypeService"/></property>		
+		<property name="forwards">
+			<map>
+				<entry key="query"><ref bean="userdatarefqueryforward"/></entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="userselfdatarefquery" class="net.mast.bsp.permit.pap.cmd.UserSelfDataReferenceQueryCmd">
+		<property name="userDataRefService"><ref bean="userDataRefService"/></property>
+		<property name="dataResTypeService"><ref bean="dataResTypeService"/></property>		
+		<property name="forwards">
+			<map>
+				<entry key="query"><ref bean="userdatarefqueryforward"/></entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="userdatarefqueryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+		<property name="mappings">
+			<props>
+				<prop key="nopageinit">jsp/bsp/permit/pap/user/userdatarefquery.jsp</prop>
+				<prop key="userselfdatarefquery">jsp/bsp/permit/pap/user/userselfdatarefquery.jsp</prop>  
+			</props>
+		</property>
+	</bean>
+      
+	<bean id="userDataRefView"  class="net.mast.bsp.permit.pap.view.UserDataReferenceView" singleton="false"/>
+	
+	<bean id="userDataRefDao" class="net.mast.bsp.permit.pap.dao.jdbc.UserDataReferenceJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	
+	<bean id="userDataRefService" class="net.mast.bsp.permit.pap.service.support.UserDataReferenceServiceImpl"> 
+		<property name="userDataRefDomain"><ref bean="userDataRefDomain"/></property>   	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+	
+	<bean id="userDataRefDomain" class="net.mast.bsp.permit.pap.domain.support.UserDataReferenceImpl"> 
+		<property name="userDataRefDao"><ref bean="userDataRefDao"/></property>  
+		<property name="organDomain"><ref bean="organDomain"/></property> 
+		<property name="dataResourceTypeDomain"><ref bean="dataResourceTypeDomain"/></property>  	
+	</bean>
+
+</beans>

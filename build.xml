@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+
+<project name="integration" basedir="." default="all">
+	
+	<property file="build.prop"/>
+	
+	<path id="src-path">
+		<fileset dir="${src.dir}"/>
+		<fileset dir="${workflow.dir}"/>
+	</path>
+	
+	<path id="build-classpath">
+		<fileset dir="${weblib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${tomcat.lib}">
+			<include name="jsp-api.jar"/>
+			<include name="servlet-api.jar"/>
+		</fileset>
+	</path>
+	
+			<target name="usage">
+		<echo message=""/>
+		<echo message="Project build file"/>
+		<echo message="------------------------------------------------------"/>
+		<echo message=""/>
+		<echo message="Available targets are:"/>
+		<echo message=""/>
+		<echo message="clean    --> Clean output dirs"/>
+		<echo message="checkout    --> Checkout from src and web dir from SVN"/>
+		<echo message="build    --> Compile main Java sources and copy libraries"/>
+		<echo message="warfile  --> Build the web application archive"/>
+		<echo message="all      --> Clean, build, warfile"/>
+		<echo message=""/>
+	</target>
+	
+	<target name="clean" description="Clean output dirs (build, dist)">
+		<delete dir="${build.dir}"/>
+		<delete dir="${build.workflow.dir}"/>
+		<delete dir="${webclasses.dir}"/>
+		<delete dir="${dist.dir}"/>
+		<delete file="${weblib.dir}/workflow-added.jar"/>
+	</target>
+	
+	<target name="clean2" description="Clean output dirs ( target)">
+			<delete dir="${svn.destPath}"/>
+			<delete dir="${build.dir}"/>
+			<delete dir="${build.workflow.dir}"/>
+			<delete dir="${webclasses.dir}"/>
+			<delete file="${weblib.dir}/workflow-added.jar"/>
+	</target>
+	
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml"
+		classpath="svnant.jar"/>
+	<taskdef name="svn" classname="org.tigris.subversion.svnant.SvnTask"/>
+	<target name="checkout" description="Checkout from src and web dir from SVN">
+		<mkdir dir="${svn.destPath.src}"/>
+		<svn javahl="${svn.javahl}" svnkit="${svn.svnkit}"
+			username="${svn.username}" password="${svn.password}">
+			<checkout url="${svn.url.src}" destPath="${svn.destPath.src}"/>
+		</svn>
+		<mkdir dir="${svn.destPath.workflow}"/>
+		<svn javahl="${svn.javahl}" svnkit="${svn.svnkit}"
+			username="${svn.username}" password="${svn.password}">
+			<checkout url="${svn.url.workflow}"
+				destPath="${svn.destPath.workflow}"/>
+		</svn>
+		<mkdir dir="${svn.destPath.WebContent}"/>
+		<svn javahl="${svn.javahl}" svnkit="true" username="${svn.username}"
+			password="${svn.password}">
+			<checkout url="${svn.url.WebContent}"
+				destPath="${svn.destPath.WebContent}"/>
+		</svn>
+	</target>
+	
+	<target name="build-both"
+		description="Compile main source tree java files into class files, generate jar files">
+		
+		<mkdir dir="${build.dir}"/>
+		
+		<javac destdir="${build.dir}" debug="true" optimize="false" fork="true" memorymaximumsize="800M"
+			deprecation="false" failonerror="true" source="1.5" target="1.5"
+			encoding="utf-8" includeantruntime="on">
+			<src path="${src.dir}"/>
+			<src path="${workflow.dir}"/>
+			<classpath>
+				<path refid="build-classpath"/>
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="jar" depends="build-both">
+		<mkdir dir="${build.workflow.dir}"/>
+		
+		<javac destdir="${build.workflow.dir}" debug="true" optimize="false"
+			deprecation="false" failonerror="true" source="1.5" target="1.5"
+			encoding="GBK" includeantruntime="on">
+			<src path="${workflow.dir}"/>
+			<classpath>
+				<path refid="build-classpath"/>
+				<path location="${build.dir}"/>
+			</classpath>
+		</javac>
+
+		<mkdir dir="${webclasses.dir}"/>
+		
+		<copy todir="${webclasses.dir}" overwrite="true">
+			<fileset dir="${build.workflow.dir}"/>
+		</copy>
+
+		<!-- <jar jarfile="${weblib.dir}/workflow-added.jar" compress="true"
+			basedir="${build.workflow.dir}"/> -->
+		
+	</target>
+
+	<target name="build" depends="jar"
+		description="Compile main source tree java files into class files, generate jar files">
+		<delete dir="${build.dir}"/>
+		<mkdir dir="${build.dir}"/>
+		
+		<javac destdir="${build.dir}" debug="true" optimize="false"
+			deprecation="false" failonerror="true" source="1.5" target="1.5"
+			encoding="utf-8" includeantruntime="on">
+			<src path="${src.dir}"/>
+			<classpath>
+				<path refid="build-classpath"/>
+				<path location="${build.workflow.dir}"/>
+			</classpath>
+		</javac>
+		
+		<copy todir="${webclasses.dir}" overwrite="true">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java"/>
+			</fileset>
+			<fileset dir="${workflow.dir}">
+				<exclude name="**/*.java"/>
+			</fileset>
+			<fileset dir="${build.dir}"/>
+		</copy>
+		
+	</target>
+	
+
+		<target name="dist" depends="warfile">
+		<!--
+		Delegate to warfile target by depending on it. dist is just to offer
+		a generic target name across all Spring sample apps that may be used
+		for autobuilds testing.
+		-->
+	</target>
+	
+	<target name="warfile" depends="build"
+		description="Build the web application archive">
+		
+		<mkdir dir="${dist.dir}"/>
+		
+		<war warfile="${dist.dir}/${name}.war" basedir="${web.dir}"
+			webxml="${web.dir}/WEB-INF/web.xml">
+			<include name="**/*"/>
+			<exclude name="WEB-INF/web.xml"/>
+			<exclude name="**/.*"/>
+			<exclude name="**/logs/*"/>
+		</war>
+		
+	</target>
+	
+	<target name="javadoc" depends="build"
+		description="Create complete Javadoc documentation">
+		
+		<delete dir="${javadoc.dir}"/>
+		<mkdir dir="${javadoc.dir}"/>
+		
+		<javadoc sourcepath="${src.dir}" destdir="${javadoc.dir}" windowtitle="PRC"
+			source="1.5" author="true" version="true" use="true" encoding="UTF-8"
+			docencoding="UTF-8">
+			<doctitle><![CDATA[<h1>CNOOC Project</h1>]]>
+			</doctitle>
+			<classpath refid="build-classpath"/>
+		</javadoc>
+		
+	</target>
+	<target name="all" depends="clean,checkout,build,warfile,clean2"
+		description="clean,checkout,build,warfile,clean2"/>
+	
+</project>

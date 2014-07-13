@@ -1,0 +1,14 @@
+##可以使用的变量$field,$disp,$ref
+#set ($ref=$field.getMofReference()) 
+#if($field.isKey())
+    #parse("${standardTemplatePath}/StandardKeyGrid.vm")
+#elseif($disp.isHidden())
+	#parse("${standardTemplatePath}/StandardHiddenGrid.vm")
+#elseif ($disp.isReadOnly())
+	#parse("${standardTemplatePath}/StandardLableGrid.vm")
+#else
+#set ($table_selectCol_width=$field.getLength()*7)
+	<grid:selectCol	name="$field.getFormName()"	property="$field.getFormName()"	 caption="$field.getDescription()" width="$table_selectCol_width" index="$field.indexInGrid()" size="1" >
+	<grid:options collection="${field.getFormName()}.Collection" labelProperty="Name" property="ID" />
+	</grid:selectCol>
+#end

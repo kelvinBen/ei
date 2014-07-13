@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    
+<!--***************commonQuerySupport.xml**************-->
+<!--***********************通用查询Formprinttemplet配置开始******************************-->	
+   <bean id="formprinttempletquery" class="net.mast.workform.printtemplet.cmd.FormprinttempletQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="formprinttempletforward"/></entry>
+	        </map>
+        </property>   
+	</bean>
+	   <bean id="formprinttemplethelp" class="net.mast.workform.printtemplet.cmd.FormprinttempletHelpCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="formprinttempletforward"/></entry>
+	        </map>
+        </property>   
+	</bean>
+<!--***********************通用查询Formprinttemplet配置结束******************************-->
+
+<!--****viewSupport.xml**************-->
+	<bean id="formprinttempletView"  class="net.mast.workform.printtemplet.view.FormprinttempletView" singleton="false"/>
+
+
+<!--******commandSupport.xml**********-->
+<!--***********************表单打印模板cmd配置开始*********************************-->    
+    <bean id="formprinttemplet" class="net.mast.workform.printtemplet.cmd.FormprinttempletCmd" singleton="false">
+	    <property name="formprinttempletService"><ref bean="formprinttempletService"/></property>
+	    <property name="view"><ref bean="formprinttempletView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="formprinttempletView"><ref bean="formprinttempletforward"/></entry>
+	            <entry key="formprinttempletViewChain"><ref bean="formprinttempletforwardchain"/></entry>
+	        </map>
+		</property>
+		<!--拦截看看是否需要?-->
+		<!--
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="formprinttemplet_interceptor"/>	           
+	        </list>
+     	</property>
+     	-->
+    </bean>
+<!--***********************表单打印模板cmd配置结束*********************************-->
+
+
+
+<!--************daoSupport.xml****************-->
+<bean id="formprinttempletDao" class="net.mast.workform.printtemplet.dao.jdbc.FormprinttempletJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<!--*******************forwardSupport.xml**********************-->
+<!--***********************表单打印模板  forward配置开始***********************************-->
+    <bean id="formprinttempletforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/workflow/printtemplet/formprinttemplet_detail.jsp</prop>
+			    <prop key="forinsert">jsp/workflow/printtemplet/formprinttemplet_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/workflow/printtemplet/formprinttemplet_forupdate.jsp</prop>
+				<prop key="query">jsp/workflow/printtemplet/formprinttemplet_query.jsp</prop>
+				<prop key="help">jsp/workflow/printtemplet/formprinttemplet_help.jsp</prop>				
+				<prop key="hiddenOperation">jsp/workflow/printtemplet/formprinttemplet_hiddenOperation.jsp</prop>				
+			</props>
+		</property>
+	</bean>
+    <bean id="formprinttempletforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="formprinttempletquery"/></entry>
+			</map>
+		</property>
+    </bean>
+<!--***********************表单打印模板  forward配置结束***********************************-->
+
+
+<bean id="formPrintTempletId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>WF_PRINT_TEMPLET_ID</value></property>
+</bean>
+<!--*******************************serviceSupport.xml******************************************-->
+<bean id="formprinttempletService" class="net.mast.workform.printtemplet.service.support.FormprinttempletServiceImpl"> 
+	<property name="formprinttempletDao"><ref bean="formprinttempletDao"/></property>   	
+	<property name="formPrintTempletId"><ref bean="formPrintTempletId"/></property>   		
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+</bean>
+
+<!--*****************************domainSupport.xml*****************************************-->
+<!--
+<bean id="formprinttempletDomain" class="net.mast.workflow.workform.printtemplet.domain.support.FormprinttempletDomainImpl"> 
+	<property name="formprinttempletDao"><ref bean="formprinttempletDao"/></property>   	
+</bean>
+-->
+
+<!--*****************************下拉框枚举生成*****************************************-->
+
+
+
+
+<!--***********************同时在collentionSupport.xml 中添加***************************-->
+
+<!--***********************同时在commandSupport.xml 中添加下面代码***************************-->
+
+</beans>

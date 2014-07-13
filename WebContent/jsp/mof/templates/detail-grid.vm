@@ -1,0 +1,35 @@
+##给明细Tab也增加边框
+#set ($border=1)
+#if( $tab.getCurrentTabCount() > 1)
+	#set ($border=0)
+<fieldset id="fieldset_${tab.Name}" style="padding: 2">
+	<legend id="legend_${tab.Name}">${tab.Description}</legend>
+#end
+#set ($pageType="detailGrid")
+##设置此Tab的表单域的总宽度，为绝对值,如果为空则取100%
+#set($tab_width =($tab.getWidth()))
+#if($tab.getWidth()>0)
+	#set($tab_width =($tab.getWidth()))
+#else
+	#set($tab_width ="100%")
+#end
+
+#if($tab.getMaxLine()>0)
+	#set ($height=60+20*$tab.getMaxLine())
+	<grid:grid name="grid_${tab.Name}" sumRow="true" headCss="divToucss" detailCss="divTiSkin" sumCss="divSumcss" complexHead="false" property="${tab.Name}" type="edit" headHeight="22"  sumHeight="22" width="$tab_width" height="$height">
+#else
+	<grid:grid name="grid_${tab.Name}" sumRow="true" headCss="divToucss" detailCss="divTiSkin" sumCss="divSumcss" complexHead="false" property="${tab.Name}" type="edit" headHeight="22"  sumHeight="22" width="$tab_width" height="260">
+#end
+	#set ($index=1)
+	#foreach( $field in $tab.Fields )
+		#set ($disp=$field.getDisplayControl($pageType))
+		#if($useRefTemplate)
+		#parse(${field.getGridJSPTemplate($pageType)})
+		#else
+		${field.outDetailGridJSP()}
+		#end
+	#end
+	</grid:grid>
+#if( $tab.getCurrentTabCount() > 1)
+</fieldset>	
+#end

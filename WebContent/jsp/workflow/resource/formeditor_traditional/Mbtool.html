@@ -1,0 +1,740 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>表单定制工具</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+<style>
+.bgtou{
+	background-color:#E6E6E6;
+	filter: Alpha(Opacity=40, FinishOpacity=100, Style=1, StartX=0, StartY=0, FinishX=0, FinishY=50);
+	border-color: #E6E6E6;
+	vertical-align:center;
+	white-space:   nowrap;
+	color: #000000;
+	font-size:9pt;
+	padding:5px;
+}
+.bgtou button
+{
+	background-color:#E6E6E6;
+	border:1 solid #E6E6E6;
+	vertical-align:top;
+	white-space:   nowrap;
+	color: #000000;
+	font-size:9pt;
+	cursor:hand;
+	height:23;
+}
+.fieldsetCss
+{
+width:  100%;
+padding:10;
+margin-left:12px;
+margin-bottom:4;
+margin-right:12px;
+}
+
+</style>
+</HEAD>
+<script language="javascript">
+var SubFormIndex=1;//子表单名称
+var lineobj=null;
+var linedraw=null;
+
+//初始化
+function init()
+{
+		//showtabwin();
+		var tabstr='<TABLE id="tab1"   unselectable=on   borderColor=#000000 cellSpacing=0 cellPadding=0 bgColor=#ffffff border=1>';
+		for(var i=0;i<5;i++)
+		{
+			tabstr+="<tr>";
+			for(var j=0;j<6;j++)
+			{
+			tabstr+='<td phcol="'+(j+1)+'" phrow="'+(i+1)+'" ></td>' ;
+			}
+			tabstr+="</tr>";
+		}
+		tabstr+="</table><iframe width='100%' frameborder='0'  unselectable=on   height='100%' style='top:0;position:absolute;z-index:-1;'></iframe>";
+		document.frames.ff.document.all("page1").innerHTML=tabstr;
+		document.frames.ff.OBJ.init();
+		//setFormHtml(document.all('Ins_html-code').value);
+
+}
+//外部getFormXml
+function getFormXml()
+{
+	return	document.frames.ff.OBJ.getFormXml();
+}
+//外部getFormTemplate
+function getFormTemplate()
+{
+	return	document.frames.ff.OBJ.getFormTemplate();
+}
+
+//外部getFormHtml
+function getFormHtml()
+{
+	return	document.frames.ff.OBJ.getFormHtml();
+}
+//外部set另存为
+function reSetFormName()
+{
+document.frames.ff.OBJ.reSetFormName();
+}
+//外部set大小写
+function setCharType(val)
+{
+document.frames.ff.OBJ.setCharType(val);
+}
+//外部set字段名，表名只读
+function setReadonlyType(val)
+{
+document.frames.ff.OBJ.setReadonlyType(val);
+}
+
+//外部get大小写
+function getCharType()
+{
+return document.frames.ff.OBJ.getCharType();
+}
+
+//外部set url
+function setUrl(url)
+{
+		document.frames.ff.OBJ.setUrl(url);
+}
+//外部set formtype修改时为1
+function setFormType(val)
+{
+		document.frames.ff.OBJ.setFormType(val);
+}
+
+//外部set 编辑区HTML
+function setFormHtml(str)
+{
+		if(str!=null && str!="")
+		{
+		document.frames.ff.OBJ.setFormHtml(str);
+		document.frames.ff.OBJ.init();
+		var tabs=document.frames.ff.document.body.getElementsByTagName("TABLE");
+		var subs=1;
+		for(var i=0;i<tabs.length;i++)
+		{
+		if(tabs[i].type=="sub")
+		subs++;
+		}
+		SubFormIndex=subs;
+
+		//兼容老版本的表单，标题部分
+		var titleobj=document.frames.ff.document.all("titledesign");
+		if(titleobj!=null&&titleobj.tagName!="TD")
+		{
+		titleobj.outerHTML='<table id="tabletitle" unselectable=on  width="100%" border=1><tr><td align=center id="titledesign" >'+titleobj.innerText+'</td></tr><tr><td  id="subtitledesign"></td></tr></table>';
+		}
+		}
+		//else
+		//init();
+}
+//外部set 打印模板
+function setFormPrintTemplate(str)
+{
+		document.frames.ff.OBJ.setFormPrintTemplate(str);
+}
+//外部set 正文模板
+function setFormTextTemplate(str)
+{
+		document.frames.ff.OBJ.setFormTextTemplate(str);
+}
+//用来判断是否填写表单NAME
+function hasFormName()
+{
+	var formnamestr=document.frames.ff.document.all("pages").formid;;
+	if(formnamestr==null || formnamestr=="")
+	return false;
+	else
+	return true;
+}
+  function openMbPer()
+  {
+  var curobj=document.frames.ff.OBJ.getCurXmlNode();
+  if(curobj==null)
+  {
+  alert("没有选择板块！");
+  return;
+  }
+  window.showModalDialog("bankuai.htm",window,"dialogWidth:300px;dialogHeight:300px;status:no");
+  }
+    function openTdPer()
+  {
+   var curobj=document.frames.ff.OBJ.getFirstTd();
+  if(curobj==null)
+  {
+  alert("没有选择单元格！");
+  return;
+  }
+  window.showModalDialog("cell_attrib.htm",window,"dialogWidth:400px;dialogHeight:300px;status:no");
+  }
+
+  function showtabwin()
+  {
+    var curobj=document.frames.ff.OBJ.getTabAll();
+  if(curobj==null)
+  {
+  alert("请选择表格！");
+  return;
+  }
+    window.showModalDialog("template.htm",window,"dialogWidth:450px;dialogHeight:400px;status:no");
+  }
+  //单元格属性
+  function opentd()
+  {
+	 window.showModalDialog("cell_attrib.htm",window,"dialogWidth:450px;dialogHeight:400px;status:no");
+  }
+
+  function showformwin()
+  {
+     return window.showModalDialog("form.htm",window,"dialogWidth:400px;dialogHeight:400px;status:no");
+
+  }
+  //另存为
+    function showsaveas()
+  {
+     var val=window.showModalDialog("formsaveas.htm",window,"dialogWidth:400px;dialogHeight:400px;status:no");
+	if(val=="true")
+	return "true";
+	else
+	return "false";
+  }
+
+    function showsubformwin()
+  {
+   var tab=document.frames.ff.OBJ.getTabAll();
+  if(tab==null || tab.type!="sub")
+  {
+  alert("请选择子表单！");
+  return;
+  }
+      window.showModalDialog("subform.htm",window,"dialogWidth:400px;dialogHeight:400px;status:no");
+
+  }
+
+  function dozoom()
+  {
+  var obj=event.srcElement;
+  document.frames.ff.document.body.style.zoom=obj.options[obj.selectedIndex].value;
+  }
+  function redo()
+  {
+	var str=document.frames.ff.OBJ.reDo();
+	if(str==null) return;
+	document.frames.ff.OBJ.reDraw(str,1);
+  }
+  function repeate()
+  {
+  var str=document.frames.ff.OBJ.repertDo();
+  	if(str==null) return;
+	document.frames.ff.OBJ.reDraw(str,1);
+  }
+  function noborder()
+  {
+  //alert(document.frames.ff.document.all('tt').outerHTML);
+  var img=window.event.srcElement;
+  var tt=document.frames.ff.document.all('tt');
+  if(tt.className=="noborder")
+  {
+  img.src="images/12.gif";
+  tt.className="";
+  }
+  else
+  {
+    img.src="images/12_h.gif";
+	tt.className="noborder";
+  }
+  }
+  function doview(){
+	tex2.value=ff.document.body.innerHTML;
+	document.frames.ff.OBJ.makeTabXml();
+  }
+ function dosave()
+ {
+ tex1.value=document.frames.ff.OBJ.getAllHtmlStr();
+//alert(xmlstr.xml);
+ }
+ function WBTB_format(what,opt)
+{
+var insertPoint=document.frames.ff.document.selection.createRange();
+//alert(insertPoint.parentElement().tagName);
+if(insertPoint.parentElement()!=null && insertPoint.parentElement().tagName=="TD" && insertPoint.parentElement().offsetParent!=null && insertPoint.parentElement().offsetParent.id=="tabpage")
+return;
+	if (opt=="removeFormat")
+	{
+		what=opt;
+		opt=null;
+	}
+	ff.focus();
+	if (opt==null)
+	{
+		ff.document.execCommand(what);
+	}else{
+		ff.document.execCommand(what,"",opt);
+	}
+//	ff.focus();
+}
+function WBTB_foreColor()
+{
+	//if (!WBTB_validateMode()) return;
+	var arr = showModalDialog("selcolor.html", "", "dialogWidth:20.5em; dialogHeight:20.5em; status:0; help:0");
+	if (arr != null) WBTB_format('forecolor', arr);
+	document.all('colorspan').style.backgroundColor=arr;
+}
+function WBTB_foreColor2()
+{
+	WBTB_format('forecolor', document.all('colorspan').style.backgroundColor);
+}
+
+function InsertTextFiled()
+{
+var otaball=document.frames.ff.OBJ.getTabAll();
+var insertPoint=document.frames.ff.document.selection.createRange();
+if(otaball==null || document.frames.ff.document.selection.type=="Control" || insertPoint.parentElement()==null || insertPoint.parentElement().tagName!="TD")
+// || !otaball.contains(insertPoint.parentElement()))
+{
+alert("请选择插入位置!");
+return false;
+}
+if(insertPoint.parentElement().children.length>0)
+{
+alert("不能在同一单元格中插入多个域!");
+return false;
+
+}
+insertPoint.pasteHTML('<input type="text"/>');
+}
+function DelTextFiled()
+{
+var insertPoint=document.frames.ff.document.selection;
+if(insertPoint.type=="Control")
+	insertPoint.clear();
+}
+function InsertPl()
+{
+var otaball=document.frames.ff.OBJ.getTabAll();
+var insertPoint=document.frames.ff.document.selection.createRange();
+//alert(insertPoint.parentElement().tagName);
+if(otaball==null || document.frames.ff.document.selection.type=="Control" || insertPoint.parentElement()==null || insertPoint.parentElement().tagName!="TD")
+// || !otaball.contains(insertPoint.parentElement()))
+{
+alert("请选择插入位置!");
+return false;
+}
+if(insertPoint.parentElement().children.length>0)
+{
+alert("不能在同一单元格中插入多个域!");
+return false;
+
+}
+
+if(otaball==null)
+return;
+if(otaball.type=="sub")
+{
+alert("评论域不能插入到子表单!");
+return;
+}
+if(otaball.type=="sub")
+{
+alert("评论域不能插入到子表单!");
+return;
+}
+var areas=document.frames.ff.document.getElementsByTagName("TEXTAREA");
+for(var i=0;i<areas.length;i++)
+{
+	var oarea=areas[i];
+	if(oarea.type=="pl")
+	{
+	alert("表单只能有一个评论域!");
+	return;
+	}
+}
+var insertPoint=document.frames.ff.document.selection.createRange();
+insertPoint.pasteHTML('<textarea type="pl">评论域</textarea>');
+}
+
+function InsertTextArea()
+{
+var insertPoint=document.frames.ff.document.selection.createRange();
+insertPoint.pasteHTML('<textarea></textarea');
+}
+function InsertSelect()
+{
+var insertPoint=document.frames.ff.document.selection.createRange();
+insertPoint.pasteHTML('<select ></select>');
+}
+function insertsubform()
+{
+var tabtab=document.frames.ff.document.all("tabpage");
+var obody=null;
+for(var jj=0;jj<tabtab.rows[0].cells.length;jj++)
+{
+	var otd=tabtab.rows[0].cells[jj];
+	if(otd.className=="taboncss")
+	{
+	obody=document.frames.ff.document.all("page"+(otd.index));
+	break;
+	}
+}
+var tabstr='';
+var fieldsetcount=obody.getElementsByTagName("FIELDSET");
+if(fieldsetcount.length>0)
+	{
+	fieldsetcount=fieldsetcount[fieldsetcount.length-1].getAttribute("fid");
+	if(fieldsetcount==null)
+	fieldsetcount=0;
+	}
+else
+	{
+	fieldsetcount=0;
+//	tabstr+='<hr class="hrcss">';
+	}
+var chartype=getCharType();
+var fomid="sub";
+//if(chartype=="1")
+//fomid="SUB";
+tabstr+='<fieldset fid="'+(parseInt(fieldsetcount)+1)+'"  unselectable=on   class="fieldsetCss" ><legend> 子表单'+(parseInt(fieldsetcount)+1)+' </legend><TABLE   unselectable=on  id="sub'+SubFormIndex+'" formid="${sub'+SubFormIndex+'}"  type="sub" borderColor=#000000 cellSpacing=0 cellPadding=0  bgColor=#ffffff border=1>';
+for(var i=0;i<3;i++)
+{
+if(i==0)
+	tabstr+='<tr class="tabtoucss">';
+else if(i==2)
+	tabstr+='<tr class="tabsumcss">';
+else
+	tabstr+='<tr >';
+	for(var j=0;j<6;j++)
+	{
+	tabstr+='<td phcol="'+(j+1)+'" phrow="'+(i+1)+'" >' ;
+	//if(i==2)
+	//tabstr+='<input  sumtype="col"  style="border:1 solid;width:90%;" value="列合计">';
+	tabstr+="</td>";
+	}
+	
+	tabstr+="</tr>";
+}
+tabstr+="</table></fieldset>";
+obody.insertAdjacentHTML("beforeEnd",tabstr);
+SubFormIndex++;
+
+}
+//删除子表单
+function delsubform()
+{
+var taball=document.frames.ff.OBJ.getTabAll();
+if(taball==null || taball.tagName!="TABLE")
+	return;
+	if(taball.parentElement!=null && taball.parentElement.tagName=="FIELDSET")
+	{
+	taball.parentElement.removeNode(true);
+	taball=null;
+	}
+}
+var index=1;
+function InsertNewPage()
+{
+var tabtab=document.frames.ff.document.all("tabpage");
+var titletd=document.frames.ff.document.all("titledesign");
+var subtitletd=document.frames.ff.document.all("subtitledesign");
+
+tabtab.style.position="relative";
+for(var jj=0;jj<tabtab.rows[0].cells.length;jj++)
+{
+var otd=tabtab.rows[0].cells[jj];
+if(otd.className=="taboncss")
+{
+otd.tabtitle=titletd.innerHTML;
+otd.tabtitlexml=titletd.innerText;
+if(subtitletd!=null)
+{
+otd.subtabtitle=subtitletd.innerHTML;
+otd.subtabtitlexml=subtitletd.innerText;
+}
+}
+otd.className="taboffcss";
+if(otd.index!=null && otd.index!="")
+index=parseInt(otd.index);
+}
+var ntd=tabtab.rows[0].insertCell();
+//var index=ntd.cellIndex;
+ntd.className="taboncss";
+if(ntd.tabtitle==null || ntd.tabtitle=="")
+titletd.innerText="表单标题";
+else
+titletd.innerText=ntd.tabtitle;
+if(subtitletd!=null)
+{
+if(ntd.subtabtitle==null)
+subtitletd.innerText="";
+else
+subtitletd.innerText=ntd.subtabtitle;
+}
+ntd.innerText="第"+(index+1)+"页";
+//ntd.width=50;
+ntd.index=index+1;
+var tabstr='<TABLE   unselectable=on   id="tab'+parseInt(index+1)+'" borderColor=#000000 cellSpacing=0 cellPadding=0  bgColor=#ffffff border=1>';
+		for(var i=0;i<5;i++)
+		{
+			tabstr+="<tr>";
+			for(var j=0;j<6;j++)
+			{
+			tabstr+='<td phcol="'+(j+1)+'" phrow="'+(i+1)+'" ></td>' ;
+			}
+			tabstr+="</tr>";
+		}
+		tabstr+="</table>";
+document.frames.ff.document.all("pages").insertAdjacentHTML("beforeEnd","<div unselectable=on style='position:absolute;z-index:100;width:100%;height:100%' id='page"+(index+1)+"'>"+tabstr+"  <iframe unselectable=on width='100%' frameborder='0' height='100%' style='top:-1;position:absolute;z-index:-1;'></iframe></div>");
+var odiv=document.frames.ff.document.all("page"+(index+1));
+var oldheight=document.frames.ff.document.all("page"+(index)).clientHeight;
+var oheight=odiv.clientHeight;
+//alert(oheight+"<"+oldheight);
+if(oheight<oldheight)
+	odiv.style.height=oldheight;
+index++;
+//var ntab=document.frames.ff.document.all("tab"+parseInt(index+1));
+//if(ntab!=null && ntab.tagName=="TABLE")
+//ntab.rows[0].cells[0].click();
+}
+function delOPage()
+{
+	var tabtab=document.frames.ff.document.all("tabpage");
+	if(tabtab.rows[0].cells.length==1)
+	{
+	return;
+	}
+	for(var jj=0;jj<tabtab.rows[0].cells.length;jj++)
+	{
+	var otd=tabtab.rows[0].cells[jj];
+		if(otd.className=="taboncss")
+		{
+		var ptd=otd.previousSibling;
+		if(ptd!=null && ptd.tagName=="TD")
+		{
+		ptd.className="taboncss";
+		var pdiv=document.frames.ff.document.all("page"+(ptd.index));
+		pdiv.style.zIndex="100";
+		}
+		var odiv=document.frames.ff.document.all("page"+(otd.index));
+		if(odiv!=null)
+		odiv.removeNode(true);
+		otd.removeNode(true);
+		break;
+		}
+	}
+	if(tabtab.rows[0].cells.length==1)
+	{
+	tabtab.style.position="absolute";
+	}
+
+}
+function insertLine()
+{
+var otaball=document.frames.ff.OBJ.getTabAll();
+var insertPoint=document.frames.ff.document.selection.createRange();
+if(otaball==null || document.frames.ff.document.selection.type=="Control" || insertPoint.parentElement()==null || insertPoint.parentElement().tagName!="TD")
+// || !otaball.contains(insertPoint.parentElement()))
+{
+alert("请选择插入位置!");
+return false;
+}
+
+if(linedraw==null)
+{
+lineobj=document.frames.ff.document.all("line");
+linedraw=document.frames.ff.Line;
+}
+if(lineobj==null) return;
+if(lineobj.length>1)
+lineobj=lineobj[0];
+var otd=insertPoint.parentElement();
+	if(linedraw!=null)
+	{
+	var x1=0;//otd.offsetLeft;
+	var y1=0;//otd.offsetTop;
+	var x2=x1+otd.offsetWidth-1;
+	var y2=y1+otd.offsetHeight-1;
+	linedraw.drawLine(x1, y1, x2, y2); 
+	//alert(x1+","+y1+","+x2+","+y2);
+	linedraw.paint(); 
+	//alert(lineobj.innerHTML);
+	insertPoint.pasteHTML("<div style='position:absolute;margin:-3' unselectable=on>"+lineobj.innerHTML+"</div>");
+	linedraw.clear();
+	}
+}
+//删除斜线
+function delLine()
+{
+var otaball=document.frames.ff.OBJ.getTabAll();
+var insertPoint=document.frames.ff.document.selection.createRange();
+if(otaball==null || document.frames.ff.document.selection.type=="Control" || insertPoint.parentElement()==null)
+{
+alert("请选择要删除的斜线!");
+return false;
+
+}
+var otd=insertPoint.parentElement();
+if(otd==null) return;
+if(otd.tagName!="TD")
+{
+if(otd.parentElement.tagName=="TD")
+otd=otd.parentElement;
+}
+
+if(otd.tagName!="TD")
+{
+return false;
+}
+var arrdiv=otd.getElementsByTagName("DIV");
+
+	if(arrdiv.length>5)
+	{
+		for(var i=arrdiv.length-1;i>=0;i--)
+		{
+		arrdiv[i].removeNode();
+		}
+	}
+}
+
+//合计列
+function InsertColSum()
+{
+var otaball=document.frames.ff.OBJ.getTabAll();
+var insertPoint=document.frames.ff.document.selection.createRange();
+if(otaball==null || document.frames.ff.document.selection.type=="Control" || otaball.type!="sub" || insertPoint.parentElement()==null || insertPoint.parentElement().tagName!="TD")// || !otaball.contains(insertPoint.parentElement()))
+{
+alert("不能在主表单中插入合计列!");
+return false;
+}
+if(insertPoint.parentElement().children.length>0)
+{
+alert("不能在同一单元格中插入多个域!");
+return false;
+
+}
+
+insertPoint.pasteHTML('<input  sumtype="col"  style="border:1 solid;width:90%;" value="列合计">');
+}
+//合计行
+function InsertRowSum()
+{
+var otaball=document.frames.ff.OBJ.getTabAll();
+var insertPoint=document.frames.ff.document.selection.createRange();
+if(otaball==null || document.frames.ff.document.selection.type=="Control" || otaball.type!="sub" || insertPoint.parentElement()==null || insertPoint.parentElement().tagName!="TD")// || !otaball.contains(insertPoint.parentElement()))
+{
+alert("不能在主表单中插入合计行!");
+return false;
+}
+if(insertPoint.parentElement().children.length>0)
+{
+alert("不能在同一单元格中插入多个域!");
+return false;
+
+}
+
+insertPoint.pasteHTML('<input  sumtype="row"  style="border:1 solid;width:90%;" value="行合计">');
+}
+
+</script>
+<BODY topmargin=0 onload="init()" ondragstart="return false;">
+<!--<textarea id=ttt></textarea>-->
+<TABLE width="100%" border=1 height="100%" cellspacing=0 cellpadding=0>
+<!--<TR bgcolor="#A3CFF2">
+	<TD  height="23" colspan=2><img src="images/document.frames.gif"><textarea id="tex1"></textarea><textarea id="tex2"></textarea>
+</TD>
+</TR>-->
+<TR>
+	<TD   colspan=2 width="100%" height="25" class="bgtou">
+	<!--	<img border="0" src="images/01.gif" title="保存" onclick="dosave();">
+		<img border="0" src="images/02.gif" title="预览" onclick="doview();alert(getFormXml());alert(getFormTemplate());">-->
+		<img  onclick="showformwin();"  border="0" src="images/05.gif" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   title="表单属性">
+		<img  onclick="showsubformwin();"  border="0" src="images/subform.gif" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   title="子表单属性">
+		<img border="0" src="images/04.gif"  onclick="showtabwin();" id="05" title="表格属性"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;" >
+		<img border="0" src="images/03.gif"  title="单元格属性" onclick="opentd()"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;" >
+		<img onclick="ff.merge();"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/06.gif" title="合并单元格">
+		<img onclick="ff.split();"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/07.gif" title="拆分单元格">
+		<img onclick="document.frames.ff.OBJ.addRow();"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/08.gif" title="插入一行">
+		<img onclick="document.frames.ff.OBJ.delRow();"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0"  title="删除一行" src="images/09.gif">
+		<img onclick="document.frames.ff.OBJ.addCol();"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/10.gif"  title="插入一列">
+		<img onclick="document.frames.ff.OBJ.delCol();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/11.gif"  title="删除一列">
+		<img  src="images/hr.gif" onclick="insertLine();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;" title="插入斜线">
+		<img border="0" src="images/delhr.gif" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;" onclick="delLine();"  title="去掉斜线">
+		<span id="colorspan" style="background-color:red"><img    style="border:1 #E6E6E6 solid;"   border="0"   usemap="#divimg" title="字体颜色" src="images/def_fontcolor2.gif"></span>
+		<img onclick="WBTB_format('justifyleft');"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/def_left.gif"  title="左对齐">
+		<img onclick="WBTB_format('justifycenter');"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/def_middle.gif"  title="居中">
+		<img onclick="WBTB_format('justifyright');"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/def_right.gif"  title="右对齐">
+		
+		<img onclick="WBTB_format('bold');"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/bold.gif" title="粗体">
+		<img  onclick="WBTB_format('italic');"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/italic.gif" title="斜体">
+		<img onclick="WBTB_format('underline');"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" style="border:1 #E6E6E6 solid;"   border="0" src="images/underline.gif" title="下划线">
+	<!--<select name="zoom" onchange="dozoom();" title="缩放比例"><option value="50%">50%</option><option value="75%">75%</option><option value="100%" selected>100%</option><option value="150%">150%</option><option value="200%">200%</option><option value="250%">250%</option><option value="300%">300%</option></select>-->
+
+</TD>
+	
+</TR>
+<tr>
+<td class="bgtou" height="15" valign=top>
+	<select language="javascript" class="WBTB_TBGen" id="FontName" onchange="WBTB_format('fontname',this[this.selectedIndex].value);this.options[0].selected=true;"> 
+							<option class="heading" selected>字体
+							<option value="宋体">宋体
+							<option value="黑体">黑体
+							<option value="楷体_GB2312">楷体
+							<option value="仿宋_GB2312">仿宋
+							<option value="隶书">隶书
+							<option value="幼圆">幼圆
+							<option value="新宋体">新宋体
+							<option value="细明体">细明体
+							<option value="Arial">Arial
+							<option value="Arial Black">Arial Black
+							<option value="Arial Narrow">Arial Narrow
+							<option value="Bradley Hand ITC">Bradley Hand ITC
+							<option value="Brush Script	MT">Brush Script MT
+							<option value="Century Gothic">Century Gothic
+							<option value="Comic Sans MS">Comic Sans MS
+							<option value="Courier">Courier
+							<option value="Courier New">Courier New
+							<option value="MS Sans Serif">MS Sans Serif
+							<option value="Script">Script
+							<option value="System">System
+							<option value="Times New Roman">Times New Roman
+							<option value="Viner Hand ITC">Viner Hand ITC
+							<option value="Verdana">Verdana
+							<option value="Wide Latin">Wide Latin
+							<option value="Wingdings">Wingdings</option>
+						</select>
+	<select language="javascript" class="WBTB_TBGen" id="FontSize" onchange="WBTB_format('fontsize',this[this.selectedIndex].value);this.options[0].selected=true;">
+							<option class="heading" selected>字号
+							<option value="1">1
+							<option value="2">2
+							<option value="3">3
+							<option value="4">4
+							<option value="5">5
+							<option value="6">6 
+							<option value="7">7</option>
+						</select>
+		<button onclick="InsertTextFiled();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'"><img border="0" src="images/def_text.gif"   title="插入域"></button>&nbsp;<button onclick="DelTextFiled();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'"><img border="0" src="images/dele_h.gif"   title="删除域"></button><img border="0" src="images/dianline.gif">
+		<button onclick="insertsubform();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'" ><img border="0" src="images/copy.gif"   title="插入子表单"></button>&nbsp;<button onclick="delsubform();"  onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'"><img border="0" src="images/delsub.gif"   title="删除子表单"></button>&nbsp;<img border="0" src="images/dianline.gif">
+		<button onclick="InsertNewPage();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'"><img border="0" src="images/new.gif"  title="插入新页面" ></button>&nbsp;	<button onclick="delOPage();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'"><img border="0" src="images/delpage.gif"  title="删除页" ></button><img border="0" src="images/dianline.gif"><button onclick="InsertPl();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'"><img border="0" src="images/statistic_h.gif"  title="插入评论域" ></button><img border="0" src="images/dianline.gif"><button onclick="InsertColSum();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'"><img border="0" src="images/list.gif"  title="插入列合计" ></button>&nbsp;<button onclick="InsertRowSum();" onmouseover="this.style.borderColor='#000000';" onmouseout="this.style.borderColor='#E6E6E6'"><img border="0" src="images/list1.gif"  title="插入行合计" ></button>
+
+</td>
+</tr>
+<TR onmousedown="document.frames.ff.OBJ.FrameMouseDown();" onmousemove="document.selection.empty();">
+
+	<TD width="100%" id="treetd"><iframe width="100%" height="100%" id=ff src="blank.htm"></iframe></TD>
+</TR>
+</TABLE>
+<map name="divimg">
+	<area shape="rect" coords="0,0,22,24" HIDEFOCUS="true" UNSELECTABLE="true"  onmousedown="WBTB_foreColor2();">
+	<area shape="rect" coords="23,0,35,24" HIDEFOCUS="true" UNSELECTABLE="true" onmousedown="WBTB_foreColor();">
+</map>
+</BODY>
+</HTML>

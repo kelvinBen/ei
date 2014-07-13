@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+				<!--processType
+   <bean id="processtypequery" class="net.mast.workflow.wfclient.processmanage.processtype.cmd.ProcessTypeQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="processtypeforward"/></entry>
+	        </map>
+        </property>         	
+		<property name="dictService"><ref bean="DictService"/></property>
+	</bean>
+	
+	-->
+	
+	   <bean id="processtypehelpquery" class="net.mast.workflow.wfclient.processmanage.processType.action.ProcessTypeHelpAction" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="processtypeforward"/></entry>
+	        </map>
+        </property>         	
+		<property name="dictService"><ref bean="DictService"/></property>
+	</bean>
+    <bean id="processtypeforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/processmanage/processtype/processtype_query.jsp</prop>
+			    <prop key="queryhelp">jsp/workflow/processmanage/processtype/processtype_query_help.jsp</prop>
+			</props>
+		</property>
+	</bean>
+<!--  
+    <bean id="processtype" class="net.mast.workflow.wfclient.processmanage.processtype.cmd.ProcessTypeCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="processtypeView"><ref bean="processtypeView"/></entry>
+	            <entry key="processtypeViewChain"><ref bean="processtypeViewChain"/></entry>
+	        </map>
+		</property>
+		<property name="dictService"><ref bean="DictService"/></property>
+    </bean>
+    -->
+    <bean id="processtypeView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="detail">jsp/workflow/processmanage/processtype/processtype_detail.jsp</prop>
+				<prop key="forinsert">jsp/workflow/processmanage/processtype/processtype_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/workflow/processmanage/processtype/processtype_forupdate.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="processtypeViewChain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="processtypequery"/></entry>
+			</map>
+		</property>
+    </bean>
+				<!--process-->
+   <bean id="processquery" class="net.mast.workflow.wfclient.processmanage.process.cmd.ProcessQueryCmd" singleton="false">
+	   <property name="struDomain"><ref bean="struDomain"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="processforward"/></entry>
+	        </map>
+        </property>  
+		<property name="dictService"><ref bean="DictService"/></property>     	
+	</bean>
+   <bean id="processhelpquery" class="net.mast.workflow.wfclient.processmanage.process.cmd.ProcessHelpCmd" singleton="false">
+	    <property name="struDomain"><ref bean="struDomain"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="processforward"/></entry>
+	        </map>
+        </property>   
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="processtypeinterceptor"/>
+	        </list>
+        </property>          	
+	</bean>
+	   <bean id="processtemplatequery" class="net.mast.workflow.wfclient.processmanage.process.cmd.ProcessTemplateQueryCmd" singleton="false">
+	   <property name="struDomain"><ref bean="struDomain"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="processforward"/></entry>
+	        </map>
+        </property>   
+		<property name="dictService"><ref bean="DictService"/></property>     	
+	</bean>
+    <bean id="processforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/processmanage/process/process_query.jsp</prop>
+			    <prop key="queryhelpradio">jsp/workflow/processmanage/process/process_radio.jsp</prop>
+			    <prop key="querytemplateradio">jsp/workflow/processmanage/process/process_template_radio.jsp</prop>
+			</props>
+		</property>
+	</bean>
+
+    <bean id="process" class="net.mast.workflow.wfclient.processmanage.process.cmd.ProcessCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="processView"><ref bean="processView"/></entry>
+	            <entry key="processViewChain"><ref bean="processViewChain"/></entry>
+	        </map>
+		</property>
+		<property name="beforIntercept">
+	        <list>
+	           
+	            <ref bean="workflow_process_reservetype_interceptor"/>
+	        </list>
+        </property>
+		<property name="dictService"><ref bean="DictService"/></property>
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+    </bean>
+    <bean id="processView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="detail">jsp/workflow/processmanage/process/process_detail.jsp</prop>
+				<prop key="forinsert">jsp/workflow/processmanage/process/process_forinsert.jsp</prop>
+				<!--<prop key="forinsertpro">jsp/workflow/processmanage/process/process_forinsertpro.jsp</prop>-->
+				<prop key="forinsertpro">jsp/workflow/processmanage/process/process_forinsertpro_dev.jsp</prop>
+			    <prop key="forupdate">jsp/workflow/processmanage/process/process_forupdate.jsp</prop>
+			    <prop key="forupdatepro">jsp/workflow/processmanage/process/process_forupdatepro.jsp</prop>
+			    <prop key="errorforward">jsp/workflow/processmanage/process/process_error_forward.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="processViewChain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="processquery"/></entry>
+			</map>
+		</property>
+    </bean>
+	
+	<bean id="urlconfig" class="net.mast.workflow.wfclient.wfdefinition.cmd.UrlConfigCmd" singleton="false">
+		<property name="forwards">
+	        <map>
+	            <entry key="urlconfigView"><ref bean="urlconfigView"/></entry>
+	        </map>
+		</property>				
+	</bean>
+	<bean id="urlconfigView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="blank">jsp/workflow/processmanage/blank.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- 流程定义的导入导出 -->
+	<bean id="processupdateview"  class="net.mast.workflow.wfclient.processmanage.exchange.bean.ProcessUpdateView" singleton="false"/>
+	<bean id="processExchange" class="net.mast.workflow.wfclient.processmanage.exchange.cmd.ProcessExchangeCmd" singleton="false">
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+		<property name = "wfWorkformId" ><ref bean ="wfWorkformId" /></property>
+		<property name="view"><ref bean="processupdateview"/></property>
+		<property name="forwards">
+	        <map>
+	            <entry key="processExchangeView"><ref bean="processExchangeView"/></entry>
+	        </map>
+		</property>
+	</bean>
+	<bean id="processExchangeView" class="net.mast.waf.mvc.ServletDispatcherForward" >
+	    <property name="mappings">
+			<props>
+			    <prop key="forexport">jsp/workflow/processmanage/exchange/process_forexport.jsp</prop>
+			    <prop key="forimport">jsp/workflow/processmanage/exchange/process_forimport.jsp</prop>
+			    <prop key="import">jsp/workflow/processmanage/exchange/process_import.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- end 流程定义的导入导出 -->
+</beans>

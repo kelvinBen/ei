@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+<!--***********************翻页初始化特殊查询配置开始***************************-->
+	<bean id="proposalportalAction" class="org.proposal.portal.portalAction">
+	    <property name="forwards">
+	        <map>
+	            <entry key="proposalportalAction"><ref bean="portalActionforward"/></entry>
+	        </map>
+        </property>
+		<property name="statisticDao"><ref bean="proposalstatisticDao"/></property>
+	</bean>
+
+
+    <!--***********************界面转向forward配置开始***********************************-->
+    <bean id="portalActionforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="userlist">jsp/proposal/userlist.jsp</prop>	
+			    <prop key="auditlist">jsp/proposal/auditlist.jsp</prop>
+			    <prop key="jiaobanlist">jsp/proposal/jiaobanlist.jsp</prop>
+			     <prop key="deptlist">jsp/proposal/deptlist.jsp</prop>
+			  
+			</props>
+		</property>
+	</bean>	
+	
+	
+	
+</beans>	

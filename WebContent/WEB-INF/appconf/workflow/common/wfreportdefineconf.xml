@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+
+<!--***************commonQuerySupport.xml**************-->
+<!--***********************通用查询WfReportdefine配置开始******************************-->
+<bean id="wfreportdefinequery" class="net.mast.waf.mvc.CommonQueryCommand">
+	<property name="mappings">
+		<props>
+			<prop key="success">jsp/dcwork/wfrpt/wf_reportdefine_query.jsp</prop>
+		</props>
+	</property>
+	<property name="collection"><ref bean="sqlPageCollection"/></property>
+</bean>
+<!--***********************通用查询WfReportdefine配置结束******************************-->
+
+<!--****viewSupport.xml**************-->
+	<bean id="wfReportdefineView"  class="com.lc.dcwork.wfrpt.view.WfReportdefineView" singleton="false"/>
+	<bean id="formFieldBean"  class="com.lc.dcwork.wfrpt.view.FormFieldBean" singleton="false"/>
+
+
+<!--******commandSupport.xml**********-->
+<!--***********************报表定义cmd配置开始*********************************-->
+    <bean id="wfreportdefine" class="com.lc.dcwork.wfrpt.cmd.WfReportdefineCmd" singleton="false">
+	    <property name="wfReportdefineService"><ref bean="wfReportdefineService"/></property>
+	    <property name="wfReportService"><ref bean="wfReportService"/></property>
+	    <property name="view"><ref bean="wfReportdefineView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="wfreportdefineView"><ref bean="wfreportdefineforward"/></entry>
+	            <entry key="wfreportdefineViewChain"><ref bean="wfreportdefineforwardchain"/></entry>
+	        </map>
+		</property>
+		<!--拦截看看是否需要?-->
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="wf_reportdefine_interceptor"/>
+                     <ref bean="wf_report_interceptor"/>
+	        </list>
+
+
+     	</property>
+    </bean>
+<!--***********************报表定义cmd配置结束*********************************-->
+
+
+
+<!--************daoSupport.xml****************-->
+<bean id="wfReportdefineDao" class="com.lc.dcwork.wfrpt.dao.jdbc.WfReportdefineJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<!--*******************forwardSupport.xml**********************-->
+<!--***********************报表定义  forward配置开始***********************************-->
+    <bean id="wfreportdefineforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="detail">jsp/dcwork/wfrpt/wf_reportdefine_detail.jsp</prop>
+			    <prop key="forinsert">jsp/dcwork/wfrpt/wf_reportdefine_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/dcwork/wfrpt/wf_reportdefine_forupdate.jsp</prop>
+			    <prop key="success">jsp/dcwork/wfrpt/wf_report_detail.jsp</prop>
+			    <prop key="query">jsp/dcwork/wfrpt/dynareporttemplate.jsp</prop>
+			    <prop key="forquery">jsp/dcwork/wfrpt/wfrptquerycond.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="wfreportdefineforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="wfreportdefinequery"/></entry>
+			</map>
+		</property>
+    </bean>
+<!--***********************报表定义  forward配置结束***********************************-->
+
+
+
+<!--*******************************serviceSupport.xml******************************************-->
+<bean id="wfReportdefineService" class="com.lc.dcwork.wfrpt.service.support.WfReportdefineServiceImpl">
+	<property name="wfReportdefineDao"><ref bean="wfReportdefineDao"/></property>
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+</bean>
+
+<!--*****************************domainSupport.xml*****************************************-->
+<!--
+<bean id="wfReportdefineDomain" class="com.lc.dcwork.wfrpt.domain.support.WfReportdefineDomainImpl">
+	<property name="wfReportdefineDao"><ref bean="wfReportdefineDao"/></property>
+</bean>
+-->
+
+<!--*****************************下拉框枚举生成*****************************************-->
+
+<!--***********************拦截器***************************-->
+		<bean id="wf_reportdefine_interceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+	    	<property name="collections">
+    	    	<map>
+				<entry key="WF_REPORTDEFINE_COLLECTION"><ref bean="WF_REPORTDEFINE_COLLECTION"/></entry>
+			</map>
+    	</property>
+	</bean>
+
+<!--***********************同时在collentionSupport.xml 中添加***************************-->
+		<bean id="WF_REPORTDEFINE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+	    	<property name="enumName"><value>WFRPTDEFINE.AREA</value></property>
+	    	<property name="enumService"><ref bean="enumService"/></property>
+		</bean>
+</beans>

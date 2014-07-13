@@ -1,0 +1,36 @@
+<Form id="apply" name="申请单">
+		<Url>clbxapply.cmd?method=forinsert</Url>
+		<Buttons>
+			<Button id="create" name="启动流程" fun-name="create()" description="启动流程"/>
+			<Button id="createAndSend" name="创建流程并提交" fun-name="createAndSend()" description="创建流程并提交"/>
+			<Button id="send" name="发送" fun-name="send()" description="发送任务给下一处理人，不能选择目标环节和参与者"/>
+			<Button id="selectAndSend" name="发送" fun-name="selectAndSend()" description="发送任务给下一处理人，可以选择目标环节和参与者，发送前需要先保存表单"/>
+		</Buttons>  
+		<Fields>
+		        <Field id="bxr"  name="报销人"  dataType="String" description="">
+		        </Field>	
+		        <Field id="department"  name="部门" dataType="String" description="">
+		        </Field>
+		        <Field id="txrs"  name="同行人数"  dataType="Long" description="">
+		        </Field>
+		        <Field id="cfd"  name="出发地"  dataType="String" description="">
+		        </Field>
+		        <Field id="bxsum"  name="报销金额"  dataType="Float" description="">
+		        </Field>	
+		        <Field id="ccsy"  name="出差事由" dataType="String" description="">
+		        </Field>
+		</Fields>	   	
+	</Form>
+	<Form id="approve" name="审批单">
+		<Url>clbxapprove.cmd?method=forinsert</Url>
+		<Buttons>
+	 		<Button id="send" name="发送" fun-name="send()" description="发送任务给下一处理人，不能选择目标环节和参与者"/>
+			<Button id="selectAndSend" name="发送" fun-name="selectAndSend()" description="发送任务给下一处理人，可以选择目标环节和参与者，发送前需要先保存表单"/>
+		</Buttons>  
+		<Fields>
+		        <Field id="jlmemo"  name="经理审批"  dataType="String" description="">
+		        </Field>
+		        <Field id="cwmemo"  name="财务审批"  dataType="String" description="">
+		        </Field>
+		</Fields>	   	
+	</Form>

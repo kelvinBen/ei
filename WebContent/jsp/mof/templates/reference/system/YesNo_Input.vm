@@ -1,0 +1,25 @@
+##可以使用的变量$field,$disp,$ref
+#if ($disp.isHidden())
+     #parse("${standardTemplatePath}/StandardHidden.vm")
+#elseif ($disp.isLabel()||$disp.isReadOnly())
+	#parse("${standardTemplatePath}/StandardCollectionLabel.vm")
+#elseif ($disp.isReadOnly())
+    #parse("${standardTemplatePath}/StandardCollectionText.vm")
+#elseif ($disp.isSearch())
+    #parse("${standardTemplatePath}/StandardSelect.vm")
+#else
+    #set ($ref=$field.getMofReference())
+      <html:checkbox  name="$field.getFormName()" 
+    #if ($disp.isOutValue()) 
+		  property="$field.getFormName()"
+    #end
+      value="1"
+    #if ($disp.isReadOnly()&&$disp.hasChangedField())
+		  onchange="${field.getFormName()}_change()"
+    #end
+      />
+    #if ($disp.isReadOnly()&&$disp.hasChangedField())
+	  $ref.getChangeScript($field,$field.getChangeField())
+	#end
+	$ref.getCustomEvent($field,$ref.hasDisplayTextField())
+#end

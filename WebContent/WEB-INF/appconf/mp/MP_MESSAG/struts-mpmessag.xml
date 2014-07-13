@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+<!--***********************翻页初始化特殊查询配置开始*************-->
+	<bean id="mpmessagquery_page_init" class="net.mast.messageplatform.MP_MESSAG.action.MpMessagQueryPageInitAction">
+	    <property name="mpMessagService"><ref bean="mpMessagService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="speQuery"><ref bean="mpmessagforward"/></entry>
+	        </map>
+        </property>
+<!--        
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="mp_messag_interceptor"/>
+	        </list>
+     	</property>
+-->
+        <property name="pageSize">
+        	<value>15</value>
+        </property>
+	</bean>
+
+<!--***********************视图对象View配置****************************************-->
+	<bean id="mpMessagView"  class="net.mast.messageplatform.MP_MESSAG.view.MpMessagView" singleton="false"/>
+
+<!--***********************action配置开始*********************************************-->
+    <bean id="mpmessag" class="net.mast.messageplatform.MP_MESSAG.action.MpMessagAction" singleton="false">
+	    <property name="mpMessagService"><ref bean="mpMessagService"/></property>
+	    <property name="view"><ref bean="mpMessagView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="mpmessagView"><ref bean="mpmessagforward"/></entry>
+	            <entry key="mpmessagViewChain"><ref bean="mpmessagforwardchain"/></entry>
+	        </map>
+		</property>
+		<!--拦截看看是否需要?
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="mp_messag_interceptor"/>
+	        </list>
+     	</property>-->
+    </bean>
+<!--
+	<bean id="mp_messag_interceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+		<property name="collections">
+			<map>
+				<entry key="MPMESSAG_SENDERTYPE_COLLECTION"><ref bean="MPMESSAG_SENDERTYPE_COLLECTION"/></entry>
+				<entry key="MPMESSAG_ISCOMPLEX_COLLECTION"><ref bean="MPMESSAG_ISCOMPLEX_COLLECTION"/></entry>
+				<entry key="MPMESSAG_MESSAGETYPE_COLLECTION"><ref bean="MPMESSAG_MESSAGETYPE_COLLECTION"/></entry>
+				<entry key="MPMESSAG_STATE_COLLECTION"><ref bean="MPMESSAG_STATE_COLLECTION"/></entry>
+			</map>
+		</property>
+	</bean>
+
+
+-->
+<!--***********************action配置结束*******************************-->
+
+<!--***********************界面转向配置开始*************************-->
+    <bean id="mpmessagforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/MP/MP_MESSAG/mp_messag_detail.jsp</prop>
+			    <prop key="forinsert">jsp/MP/MP_MESSAG/mp_messag_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/MP/MP_MESSAG/mp_messag_forupdate.jsp</prop>
+			    <prop key="queryPageInit">jsp/MP/MP_MESSAG/mp_messag_query_init.jsp</prop>  
+
+			</props>
+		</property>
+	</bean>
+    <bean id="mpmessagforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="mpmessagquery_page_init"/></entry>
+			</map>
+		</property>
+    </bean>
+<!--***********************界面转向forward配置结束***********************************-->
+<!--********************字典服务***********************-->
+	<bean id="MPMESSAG_SENDERTYPE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>MPMESSAG.SENDERTYPE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="MPMESSAG_ISCOMPLEX_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>MPMESSAG.ISCOMPLEX</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="MPMESSAG_MESSAGETYPE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>MPMESSAG.MESSAGETYPE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="MPMESSAG_STATE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>MPMESSAG.STATE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+
+</beans>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>	 
+  
+    <bean id="logout" class="net.mast.bsp.permit.pap.cmd.LogOut" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="logout"><ref bean="logoutforward"/></entry>
+ 		    <entry key="logoutfresh"><ref bean="logoutforward"/></entry>
+	        </map>
+		</property>
+		
+    </bean>
+    
+    
+    <bean id="logoutforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>    		    
+			    <prop key="login">jsp/logout.jsp</prop>
+			    <prop key="zxta">jsp/logoutzxta.jsp</prop>
+			    <prop key="rdya">jsp/logoutrdya.jsp</prop>
+			</props>
+		</property>
+    </bean> 
+</beans>

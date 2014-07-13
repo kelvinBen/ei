@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+<!--***********************dao配置***********************************************-->
+	<bean id="troleOptsDao" class="net.mast.bsp.permit.pap.dao.jdbc.TRoleOptsJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+<!--***********************domain配置********************************************-->
+
+	<bean id="troleOptsDomain" class="net.mast.bsp.permit.pap.domain.support.TRoleOptsImpl"> 
+		<property name="troleOptsDao"><ref bean="troleOptsDao"/></property>   
+		<property name="functionDao"><ref bean="functionDao"/></property>
+		<property name="moduleDomain"><ref bean="moduleDomain"/></property>    
+		 	
+	</bean>
+<!--***********************service配置*******************************************-->
+
+	<bean id="troleOptsService" class="net.mast.bsp.permit.pap.service.support.TroleOptsServiceImpl"> 
+		<property name="troleOptsDomain"><ref bean="troleOptsDomain"/></property>   	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+
+<!--***********************查询配置开始********************************************-->
+	<bean id="troleoptsquery" class="net.mast.bsp.permit.pap.cmd.TrolesOptsQuery">
+		 <property name="troleOptsService"><ref bean="troleOptsService"/></property>
+			 <property name="forwards">
+				 <map>
+				  <entry key="troleOptsView"><ref bean="troleoptsforward"/></entry>
+				 </map>
+			</property>
+			
+	</bean>
+<!--***********************查询配置结束********************************************-->
+
+<!--***********************视图对象View配置****************************************-->
+	<bean id="tRoleOptsView"  class="net.mast.bsp.permit.pap.view.TRoleOptsView" singleton="false"/>
+
+<!--***********************cmd配置开始*********************************************-->
+    <bean id="tRoleopts" class="net.mast.bsp.permit.pap.cmd.TroleOptsCmd" singleton="false">
+	    <property name="troleOptsService"><ref bean="troleOptsService"/></property>
+	    <property name="view"><ref bean="tRoleOptsView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="troleOptsView"><ref bean="troleoptsforward"/></entry>
+	            <entry key="troleOptsViewChain"><ref bean="troleoptsforwardchain"/></entry>
+	        </map>
+		</property>
+		
+    </bean>
+
+<!--***********************cmd配置结束*********************************************-->
+
+<!--***********************界面转向forward配置开始***********************************-->
+    <bean id="troleoptsforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+				<prop key="root">jsp/bsp/permit/pap/template/troles/troleresourcetree.jsp</prop>
+				<prop key="node">jsp/bsp/permit/pap/template/troles/troleresourcenode.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/permit/pap/template/troleopts/trole_opts_forinsert.jsp</prop>
+			   	<prop key="query">jsp/bsp/permit/pap/template/troleopts/trole_opts_query.jsp</prop>
+				<prop key="detail">jsp/bsp/permit/pap/template/troleopts/trole_opts_detail.jsp</prop>
+				<prop key="error">jsp/bsp/permit/pap/template/troleopts/error.jsp</prop>
+				 <prop key="function_resource_TRole">jsp/bsp/permit/pap/function/function_resource_TRole.jsp</prop>
+				<prop key="success">jsp/bsp/permit/pap/function/update_resTypeOfTRole_success.jsp</prop> 
+			</props>
+		</property>
+	</bean>
+    <bean id="troleoptsforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="troleoptsquery"/></entry>
+			</map>
+		</property>
+    </bean>
+<!--***********************界面转向forward配置结束***********************************-->
+
+
+</beans>

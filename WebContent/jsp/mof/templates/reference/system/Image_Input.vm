@@ -1,0 +1,36 @@
+##可以使用的变量$field,$disp,$ref
+#set ($ref=$field.getMofReference()) 
+#if($disp.isHidden())
+    #parse("${standardTemplatePath}/StandardHidden.vm")
+#elseif ($disp.isLabel()||$disp.isReadOnly())
+    #if($ref.getFileSaveType()=="DB")
+	 ##<img src="" name="$field.getFormName()" $ref.getImageFormat($field.getVFormat()) onerror="javascript:this.src='$ref.getErrorImage($field)'" alt="图片信息" />
+	 <img src="" name="$field.getFormName()" $ref.getImageFormat($field.getVFormat()) title="图片信息" alt="" />
+     $ref.getDBImageScript($field,$disp)
+	#else
+     ##<img src="${ref.getFilePath()}/<html:value property='$field.getFormName()' />" $ref.getImageFormat($field.getVFormat()) onerror="javascript:this.src='$ref.getErrorImage($field);' alt="图片信息" />
+	 <img src="${ref.getFilePath()}/<html:value property='$field.getFormName()' />" $ref.getImageFormat($field.getVFormat()) title="图片信息" alt="" />
+     $ref.getFileImageScript($field,$disp)
+	#end
+#elseif($disp.isSearch())
+    <html:text name="$field.getFormName()" property="$filed.getFormName()" />
+#else
+	<html:file name="$field.getFormName()"
+	#if ($disp.isOutValue())
+      property="$field.getFormName()"
+    #else
+      value=""
+	#end
+	  size="$field.getLength()"
+	#if ($disp.hasChangedField()||$disp.hasLimitField())
+      onchange="${field.getFormName()}_change()"
+	#end
+    />
+    #if ($disp.isMandatory()&&!$disp.isReadOnly())
+	  <font color="#FF0000">*</font>
+	#end
+	#if ($disp.hasChangedField())
+	  $ref.getChangeScript($field,$field.getChangeField())
+	#end
+	  $ref.getCustomEvent($field,$ref.hasDisplayTextField())
+#end

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="gb2312"?>
+<project name="delploy" default="main" basedir=".">
+    <!-- ================================================================== -->
+    <!-- 初始化属性						                        			-->
+    <!-- ================================================================== -->
+    <target name="init-properties" description="初始化属性">
+        <property file="deploy.properties"/>
+        <!--property name="bin.dir" value="bin"/-->
+	    <property name="webContent" value="WebContent"/>
+    	<!--<property name="skins" value="WebContent/skins"/>
+	    <property name="jsp" value="WebContent/jsp"/>
+    	<property name="sql" value="WebContent/sql"/>
+    	<property name="META-INF" value="WebContent/META-INF"/>
+    	<property name="sql-dir" value="${sql-db-type}"/>-->
+		<property name="webapp.dir" value="${deploy.dir}/${deploy.name}" />
+
+    </target> 
+    <target name="copy" depends="init-properties" description="拷贝文件">
+        <!--拷贝web,jsp,配置文件(*.xml,*.properties),dtd,jar等,除了class-->
+        <copy todir="${webapp.dir}/">
+            <fileset dir="${webContent}">
+        	</fileset>            
+        </copy>
+    	<!-- <copy todir="${webapp.dir}/skins">
+            <fileset dir="${skins}"/>            
+        </copy>
+        <copy todir="${webapp.dir}/jsp">
+            <fileset dir="${jsp}"/>            
+        </copy>
+    	<copy todir="${webapp.dir}/sql">
+    	    <fileset dir="${sql}" />            
+    	</copy>
+        <copy todir="${webapp.dir}/WEB-INF/classes">
+            <fileset dir="${WEB-INF}/classes"/>
+        </copy>   
+            <copy todir="${webapp.dir}/META-INF">
+                <fileset dir="${META-INF}"/>
+            </copy>   -->  	
+  </target>
+   <!-- 主要任务-->
+  <target name="main" description="==>发布程序,拷贝">
+        <antcall target="copy"/>
+  </target>
+</project>

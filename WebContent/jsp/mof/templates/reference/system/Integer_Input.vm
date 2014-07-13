@@ -1,0 +1,34 @@
+##可以使用的变量$field,$disp,$ref
+#set ($ref=$field.getMofReference()) 
+#if ($disp.isHidden())
+    #parse("${standardTemplatePath}/StandardHidden.vm")
+#elseif ($disp.isLabel())
+	#parse("${standardTemplatePath}/StandardLabel.vm")
+#else
+	<html:text name="$field.getFormName()" 
+    #if ($disp.isOutValue()) 
+		      property="$field.getFormName()"
+    #else
+	          value=""
+    #end
+    #if ($disp.isReadOnly())
+		      readonly="true"  styleClass="txtReadOnly"
+    #end
+	         size="$field.getLength()" maxlength="$field.getMaxLength()" style="text-align:right"
+    #if ($field.hasTip())
+		     title="$field.getTip()"
+    #end
+    #if ($disp.hasChangedField()||$disp.hasLimitField())
+		     onchange="${field.getFormName()}_change()"
+    #end
+ 		/>
+    #if ($disp.isMandatory()&&!$disp.isReadOnly())
+		<font color="#FF0000">*</font>
+    #end
+    #if ($disp.hasChangedField())
+		$ref.getChangeScript($field,$field.getChangeField())
+    #elseif($disp.hasLimitField())
+		$ref.getFillInvokeScript($field,$field.getLimitFields(),false)
+    #end
+      $ref.getCustomEvent($field,$ref.hasDisplayTextField())
+#end

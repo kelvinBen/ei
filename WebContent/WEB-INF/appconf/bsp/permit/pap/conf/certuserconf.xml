@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+<!--***********************dao配置***********************************************-->
+	<bean id="certUserDao" class="net.mast.bsp.permit.pap.dao.jdbc.CertUserJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+<!--***********************domain配置********************************************-->
+
+	<bean id="certUserDomain" class="net.mast.bsp.permit.pap.domain.support.CertUserDomainImpl"> 
+		<property name="certUserDao"><ref bean="certUserDao"/></property>   	
+	</bean>
+<!--***********************service配置*******************************************-->
+
+	<bean id="certUserService" class="net.mast.bsp.permit.pap.service.support.CertUserServiceImpl"> 
+		<property name="certUserDomain"><ref bean="certUserDomain"/></property>   	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+
+
+<!--***********************翻页初始化特殊查询配置开始******************************************-->
+	<bean id="certuserquery_page_init" class="net.mast.bsp.permit.pap.cmd.CertUserQueryPageInitCmd">
+	    <property name="certUserService"><ref bean="certUserService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="speQuery"><ref bean="certuserqueryforward"/></entry>
+	        </map>
+        </property>
+	</bean>
+<!--***********************翻页初始化特殊查询配置结束******************************************-->
+<!--***********************查询界面转向forward配置开始***********************************-->
+	<bean id="certuserqueryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="queryPageInit">jsp/bsp/permit/pap/certuser/query.jsp</prop>  
+			</props>
+	    </property>
+	</bean> 
+<!--***********************查询界面转向forward配置结束***********************************-->
+	
+<!--***********************视图对象View配置****************************************-->
+	<bean id="certUserView"  class="net.mast.bsp.permit.pap.view.CertUserView" singleton="false"/>
+
+<!--***********************cmd配置开始*********************************************-->
+    <bean id="certuser" class="net.mast.bsp.permit.pap.cmd.CertUserCmd" singleton="false">
+	    <property name="certUserService"><ref bean="certUserService"/></property>
+	    <property name="view"><ref bean="certUserView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="certuserView"><ref bean="certuserforward"/></entry>
+	            <entry key="certuserViewChain"><ref bean="certuserforwardchain"/></entry>
+	        </map>
+		</property>
+   </bean>
+
+<!--***********************cmd配置结束*********************************************-->
+
+<!--***********************界面转向forward配置开始***********************************-->
+    <bean id="certuserforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/permit/pap/certuser/detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/permit/pap/certuser/forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/permit/pap/certuser/forupdate.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="certuserforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="certuserquery_page_init"/></entry>
+			</map>
+		</property>
+    </bean>
+<!--***********************界面转向forward配置结束***********************************-->
+</beans>

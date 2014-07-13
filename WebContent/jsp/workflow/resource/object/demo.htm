@@ -1,0 +1,45 @@
+&#65279;<HTML>
+<HEAD>
+<TITLE></TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=GB2312">
+<SCRIPT language="JavaScript" src="../js/office.js"></SCRIPT>
+</HEAD>
+
+<script language="javascript">
+	var webWord;
+	function load(){
+		webWord = new EBWebOffice(webOffice,data,document.all('documentContent'),"c:/word/new.doc");
+	}
+	function openFile(){
+		webOfficeControl.style.display = "";
+		openControl.style.display = "none";
+		webWord.openDoc();
+		
+	}
+	function saveFile(){
+		webWord.saveDoc();
+		webOfficeControl.style.display = "none";
+		openControl.style.display = "";
+	}
+
+</script>
+<BODY onload="load();">
+
+<div id = "openControl" style="display:">
+<input type="button" onclick="openFile();" value="打开">
+</div>
+<div id = "webOfficeControl" style="display:none">
+	<input type="button" onclick="saveFile();" value="保存">
+</div>
+<br>
+	<object id="webOffice" classid="clsid:00460182-9E5E-11D5-B7C8-B82690790916" VIEWASTEXT codebase="EBWebOffice.ocx" width="0" height="0">
+	</object>
+	<OBJECT ID="data" CLASSID="CLSID:4AB7F4E4-D1AA-4646-8227-A5FA83F5BB8F" CODEBASE="data.ocx#version=1,1,12,18" VIEWASTEXT>
+	</OBJECT>
+
+<br>
+<textarea name="documentContent" cols="80" rows="20" style = "display:none"></textarea>
+
+</p>
+</BODY>
+</HTML>

@@ -1,0 +1,18 @@
+##可以使用的变量$field,$disp,$ref
+#if($field.isKey())
+    #parse("${standardTemplatePath}/StandardKeyGrid.vm")
+#elseif($disp.isHidden())
+	#parse("${standardTemplatePath}/StandardHiddenGrid.vm")
+#elseif($disp.isReadOnly())
+	#parse("${standardTemplatePath}/StandardLabelGrid.vm")
+#else
+#set ($colWidth=$field.getLength()*7)
+     <grid:checkboxCol property="$field.getFormName()" caption="$field.getDescription()"
+		  width="$colWidth" maxlength="$field.getMaxLength()" 
+		  index="$field.indexInGrid()" xml="$field.getFormName()"
+		  name="$field.getFormName()" styleClass="default"
+	#if ($disp.isReadOnly()) {
+     readonly="true"
+	#end
+    />
+#end

@@ -1,0 +1,17 @@
+##可以使用的变量$field,$disp,$ref
+#set ($ref=$field.getMofReference()) 
+#if($field.isKey())
+    #parse("${standardTemplatePath}/StandardKeyGrid.vm")
+#elseif($disp.isHidden())
+	#parse("${standardTemplatePath}/StandardHiddenGrid.vm")
+#elseif($disp.isReadOnly())
+	#parse("${standardTemplatePath}/StandardTextGrid.vm")
+#else
+#set ($colWidth=$field.getLength()*7)
+	<grid:imageTextCol property="$field.getFormName()" caption="$field.getDescription()"
+		 width="$colWidth" index="$field.indexInGrid()" xml="$field.getFormName()"
+		 name="$field.getFormName()" style="width:80%;text-align:left" styleClass="default"
+		 readonly="true" onchange="${field.getFormName()}_change()"	
+		 imageUrl="skins/default/images/liulan.gif"	 imageClick="${field.getFormName()}_select_BspStru_Dialog()"
+	/>
+#end

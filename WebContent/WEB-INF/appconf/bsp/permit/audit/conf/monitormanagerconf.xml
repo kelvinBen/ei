@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+<!--***********************************CMD运行记录查询配置***********************************-->
+
+
+	<bean id="CmdLog" class="net.mast.bsp.monitor.mvc.cmd.CmdLogCmd">
+	    <property name="cmdLogService"><ref bean="cmdLogService"/></property>
+	  
+	    <property name="forwards">
+	        <map>
+	            <entry key="cmdLogView"><ref bean="CmdLogforward"/></entry>
+				<entry key="cmdLogViewChain"><ref bean="cmdLogViewforwardchain"/></entry>
+	        </map>
+		</property>
+   
+      </bean>
+
+    <bean id="CmdLogforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/monitor/cmdLogdetail.jsp</prop>
+				<prop key="CmdBeandetail">jsp/bsp/monitor/cmdBeandetail.jsp</prop>
+				<prop key="controller">jsp/bsp/monitor/mointorController.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="cmdLogViewforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="cmdLogQuery"/></entry>
+			</map>
+		</property>
+    </bean>
+
+
+  <!--**********CmdLog查询command配置************-->	
+
+    <bean id="cmdLogQuery" class="net.mast.bsp.monitor.mvc.cmd.CmdLogQueryCmd">
+	    <property name="cmdLogService"><ref bean="cmdLogService"/></property>
+		
+	    <property name="forwards">
+	          <map>
+	              <entry key="querycmdlog"><ref bean="cmdLogQueryforword"/></entry>
+	          </map>
+        </property>
+    </bean>
+    <bean id="cmdBeanQueryCmd" class="net.mast.bsp.monitor.mvc.cmd.CmdBeanQueryCmd">
+	    <property name="cmdLogService"><ref bean="cmdLogService"/></property>		
+	    <property name="forwards">
+	          <map>
+	              <entry key="querycmdbean"><ref bean="cmdLogQueryforword"/></entry>
+	          </map>
+        </property>
+    </bean>
+
+  <!--********forward配置开始***********-->
+    <bean id="cmdLogQueryforword" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			   <prop key="beanInfoSuccess">jsp/bsp/monitor/beaninfoquery.jsp</prop>
+				<prop key="cmdLogSuccess">jsp/bsp/monitor/cmdlogquery.jsp</prop>
+			</props>
+		</property>
+	</bean>
+  <!--**********View配置************************-->
+	<bean id="cmdLogView"  class="net.mast.bsp.monitor.mvc.view.CmdLogView" singleton="false"/>
+
+  <!--**********Service配置*********************-->
+    <bean id="cmdLogService" class="net.mast.bsp.monitor.mvc.service.support.CmdLogServiceImpl"> 
+	    <property name="cmdLogDao"><ref bean="cmdLogDao"/></property>   	
+	    <property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+    </bean>
+
+  <!--*********Dao配置(daoSupport.xml)**********-->
+    <bean id="cmdLogDao" class="net.mast.bsp.monitor.mvc.dao.jdbc.CmdLogJdbcDao">
+	    <property name="dataSource"><ref bean="dataSource"/></property>
+    </bean>
+
+<!--***********************CMD运行记录查询配置结束***********************************-->
+
+
+
+
+
+
+<!--***********************************当前链接查询配置*********************************-->
+
+
+<!--********************COMMAND配置*******************************-->
+
+   <!--******当前链接查询功能COMMAND配置*******-->
+	<bean id="activeconnquery" class="net.mast.bsp.monitor.mvc.cmd.ActiveConnQueryCommand">
+        	<property name="activeConnService"><ref bean="activeConnService"/></property>
+	    	<property name="forwards">
+	        	<map>
+	            		<entry key="queryactiveconn"><ref bean="activeconnqueryforward"/></entry>
+	        	</map>
+        	</property>
+	</bean>
+  <!--******当前链接删除功能COMMAND配置*******-->
+	<bean id="activeconnkill" class="net.mast.bsp.monitor.mvc.cmd.ActiveConnKillCommand">
+        	<property name="activeConnService"><ref bean="activeConnService"/></property>
+	    	<property name="forwards">
+	        	<map>
+	            		<entry key="killactiveconn"><ref bean="activeconnkillforward"/></entry>
+	        	</map>
+        	</property>
+	</bean>
+<!--********************FORWARD配置*******************************-->
+
+  <!--*******当前链接查询功能forward配置*****-->
+    <bean id="activeconnqueryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="success">jsp/bsp/monitor/activeconnquery.jsp</prop>
+			   
+			</props>
+		</property>
+	</bean>
+  <!--*******当前链接删除功能forward配置*****-->
+    <bean id="activeconnkillforward" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="activeconnquery"/></entry>			    
+			</map>
+		</property>
+	</bean>
+<!--********************SERVICE配置*******************************-->
+  <!--**********链接查询Service配置***************-->
+    <bean id="activeConnService" class="net.mast.bsp.monitor.mvc.service.support.ActiveConnServiceImpl">
+    </bean>
+<!--********************VIEW配置*******************************-->
+  <!--**********当前链接View配置*****************-->
+    <bean id="activeConnView"  class="net.mast.bsp.monitor.mvc.view.ActiveConnView"/>	
+</beans>
+<!--***********************************当前链接查询配置结束*****************************-->
