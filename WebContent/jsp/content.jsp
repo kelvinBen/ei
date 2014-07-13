@@ -10,7 +10,7 @@
 <script LANGUAGE=JavaScript>
 </script>
 </head>
-<BODY SCROLL=no>
+<BODY SCROLL=no><%--
 <iframe name="main" frameborder="0" src="<%=contextPath%>/commonsingleparms.cmd?method=desktop"  style="width:100%;height:100%;"></iframe>
-</BODY>
+--%></BODY>
 </html>

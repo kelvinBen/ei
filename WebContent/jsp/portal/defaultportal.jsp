@@ -39,7 +39,7 @@ font-size:10pt;
 <BODY style="margin-right:0px;">
 <table cellspacing="0" border="0" cellpadding=1 width="100%"
 	height="100%">
-	<tr>
+	<%--<tr>
 	<%if(PermitBeanFactory.hasPermission(userinfo,"proposalportalAction.cmd?method=auditlist")){ %>
 		<td colspan="1" rowspan="1" valign=top>
 		<table width="100%" border=0 height="100%" cellpadding=0 cellspacing=0
@@ -128,6 +128,6 @@ font-size:10pt;
 	</tr>
 	
 	<tr></tr>
-</table>
+--%></table>
 </BODY>
 </html>

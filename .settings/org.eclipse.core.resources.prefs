@@ -29,6 +29,7 @@ encoding//WebContent/sql/Mysql=gbk
 encoding//WebContent/sql/Oracle/1_bsp/INIT/1_Create=gbk
 encoding//WebContent/sql/Oracle/1_bsp/INIT/1_Create/1_bsp_create.sql=gbk
 encoding//WebContent/sql/Oracle/1_bsp/INIT/2_Data=gbk
+encoding//sql/ei_mysql_20121209\ 1033.sql=GBK
 encoding//src/net/mast/demo/loushang_demo_zh_CN.properties=GBK
 encoding//workflow/config/jspFormsManage.xml=UTF-8
 encoding//workflow/global.properties=gbk

@@ -54,7 +54,7 @@ function closeDiv(){
 <TABLE width="100%" cellspacing=0 border=0 cellpadding=0 style="border:1 solid gray;border-bottom-width:0px;">
     <TR>
     <TD colspan=2 height=50  background="<mast:ui img='yop1.JPG'/>">
-	<img src="<mast:ui img='cnooclogo1.jpg'/>" border=0 align=left><div align=right style="color: #FFFFFF; font-size: 9pt"><br /><strong><%=message%></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></TD>
+	<DIV  align="left"></DIV><div align=right style="color: #FFFFFF; font-size: 9pt"><br /><strong><%=message%></strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></TD>
 	</TR>
 	<TR>
 	<TD  style="background-image:url('<mast:ui img='top-center.jpg'/>');" ><div style="overflow:hidden;width:1px;" id="showmenu"></div>
