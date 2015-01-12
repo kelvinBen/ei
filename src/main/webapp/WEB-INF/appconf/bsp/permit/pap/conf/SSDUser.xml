@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>	 
+
+    <bean id="commonquery_user" class="net.mast.waf.mvc.CommonQueryCommand">
+	<property name="mappings">
+		<props>
+			<prop key="success">jsp/content.jsp</prop>
+		</props>
+	</property>     
+	
+    </bean>
+    
+    <bean id="userQuery" class="net.mast.bsp.permit.pap.cmd.UserQueryCmd">
+		<property name="userService"><ref bean="userService"/></property>
+		<property name="forwards">
+	          <map>
+	            <entry key="query"><ref bean="usersforward"/></entry>
+	          </map>
+                </property>    
+
+	</bean>
+     <bean id="userhelp" class="net.mast.bsp.permit.pap.cmd.UserHelpCmd" singleton="false">
+	    <property name="userService"><ref bean="userService"/></property>
+	    <property name="struService"><ref bean="struService"/></property>
+	    <property name="view"><ref bean="UserView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="UserView"><ref bean="usersforward"/></entry>
+	        </map>
+		</property>		
+    </bean>
+    <bean id="user" class="net.mast.bsp.permit.pap.cmd.UserCmd" singleton="false">
+	    <property name="userService"><ref bean="userService"/></property>
+	    <property name="struService"><ref bean="struService"/></property>
+	    <property name="dataResTypeService"><ref bean="dataResTypeService"/></property>
+		<property name="struDomain"><ref bean="struDomain"/></property>
+	    <property name="userDataRefDomain"><ref bean="userDataRefDomain"/></property>    
+	    <property name="organDomain"><ref bean="organDomain"/></property>  
+	    <property name="view"><ref bean="UserView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="UserView"><ref bean="usersforward"/></entry>
+	            <entry key="UserViewChain"><ref bean="usersforwardchain"/></entry>
+	        </map>
+		</property>
+	    <property name="beforIntercept">
+        	<list>
+                    <ref bean="securitylevelinterceptor"/>
+                    <ref bean="struTypeinterceptor"/>		           
+        	</list>
+ 	    </property>
+		
+    </bean>
+
+    <bean id="securitylevelinterceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+	         <property name="collections">
+    	             <map>
+                          <entry key="securityLevelCollection"><ref bean="securityLevelCollection"/></entry>
+    	             </map>
+    	         </property>
+    </bean>
+    <bean id="struTypeinterceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+	         <property name="collections">
+    	             <map>
+                          <entry key="struTypeCollection"><ref bean="struTypeCollection"/></entry>
+    	             </map>
+    	         </property>
+    </bean>
+
+    <bean id="UserView"  class="net.mast.bsp.permit.pap.view.UserView" singleton="false"/>
+    
+    <bean id="usersforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>    
+			<prop key="forimport">jsp/bsp/permit/pap/user/forimport.jsp</prop>
+			    <prop key="forResetCorpPassword">jsp/bsp/permit/pap/user/resetpassword.jsp</prop>
+			    <prop key="resetPassword">jsp/bsp/permit/pap/user/resetpassword_result.jsp</prop>	
+			    <prop key="forResetUserPassword">jsp/bsp/permit/pap/user/resetuserpassword.jsp</prop>
+			    <prop key="resetUserPassword">jsp/bsp/permit/pap/user/result.jsp</prop>		    
+			    <prop key="forLoginResetUserPassword">jsp/bsp/permit/pap/user/loginresetuserpassword.jsp</prop>		    
+			    <prop key="loginResetUserPassword">jsp/bsp/permit/pap/user/resetuserpassword_result.jsp</prop>		    
+			    <prop key="detail">jsp/bsp/permit/pap/user/detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/permit/pap/user/forinsert.jsp</prop>
+			    <prop key="forupdateuser">jsp/bsp/permit/pap/user/updateuser.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/permit/pap/user/forupdate.jsp</prop>
+			    <prop key="userdetail">jsp/bsp/permit/pap/user/userdetail.jsp</prop>
+	            <prop key="root">jsp/bsp/permit/pap/user/user_tree.jsp</prop>
+	            <prop key="struruseroot">jsp/bsp/permit/pap/user/stru_user_tree.jsp</prop>
+	            <prop key="strurusernode">jsp/bsp/permit/pap/user/stru_user_tree_node.jsp</prop>
+	            <prop key="getchoiceroot">jsp/bsp/permit/pap/user/choice_user_tree.jsp</prop>
+	            <prop key="getchoicenode">jsp/bsp/permit/pap/user/choice_user_tree_node.jsp</prop>
+	            <prop key="getcheckboxroot">jsp/bsp/permit/pap/user/checkbox_user_tree.jsp</prop>
+	            <prop key="getcheckboxnode">jsp/bsp/permit/pap/user/checkbox_user_tree_node.jsp</prop>
+	            <prop key="getcheckroot">jsp/bsp/permit/pap/user/check_user_tree.jsp</prop>
+	            <prop key="getchecknode">jsp/bsp/permit/pap/user/check_user_tree_node.jsp</prop>
+	            <prop key="userControl">jsp/bsp/permit/pap/user/userControl.jsp</prop>
+	            <prop key="selectUserDataResRef">jsp/bsp/permit/pap/user/selectUserDataResRef.jsp</prop>
+	            <prop key="selectUserDataResRef1">jsp/bsp/permit/pap/user/selectUserDataResRef1.jsp</prop>
+	            <prop key="selectUserDataResRef2">jsp/bsp/permit/pap/user/selectUserDataResRef2.jsp</prop>
+				<prop key="query">jsp/bsp/permit/pap/user/query.jsp</prop>
+	            <prop key="delete">jsp/content.jsp</prop>
+	            <prop key="deletedetail">jsp/bsp/permit/pap/role/deletdetail.jsp</prop>
+	            <prop key="forupdateForTable">jsp/bsp/permit/pap/user/forupdateForTable.jsp</prop>
+	            <prop key="detailForTable">jsp/bsp/permit/pap/user/detailForTable.jsp</prop>
+	            <prop key="getfromroot">jsp/bsp/permit/pap/user/getfromroot.jsp</prop>
+	            <prop key="getfromrootnode">jsp/bsp/permit/pap/user/getfromrootnode.jsp</prop>
+	            <prop key="selectstruruseroot">jsp/bsp/permit/pap/user/select_stru_user_tree.jsp</prop>
+	            <prop key="selectstrurusernode">jsp/bsp/permit/pap/user/select_stru_user_tree_node.jsp</prop>
+	            <!-- ===使用数型的方式取得登陆用户的所属公司的所有用户ID和用户名=== -->
+	            
+	            <prop key="CorporationUserRoot">jsp/bsp/permit/pap/user/corp_user_tree.jsp</prop>
+	            <prop key="CorporationUserNode">jsp/bsp/permit/pap/user/corp_user_tree_node.jsp</prop>
+	            <prop key="exceedUserNumber">jsp/bsp/permit/pap/user/message.jsp</prop>
+	            
+			</props>
+		</property>
+    </bean> 
+    <bean id="usersforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="userQuery"/></entry>
+			    
+			</map>
+		</property>
+    </bean>
+
+    <bean id="userService" class="net.mast.bsp.permit.pap.service.support.UserServiceImpl"> 
+	    <property name="roleDomain"><ref bean="roleDomain"/></property>
+	    <property name="userDomain"><ref bean="userDomain"/></property>
+	    <property name="struDomain"><ref bean="struDomain"/></property>
+	    <property name="organTypeDomain"><ref bean="organTypeDomain"/></property>   	
+    	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+    </bean>
+    
+    <bean id="userDomain" class="net.mast.bsp.permit.pap.domain.hierarchical.HierarchicalUsers">
+		<property name="userDao"><ref bean="userDao"/></property>   	
+		<!--<property name="userSession"><ref bean="userSession"/></property>-->   	
+		<property name="uaDomain"><ref bean="uaDomain"/></property>   
+		<property name="globalDomain"><ref bean="globalDomain"/></property>   
+		<property name="struDomain"><ref bean="struDomain"/></property>   
+		<property name="securityLevelDomain"><ref bean="securityLevelDomain"/></property>   
+		<property name="agentDomain"><ref bean="agentDomain"/></property> 
+		<property name="dataResourceDomain"><ref bean="userDataRefDomain"/></property> 
+		<property name="struTypeRefDomain"><ref bean="struTypeRefDomain"/></property>
+		<property name="isCacheAllUsers"><value>false</value></property>
+		<property name="certUserDomain"><ref bean="certUserDomain"/></property>  
+    </bean> 
+	
+     <bean id="userDao" class="net.mast.bsp.permit.pap.dao.jdbc.UsersJdbcDao">
+	        <property name="dataSource"><ref bean="dataSource"/></property>
+	 </bean>
+</beans>

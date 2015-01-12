@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- =========================基本的jdbc配置========================= -->
+	<!-- jdbc数据源配置  mysql-->
+		 
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"><value>com.mysql.jdbc.Driver</value></property>
+		<property name="url"><value><![CDATA[jdbc:mysql://127.0.0.1:3306/ei?useUnicode=true&characterEncoding=utf-8]]></value></property>
+		<property name="username"><value>root</value></property>
+		<property name="password"><value>bjsxt</value></property>
+	</bean>
+	   
+	<!-- jdbc  数据源配置 db2 -->
+   <!-- 
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"><value>COM.ibm.db2.jdbc.app.DB2Driver</value></property>
+		<property name="url"><value>jdbc:db2:ntmast</value></property>
+		<property name="username"><value>db2admin</value></property>
+		<property name="password"><value>admin</value></property>
+	</bean>
+  -->
+   <!-- jdbc  数据源配置 Oracle 
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"><value>oracle.jdbc.driver.OracleDriver</value></property>
+		<property name="url"><value>jdbc:oracle:thin:@localhost:1521:orcl</value></property>
+		<property name="username"><value>prapp</value></property>
+		<property name="password"><value>prapppass</value></property>
+	</bean>-->
+	<!-- jdbc  数据源配置 SQLServer
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"><value>com.microsoft.jdbc.sqlserver.SQLServerDriver</value></property>
+		<property name="url"><value>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=ntmast</value></property>
+		<property name="username"><value>sa</value></property>
+		<property name="password"><value>sa</value></property>
+	</bean>-->
+		<!--
+		<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"><value>com.microsoft.jdbc.sqlserver.SQLServerDriver</value></property>
+		<property name="url"><value>jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=test3</value></property>
+		<property name="username"><value>sa</value></property>
+		<property name="password"><value>sa</value></property>
+	</bean>-->
+	<!--Tomcat 环境下为java:comp/env/jdbc/mast,如果是Jboss的话，jndiName属性的value值为：java:jdbc/mast	-->
+	
+  <!-- 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName"><value>java:comp/env/jdbc/mast</value></property>
+	</bean>
+ -->
+</beans>

@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+<!--***********************个性化菜单 配置开始***********************************************-->	
+    
+	<bean id="strumenudefine" class="net.mast.bsp.permit.newmenu.cmd.MenuStruCmd" singleton="false">
+	    <property name="menuStruService"><ref bean="menuStruService"/></property>
+	    <property name="struService"><ref bean="struService"/></property>
+	    <property name="struTypeService"><ref bean="struTypeService"/></property> 
+	    <property name="menuSysItemService"><ref bean="menuSysItemService"/></property> 
+	    <property name="userService"><ref bean="userService"/></property> 
+	    <property name="pubAppService"><ref bean="pubAppService"/></property> 
+	    <property name="view"><ref bean="menuStruView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="menustruView"><ref bean="menuStruforward"/></entry> 
+	        </map>
+		</property>
+		
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="menuSysitem_interceptor"/>
+	        </list>
+     	</property>
+    </bean>
+
+	<bean id="permenudefine" class="net.mast.bsp.permit.newmenu.cmd.MenuStruCmd" singleton="false">
+	    <property name="menuStruService"><ref bean="menuStruService"/></property>
+	    <property name="struService"><ref bean="struService"/></property>
+	    <property name="struTypeService"><ref bean="struTypeService"/></property> 
+	    <property name="menuSysItemService"><ref bean="menuSysItemService"/></property> 
+	    <property name="userService"><ref bean="userService"/></property> 
+	    <property name="pubAppService"><ref bean="pubAppService"/></property> 
+	    <property name="view"><ref bean="menuStruView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="menustruView"><ref bean="menuStruforward"/></entry> 
+	        </map>
+		</property>
+		
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="menuSysitem_interceptor"/>
+	        </list>
+     	</property>
+    </bean>
+	
+	<bean id="menuStruView"  class="net.mast.bsp.permit.newmenu.view.MenuStruView" singleton="false"/>
+    
+    <bean id="menuStruforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="primaryroot">jsp/bsp/permit/newmenu/menustru/primaryroot.jsp</prop>	
+			    <prop key="primarynode">jsp/bsp/permit/newmenu/menustru/primarynode.jsp</prop> 	
+			    <prop key="menustruroot">jsp/bsp/permit/newmenu/menustru/menustruroot.jsp</prop>	
+			    <prop key="menustrunode">jsp/bsp/permit/newmenu/menustru/menustrunode.jsp</prop>  
+			    <prop key="form">jsp/bsp/permit/newmenu/menustru/menustruform.jsp</prop> 	
+			    <prop key="menustruroothelp">jsp/bsp/permit/newmenu/menustru/menustruroothelp.jsp</prop>	
+			    <prop key="menustrunodehelp">jsp/bsp/permit/newmenu/menustru/menustrunodehelp.jsp</prop>  
+			    <prop key="menustrurootper">jsp/bsp/permit/newmenu/menustru/menustrurootper.jsp</prop> 
+			    <prop key="menustrurootperfirst">jsp/bsp/permit/newmenu/menustru/menustrurootperfirst.jsp</prop>
+			    <prop key="menustrudel">jsp/bsp/permit/newmenu/menustru/menustrudel.jsp</prop>
+	            <prop key="struruseroot">jsp/bsp/permit/newmenu/menustru/stru_user_tree.jsp</prop>
+	            <prop key="strurusernode">jsp/bsp/permit/newmenu/menustru/stru_user_tree_node.jsp</prop>
+			</props>
+		</property>
+	</bean> 
+
+
+	<bean id="menuStruService" class="net.mast.bsp.permit.newmenu.service.support.MenuStruServiceImpl"> 
+		<property name="menuStruDomain"><ref bean="menuStruDomain"/></property>   	
+    	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+	
+	<bean id="menuStruDomain" class="net.mast.bsp.permit.newmenu.domain.support.MenuStruDomainImpl"> 
+		<property name="menuStruDao"><ref bean="menuStruDao"/></property>  
+		<property name="menuStruTypeDao"><ref bean="menuStruTypeDao"/></property>  
+		<property name="menuStruTypeIdDao"><ref bean="menuStruTypeId"/></property>  
+		<property name="menuStruIdDao"><ref bean="menuStruId"/></property>  
+		<property name="menuPerItemDao"><ref bean="menuPerItemDao"/></property>  
+		<property name="perMenuIdDao"><ref bean="perMenuId"/></property>	
+		<property name="struDao"><ref bean="struDao"/></property>
+		<property name="menuSysItemDao"><ref bean="menuSysItemDao"/></property>
+		<property name="userParmsDao"><ref bean="userParmsDao"/></property>
+	</bean>
+	
+	<bean id="newmenusave" class="net.mast.bsp.permit.newmenu.cmd.MenuStruSaveCommand" singleton="true">
+		<property name="menuStruService"><ref bean="menuStruService"/></property>
+	</bean>
+<!--***********************个性化菜单 配置结束***********************************************-->	
+	
+<!--***********************dao配置***********************************************-->
+	<bean id="menuSysItemDao" class="net.mast.bsp.permit.newmenu.dao.jdbc.MenuSysItemJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	
+	<bean id="userParmsDao" class="net.mast.bsp.permit.newmenu.dao.jdbc.UserParmsJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>	
+	
+	<bean id="menuPerItemDao" class="net.mast.bsp.permit.newmenu.dao.jdbc.MenuPerItemJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>	
+	
+	<bean id="menuTypeDao" class="net.mast.bsp.permit.newmenu.dao.jdbc.MenuTypeJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>	
+	
+	<bean id="menuStruTypeDao" class="net.mast.bsp.permit.newmenu.dao.jdbc.MenuStruTypeJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>	
+		
+	<bean id="menuStruDao" class="net.mast.bsp.permit.newmenu.dao.jdbc.MenuStruJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>		
+		
+	<bean id="menuSysDao" class="net.mast.bsp.permit.newmenu.dao.jdbc.MenuSysJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>		
+
+<!--***********************domain配置********************************************-->
+
+	<bean id="menuSysItemDomain" class="net.mast.bsp.permit.newmenu.domain.support.MenuSysItemDomainImpl"> 
+		<property name="menuSysItemDao"><ref bean="menuSysItemDao"/></property>
+		<property name="menuIdDao"><ref bean="menuSysId"/></property>
+	</bean>
+		
+	<bean id="newmenuDomain" class="net.mast.bsp.permit.newmenu.domain.support.MenuDomainImpl"> 
+		<property name="menuStruDao"><ref bean="menuStruDao"/></property>   	
+		<property name="menuSysDao"><ref bean="menuSysDao"/></property>
+		<property name="menuStruIdDao"><ref bean="menuStruId"/></property>
+		<property name="menuStruTypeIdDao"><ref bean="menuStruTypeId"/></property>
+		<property name="menuTypeDao"><ref bean="menuTypeDao"/></property>   	
+		<property name="menuStruTypeDao"><ref bean="menuStruTypeDao"/></property>  
+		<property name="perMenuIdDao"><ref bean="perMenuId"/></property> 	
+		<property name="menuPerItemDao"><ref bean="menuPerItemDao"/></property>
+		<property name="userParmsDao"><ref bean="userParmsDao"/></property>
+		<property name="struDomain"><ref bean="struDomain"/></property>
+		<property name="menuSysItemDao"><ref bean="menuSysItemDao"/></property>
+	</bean>	
+	
+	<bean id="menuSysDomain" class="net.mast.bsp.permit.newmenu.domain.support.MenuSysDomainImpl"> 
+		<property name="menuSysDao"><ref bean="menuSysDao"/></property>   	
+		<property name="menuTypeDao"><ref bean="menuTypeDao"/></property>  
+		<property name="menuSysId"><ref bean="menuSysId"/></property>
+		<property name="menuSysItemDao"><ref bean="menuSysItemDao"/></property>
+		<property name="userParmsDao"><ref bean="userParmsDao"/></property>
+	</bean>
+
+	<bean id="userParmsDomain" class="net.mast.bsp.permit.newmenu.domain.support.UserParmsDomainImpl"> 
+		<property name="userParmsDao"><ref bean="userParmsDao"/></property>   	
+	</bean>
+<!--***********************service配置*******************************************-->
+
+	<bean id="menuSysItemService" class="net.mast.bsp.permit.newmenu.service.support.MenuSysItemServiceImpl"> 
+		<property name="menuSysItemDomain"><ref bean="menuSysItemDomain"/></property>   	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+
+	<bean id="newmenuService" class="net.mast.bsp.permit.newmenu.service.support.MenuServiceImpl"> 
+		<property name="newmenuDomain"><ref bean="newmenuDomain"/></property>   
+		<property name="userParmsDomain"><ref bean="userParmsDomain"/></property>	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+	
+	<bean id="menuSysService" class="net.mast.bsp.permit.newmenu.service.support.MenuSysServiceImpl"> 
+		<property name="menuSysDomain"><ref bean="menuSysDomain"/></property>  
+		<property name="menuSysItemDomain"><ref bean="menuSysItemDomain"/></property>
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+
+<!--***********************查询配置开始******************************************-->
+	<bean id="menusysitemquery_page_init" class="net.mast.bsp.permit.newmenu.cmd.MenuSysItemQueryPageInitCmd">
+	    <property name="menuSysItemService"><ref bean="menuSysItemService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="speQuery"><ref bean="menuSysitemqueryforward"/></entry>
+	        </map>
+        </property>
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="menuSysitem_interceptor"/>
+	        </list>
+     	</property>
+        <property name="pageSize">
+        	<value>10</value>
+        </property>
+	</bean>
+	
+	<bean id="menusysitemhelp" class="net.mast.bsp.permit.newmenu.cmd.MenuSysItemHelp">
+	    <property name="menuSysItemService"><ref bean="menuSysItemService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="menusysitemView"><ref bean="menusysitemhelpforward"/></entry>
+	        </map>
+        </property>
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="menuSysitem_interceptor"/>
+	        </list>
+     	</property>
+        <property name="pageSize">
+        	<value>10</value>
+        </property>
+	</bean>
+<!--***********************查询配置结束******************************************-->
+<!--***********************查询界面转向forward配置开始***********************************-->
+	<bean id="menuSysitemqueryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="queryPageInit">jsp/bsp/permit/newmenu/menusysitem/menu_sysitem_query.jsp</prop>  
+			</props>
+	    </property>
+	</bean> 
+	<bean id="menusysitemhelpforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="help">jsp/bsp/permit/newmenu/menusysitem/menusysitemhelp.jsp</prop>  
+			</props>
+	    </property>
+	</bean> 
+<!--***********************查询界面转向forward配置结束***********************************-->
+	
+<!--***********************视图对象View配置****************************************-->
+	<bean id="menusysitemView"  class="net.mast.bsp.permit.newmenu.view.MenuSysItemView" singleton="false"/>
+
+	<bean id="menuTypeView"  class="net.mast.bsp.permit.newmenu.view.MenuTypeView" singleton="false"/>
+	
+	<bean id="menuSysView"  class="net.mast.bsp.permit.newmenu.view.MenuSysView" singleton="false"/>
+	
+<!--***********************cmd配置开始*********************************************-->
+    <bean id="menusysitem" class="net.mast.bsp.permit.newmenu.cmd.MenuSysItemCmd" singleton="false">
+	    <property name="menuSysItemService"><ref bean="menuSysItemService"/></property>
+	    <property name="menuSysService"><ref bean="menuSysService"/></property>
+	    <property name="menuStruService"><ref bean="menuStruService"/></property>
+	    <property name="pubAppService"><ref bean="pubAppService"/></property>
+	    <property name="view"><ref bean="menusysitemView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="menusysitemView"><ref bean="newMenuforward"/></entry>
+	            <entry key="menusysitemViewChain"><ref bean="newMenuforwardchain"/></entry>
+	        </map>
+		</property>
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="menuSysitem_interceptor"/>
+	        </list>
+     	</property>
+    </bean>
+    
+    <bean id="newMenu" class="net.mast.bsp.permit.newmenu.cmd.MenuCmd" singleton="false">
+	    <property name="struService"><ref bean="struService"/></property>
+	    <property name="newmenuService"><ref bean="newmenuService"/></property>
+	    <property name="userService"><ref bean="userService"/></property>
+	    <!-- 新加toJSon 的菜单 -->
+	    <property name="menuManager"><ref bean="menuManagerDb"/></property>
+	    <property name="view"><ref bean="menuTypeView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="menuView"><ref bean="newMenuforward"/></entry>
+	        </map>
+		</property>
+    </bean>
+    
+	<bean id="menuSysitem_interceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+		<property name="collections">
+			<map>
+				<entry key="PUB_MENU_SYS_ITEM_COLLECTION"><ref bean="PUB_MENU_SYS_ITEM_COLLECTION"/></entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="menusys" class="net.mast.bsp.permit.newmenu.cmd.MenuSysCmd" singleton="false">
+	    <property name="menuSysService"><ref bean="menuSysService"/></property>
+	    <property name="menuSysItemService"><ref bean="menuSysItemService"/></property>
+	    <property name="pubAppService"><ref bean="pubAppService"/></property>
+	    <property name="view"><ref bean="menuSysView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="menusysView"><ref bean="menusysforward"/></entry>
+	        </map>
+		</property>
+    </bean>
+
+	<bean id="menusyssave" class="net.mast.bsp.permit.newmenu.cmd.MenuSysSaveCommand" singleton="true">
+		<property name="menuSysService"><ref bean="menuSysService"/></property>
+	</bean>
+
+	<bean id="refresh" class="net.mast.bsp.permit.newmenu.cmd.RefreshMenuCommand" singleton="false">
+		<property name="menuManager"><ref bean="menuManagerDb"/></property>
+		<property name="forwards">
+		        <map>
+		            <entry key="menusysView"><ref bean="menusysforward"/></entry>
+		        </map>
+        </property>
+	</bean>
+	<!--
+    <bean id="menuManagerDb" class="net.mast.bsp.permit.newmenu.cmd.FunctionDBMenuManagerWrapper" singleton="true">
+		<property name="resourcesService"><ref bean="resourcesService"/></property>
+		<property name="menuService"><ref bean="newmenuService"/></property>
+		<property name="cachePolicy"><ref bean="cachePolicy"/></property>
+		<property name="pubAppDomain"><ref bean="pubAppDomain"/></property>
+    </bean>
+    -->
+    <bean id="menuManagerDb" class="net.mast.bsp.permit.newmenu.cmd.DBMenuManagerWrapper" singleton="true">
+		<property name="resourcesService"><ref bean="resourcesService"/></property>
+		<property name="menuService"><ref bean="newmenuService"/></property>
+		<property name="cachePolicy"><ref bean="cachePolicy"/></property>
+		<property name="pubAppDomain"><ref bean="pubAppDomain"/></property>
+    </bean>
+
+	<bean id="cachePolicy" class="net.mast.bsp.permit.newmenu.cache.support.DefaultCachePolicy" singleton="true">
+		<property name="menuService"><ref bean="newmenuService"/></property>
+		<property name="struService"><ref bean="struService"/></property>
+	</bean>	
+
+	<bean id="menuxml" class="net.mast.bsp.permit.newmenu.cmd.MenuXmlCommand" singleton="true">
+		<property name="menuManager"><ref bean="menuManagerDb"/></property>
+	</bean>	
+ 
+<!--***********************cmd配置结束*********************************************-->
+
+<!--***********************界面转向forward配置开始***********************************-->
+    <bean id="newMenuforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/permit/newmenu/menusysitem/menu_sysitem_detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/permit/newmenu/menusysitem/menu_sysitem_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/permit/newmenu/menusysitem/menu_sysitem_forupdate.jsp</prop>
+			    <prop key="forclonemenu">jsp/bsp/permit/newmenu/clone/forclone_newmenu.jsp</prop>
+			    <prop key="forchangemenu">jsp/bsp/permit/newmenu/change/forchange_menu.jsp</prop>
+			    <prop key="forchangestrumenu">jsp/bsp/permit/newmenu/change/forchange_strumenu.jsp</prop>
+			    <prop key="showmenu">jsp/bsp/permit/newmenu/change/show_newmenu.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="newMenuforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="menusysitemquery_page_init"/></entry>
+			</map>
+		</property>
+    </bean>       
+    
+    <bean id="menusysforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+				<prop key="menuType_root">jsp/bsp/permit/newmenu/menusys/menuType_root.jsp</prop>
+				<prop key="menuType_node">jsp/bsp/permit/newmenu/menusys/menuType_node.jsp</prop>
+				<prop key="menuSys_root">jsp/bsp/permit/newmenu/menusys/menuSys_root.jsp</prop>
+				<prop key="menuSys_node">jsp/bsp/permit/newmenu/menusys/menuSys_node.jsp</prop>
+				<prop key="menuSys_roothelp">jsp/bsp/permit/newmenu/menusys/menuSys_roothelp.jsp</prop>
+				<prop key="menuSys_nodehelp">jsp/bsp/permit/newmenu/menusys/menuSys_nodehelp.jsp</prop>
+				<!--***********************于2006-11-23添加通用帮助的复选框菜单***********************************-->
+				<prop key="menuSys_roothelpcheckbox">jsp/bsp/permit/newmenu/menusys/menuSys_roothelpcheckbox.jsp</prop>
+				<prop key="menuSys_nodehelpcheckbox">jsp/bsp/permit/newmenu/menusys/menuSys_nodehelpcheckbox.jsp</prop>
+				<prop key="form">jsp/bsp/permit/newmenu/menusys/form.jsp</prop>
+				<prop key="radioroot">jsp/bsp/permit/newmenu/menusys/radio_root.jsp</prop>
+				<prop key="radionode">jsp/bsp/permit/newmenu/menusys/radio_node.jsp</prop>
+				<prop key="success">jsp/bsp/permit/newmenu/menusys/success.jsp</prop>
+				<prop key="setCurrentSuccess">jsp/bsp/permit/newmenu/menusys/setCurrentSuccess.jsp</prop>
+				<prop key="foraddmenutype">jsp/bsp/permit/newmenu/menusys/foraddmenutype.jsp</prop>
+				<prop key="menutypedetail">jsp/bsp/permit/newmenu/menusys/menutypedetail.jsp</prop>
+				<prop key="menutypeupdate">jsp/bsp/permit/newmenu/menusys/menutypeupdate.jsp</prop>
+				<prop key="menutypedel">jsp/bsp/permit/newmenu/menusys/menutypedel.jsp</prop>
+				<prop key="forInsertMenuType">jsp/bsp/permit/newmenu/menusys/selectInertMenuType.jsp</prop>
+				
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="menuSysItemforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/permit/menu/pub_menu_sys_item_detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/permit/menu/pub_menu_sys_item_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/permit/menu/pub_menu_sys_item_forupdate.jsp</prop>
+			</props>
+		</property>
+	</bean>
+<!--***********************界面转向forward配置结束***********************************-->
+	<bean id="PUB_MENU_SYS_ITEM_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PUB_MENU_SYS_ITEM.TYPE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>	
+<!--***********************最大号配置 开始*************************************************-->	
+	<bean id="menuStruId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="id"><value>MENU_STRU_ID</value></property>
+	</bean>	  
+	  
+	<bean id="menuStruTypeId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="id"><value>MENU_STRU_TYPE_ID</value></property>
+	</bean>	
+		    
+	<bean id="perMenuId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="id"><value>MENU_PER_ID</value></property>
+	</bean>	
+	
+	<bean id="menuSysId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>MENU_SYS_ID</value></property>
+</bean>
+	
+<!--***********************最大号配置 结束*************************************************-->	
+<bean id="menu" class="net.mast.bsp.permit.menu.MainCommand" singleton="true">
+             <property name="forwards">
+	        <map>
+	            <entry key="menu"><ref bean="menuforward"/></entry>
+	        </map>
+             </property>
+	</bean>
+
+	<bean id="menuforward" class="net.mast.waf.mvc.ServletDispatcherForward" singleton="true">
+	    <property name="mappings">
+			<props>
+			    <prop key="success">jsp/main.jsp</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+        <bean id="strurulequery" class="net.mast.waf.mvc.CommonQueryCommandWithInit">
+	           <property name="mappings">
+	                      <props>
+			           <prop key="success">jsp/bsp/organization/strurule/query.jsp</prop>				
+                              </props>
+                   </property> 
+                   <property name="beforIntercept">
+	              <list>
+	                <ref bean="struruleinsertinterceptor"/>
+	              </list>
+                   </property> 
+               <property name="pageSize"><value>15</value></property>   
+	           <property name="collection"><ref bean="sqlPageCollection"/></property>
+	           
+	</bean>
+	
+	<bean id="struruleQueryInit" class="net.mast.waf.mvc.CommonQueryCommandWithInit">
+	           <property name="mappings">
+	                       <props>
+			           <prop key="success">jsp/bsp/organization/strurule/query.jsp</prop>				
+                               </props>
+                   </property>    
+                   <property name="beforIntercept">
+	              <list>
+	                <ref bean="struruleinsertinterceptor"/>
+	              </list>
+                   </property> 
+               <property name="pageSize"><value>15</value></property> 
+	           <property name="collection"><ref bean="sqlPageCollection"/></property>
+	          
+	</bean>
+
+	<bean id="struRuleView"  class="net.mast.bsp.organization.view.StruRuleView" singleton="false"/>
+
+
+    <bean id="strurule" class="net.mast.bsp.organization.cmd.StruRuleCmd" singleton="false">
+	    <property name="struRuleService"><ref bean="struRuleService"/></property>
+	    <property name="organTypeService"><ref bean="organTypeService"/></property>   
+	    <property name="view"><ref bean="struRuleView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="struruleView"><ref bean="struruleforward"/></entry>
+	            <entry key="struruleViewChain"><ref bean="struruleforwardchain"/></entry>
+	        </map>
+		</property>
+		
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="struruleinsertinterceptor"/>
+	        </list>
+        </property>
+    </bean>
+    
+    
+     <bean id="struruleinsertinterceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+	    <property name="collections">
+    	    <map>
+                <entry key="struRuleCollection"><ref bean="struRuleCollection"/></entry>
+                <entry key="organTypeCollection"><ref bean="organTypeCollection"/></entry>
+                <entry key="struTypeCollection"><ref bean="struTypeCollection"/></entry>
+    	    </map>
+    	    </property>
+     </bean>
+
+
+
+<bean id="struRuleDao" class="net.mast.bsp.organization.dao.jdbc.StruRuleJdbcDao">
+        <property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+
+
+    <bean id="struruleforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/organization/strurule/detail.jsp</prop>
+				<prop key="detailList">jsp/bsp/organization/strurule/detailList.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/organization/strurule/forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/organization/strurule/forupdate.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="struruleforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="struruleQueryInit"/></entry>
+			</map>
+		</property>
+    </bean>
+
+
+<bean id="struRuleService" class="net.mast.bsp.organization.service.support.StruRuleServiceImpl"> 
+	    <property name="struRuleDomain"><ref bean="struRuleDomain"/></property>   		
+    	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+</bean>
+	
+	
+<bean id="struRuleDomain" class="net.mast.bsp.organization.domain.support.StruRuleImpl"> 
+ 	    <property name="organTypeDomain"><ref bean="organTypeDomain"/></property>
+	    <property name="struRuleDao"><ref bean="struRuleDao"/></property>   
+	    <property name="struTypeDomain"><ref bean="struTypeDomain"/></property> 	
+</bean>
+	
+<bean id="targetlistinterceptor" class="net.mast.bsp.organization.cmd.TargetListInterceptor">
+		<property name="struRuleService"><ref bean="struRuleService"/></property>
+	</bean>
+	
+</beans>
+
+

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean id="struquery" class="net.mast.bsp.organization.cmd.StruUnderlingQuery">
+	    <property name="struService"><ref bean="struService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="struforward"/></entry>
+	        </map>
+        </property>
+        <property name="beforIntercept">
+	        <list>
+	        <ref bean="struinsertinterceptor"/>
+	        </list>
+        </property>
+        </bean>
+        
+	<bean id="struView"  class="net.mast.bsp.organization.view.StruView" singleton="false"/>
+
+
+    <bean id="stru" class="net.mast.bsp.organization.cmd.StruCmd" singleton="false">
+	    <property name="view"><ref bean="struView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="struView"><ref bean="struforward"/></entry>
+	            <entry key="employeeView"><ref bean="employeeforward"/></entry>
+	        </map>
+		</property>
+		<property name="beforIntercept">
+	        <list>
+	        <ref bean="struinsertinterceptor"/>
+	        </list>
+        </property>
+        
+        <property name="providers">
+        	<list>
+               		<ref bean="employee"/>	           
+        	</list>
+ 	    </property>
+    </bean>
+    
+    
+    <bean id="struinsertinterceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+	    <property name="collections">
+    	    <map>
+                <entry key="workplaceCollection"><ref bean="workplaceCollection"/></entry>
+                <entry key="organTypeCollection"><ref bean="organTypeCollection"/></entry>
+                <entry key="corpCollection"><ref bean="corpCollection"/></entry>
+                <entry key="isLeafCollection"><ref bean="isLeafCollection"/></entry>
+    	    </map>
+    	</property>
+	</bean>
+
+
+<bean id="struDao" class="net.mast.bsp.organization.dao.jdbc.StruJdbcDao">
+        <property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+
+
+    <bean id="struforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		
+			<!-- 机构导入 -->    		    
+				<prop key="forimport">jsp/bsp/organization/org/forimport.jsp</prop>
+
+			    <prop key="nodeId">jsp/bsp/organization/org/nodeid.jsp</prop>
+			    <prop key="detail">jsp/bsp/organization/org/detail.jsp</prop>
+			    <prop key="detailb">jsp/bsp/organization/org/detailb.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/organization/org/forinsert.jsp</prop>
+			    <prop key="fordelete">jsp/bsp/organization/org/tree/deletestru.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/organization/org/forupdate.jsp</prop>
+			    <prop key="forquery">jsp/bsp/organization/org/blur_query.jsp</prop>
+				
+				<prop key="primaryroot">jsp/bsp/organization/org/tree/primaryroot.jsp</prop>			    
+			    <prop key="primarynode">jsp/bsp/organization/org/tree/primarynode.jsp</prop>			   
+			    
+			    <prop key="subroot">jsp/bsp/organization/org/tree/subroot.jsp</prop>	
+			    <prop key="subDetail">jsp/bsp/organization/org/subdetail.jsp</prop>		   
+			    
+			    <prop key="addMemberRoot">jsp/bsp/organization/org/tree/addmemberroot.jsp</prop>
+			    <prop key="addMemberNode">jsp/bsp/organization/org/tree/addmembernode.jsp</prop>
+			    			    
+			    <prop key="mergeRoot">jsp/bsp/organization/org/tree/mergeroot.jsp</prop>
+			
+			    <prop key="queryHistRoot">jsp/bsp/organization/org/tree/queryhistroot.jsp</prop>
+			    <prop key="queryHistNode">jsp/bsp/organization/org/tree/queryhistnode.jsp</prop>
+			    <prop key="histdetail">jsp/bsp/organization/org/histdetail.jsp</prop>
+			    <prop key="eventdetail">jsp/bsp/organization/org/eventdetail.jsp</prop>
+			    
+			    <prop key="struTypeRoot">jsp/bsp/organization/org/tree/strutyperoot.jsp</prop>
+			    <prop key="struTypeNode">jsp/bsp/organization/org/tree/strutypenode.jsp</prop>
+			     <prop key="changeOrderRoot">jsp/bsp/organization/org/changeOrder.jsp</prop>
+			     
+			       <prop key="choiceRoot">jsp/bsp/organization/org/tree/choiceroot.jsp</prop>
+			       <prop key="choiceNode">jsp/bsp/organization/org/tree/choicenode.jsp</prop>
+			       
+			       <prop key="choiceNewRoot">jsp/bsp/organization/org/tree/choicenewroot.jsp</prop>
+			       <prop key="choiceNewNode">jsp/bsp/organization/org/tree/choicenewnode.jsp</prop>
+			       
+			       <prop key="checkRoot">jsp/bsp/organization/org/tree/checkroot.jsp</prop>
+			       <prop key="checkNode">jsp/bsp/organization/org/tree/checknode.jsp</prop>
+			       
+			       	<prop key="checkNewRoot">jsp/bsp/organization/org/tree/checknewroot.jsp</prop>
+			       <prop key="checkNewNode">jsp/bsp/organization/org/tree/checknewnode.jsp</prop>
+			       
+			       <prop key="checkTable">jsp/bsp/organization/org/tree/checktable.jsp</prop>
+			       <prop key="choiceTable">jsp/bsp/organization/org/tree/choicetable.jsp</prop>
+			       
+			       <prop key="depRoot">jsp/bsp/organization/org/tree/depRoot.jsp</prop>
+			       <prop key="depNode">jsp/bsp/organization/org/tree/depNode.jsp</prop> 
+			       
+			        <prop key="forselectorgantype">jsp/bsp/organization/org/tree/selectinserttype.jsp</prop>
+			        <prop key="checkTableByOrganType">jsp/bsp/organization/org/tree/checktablebyorgantype.jsp</prop>
+				
+			</props>
+		</property>
+	</bean>
+
+    
+<bean id="struService" class="net.mast.bsp.organization.service.support.StruServiceImpl">  	
+	    <property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+</bean>
+
+
+<bean id="structureId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>STRU_ID</value></property>
+</bean>
+
+
+<bean id="struDomain" class="net.mast.bsp.organization.domain.support.StruImpl"> 
+</bean>
+
+
+<bean id="struViewUtils" class="net.mast.bsp.organization.utils.StruViewUtils"> 
+</bean>
+</beans>
+
+
+

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+        <bean id="functionDao" class="net.mast.bsp.permit.pap.dao.jdbc.FunctionJdbcDao">
+	       <property name="dataSource"><ref bean="dataSource"/></property>
+        </bean>
+
+        <bean id="functionService" class="net.mast.bsp.permit.pap.service.support.FunctionServiceImpl"> 
+	        <property name="functionDomain"><ref bean="functionDomain"/></property>   
+	        <property name="moduleDomain"><ref bean="moduleDomain"/></property>	
+	        <property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+        </bean>
+
+        <bean id="functionDomain" class="net.mast.bsp.permit.pap.domain.support.FunctionImpl"> 
+	        <property name="functionDao"><ref bean="functionDao"/></property>   	
+	        <property name="uaDomain"><ref bean="uaDomain"/></property>   	
+        </bean>
+        
+        <bean id="function" class="net.mast.bsp.permit.pap.cmd.FunctionCmd" singleton="false">
+	        <property name="moduleService"><ref bean="moduleService"/></property>
+	        <property name="functionService"><ref bean="functionService"/></property>
+	        <property name="resourcesService"><ref bean="resourcesService"/></property>
+	        <property name="resTypeDomain"><ref bean="resTypeDomain"/></property>
+	        <property name="roleResourceDomain"><ref bean="roleResourceDomain"/></property>
+	        <property name="troleOptsDomain"><ref bean="troleOptsDomain"/></property>
+	        <property name="moduleDomain"><ref bean="moduleDomain"/></property>	
+	        <property name="view"><ref bean="functionView"/></property>
+	        <property name="forwards">
+	             <map>
+	                    <entry key="functionView"><ref bean="functionForward"/></entry>
+	                    <entry key="functionViewChain"><ref bean="functionViewChain"/></entry>
+	             </map>
+	        </property>
+	     	<property name="beforIntercept">
+	             <list>
+	                    <ref bean="function_interceptor"/> 
+	                    <ref bean="resourcesInterceptor"/>
+	             </list>
+   			</property>
+        </bean>
+      
+        <bean id="functionView"  class="net.mast.bsp.permit.pap.view.FunctionView" singleton="false"/>
+     
+        <bean id="functionForward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	       <property name="mappings">
+		      <props>		    		    
+			     <prop key="root">jsp/bsp/permit/pap/function/function_tree.jsp</prop>
+			     <prop key="node">jsp/bsp/permit/pap/function/function_node.jsp</prop>
+			     <prop key="transferRoot">jsp/bsp/permit/pap/function/transfer_tree.jsp</prop>
+			     <prop key="transferNode">jsp/bsp/permit/pap/function/transfer_node.jsp</prop>
+			     <prop key="detail">jsp/bsp/permit/pap/function/detail.jsp</prop>
+			     <prop key="forinsert">jsp/bsp/permit/pap/function/forinsert.jsp</prop>
+			     <prop key="forupdate">jsp/bsp/permit/pap/function/forupdate.jsp</prop>
+			     <prop key="checkhelproot">jsp/bsp/permit/pap/function/checkhelproot.jsp</prop>
+			     <prop key="radiohelproot">jsp/bsp/permit/pap/function/radiohelproot.jsp</prop>
+			     <prop key="checkhelpnode">jsp/bsp/permit/pap/function/checkhelpnode.jsp</prop>
+			     <prop key="radiohelpnode">jsp/bsp/permit/pap/function/radiohelpnode.jsp</prop>
+			     <prop key="checkcontextroot">jsp/bsp/permit/pap/function/checkcontextroot.jsp</prop>
+			     <prop key="checkcontextnode">jsp/bsp/permit/pap/function/checkcontextnode.jsp</prop>
+			     <prop key="checkcontextroot1">jsp/bsp/permit/pap/function/checkcontextroot1.jsp</prop>
+			     <prop key="checkcontextnode1">jsp/bsp/permit/pap/function/checkcontextnode1.jsp</prop>
+			     <prop key="choicehelproot">jsp/bsp/permit/pap/function/choicehelproot.jsp</prop>
+			     <prop key="choicehelpnode">jsp/bsp/permit/pap/function/choicehelpnode.jsp</prop>
+			      <prop key="function_resource">jsp/bsp/permit/pap/function/function_resource.jsp</prop>
+			      <prop key="function_resource_TRole">jsp/bsp/permit/pap/function/function_resource_TRole.jsp</prop>
+			      
+		      </props>
+	       </property>
+         </bean>
+      
+         <bean id="functionViewChain" class="net.mast.waf.mvc.ChainForward">
+	         <property name="mappings">
+			        <map>
+			               <entry key="success"><ref bean="commonquery_function"/></entry>
+			               <entry key="deletedetail"><ref bean="commondelete_function"/></entry>
+			        </map>
+		     </property>
+          </bean>
+          <bean id="commonquery_function" class="net.mast.waf.mvc.CommonQueryCommand">
+	         <property name="mappings">
+		            <props>
+			           <prop key="success">jsp/content.jsp</prop>
+		            </props>
+	         </property>     
+          </bean>
+          <bean id="commondelete_function" class="net.mast.waf.mvc.CommonQueryCommand">
+	         <property name="mappings">
+		            <props>
+			           <prop key="success">jsp/bsp/permit/pap/role/deletdetail.jsp</prop>
+		            </props>
+	         </property>     
+          </bean>
+          
+          <bean id="FUNCTIONTYPE_ISSYS_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		     <property name="enumName"><value>FUNCTIONTYPE.ISSYS</value></property>
+		     <property name="enumService"><ref bean="enumService"/></property>
+	      </bean>
+
+          <bean id="function_interceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+		     <property name="collections">
+		    	<map>
+				    <entry key="PUBFUNCTIONS_MODULEID_COLLECTION"><ref bean="moduleIdCollection"/></entry>
+				    <entry key="PUBFUNCTIONS_DATARESTYPE_COLLECTION"><ref bean="dataResTypeCollection"/></entry>
+				    <entry key="FUNCTIONTYPE_ISSYS_COLLECTION"><ref bean="FUNCTIONTYPE_ISSYS_COLLECTION"/></entry>
+			    </map>
+		     </property>
+           </bean>
+</beans>

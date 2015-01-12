@@ -1,2 +1,0 @@
-##可以使用的变量$field,$disp,$ref
-#parse("SimpleData_Input.vm")

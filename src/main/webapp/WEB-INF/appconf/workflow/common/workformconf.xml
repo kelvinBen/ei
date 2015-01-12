@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- 普通的DAO配置 -->
+	<bean id="databaseAccessObjectDomain" class="net.mast.workform.database.domain.support.DatabaseAccessObjectDomainImpl"> 
+		<property name="databaseAccessObjectDao"><ref bean="databaseAccessObjectDao"/></property>  
+		<property name="dataSource"><ref bean="dataSource"/></property> 
+		<property name="schemaName"><value>ntmast</value></property> 	
+	</bean>
+		<!--sql server专用start	
+	<bean id="databaseAccessObjectDao" class="net.mast.workform.database.dao.jdbc.FormSQLSJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>-->
+      <!-- sql server专用 end	-->
+	<!--一般通用  start-->
+	<bean id="databaseAccessObjectDao" class="net.mast.workform.database.dao.jdbc.FormDBJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+    <!--	end -->	
+	<!-- weblogic + oracle 10G DAO配置 开始
+	
+	<bean id="databaseAccessObjectDomain" class="net.mast.workform.database.weblogic.oracle.domain.support.DatabaseAccessObjectDomainImpl_weblogic_oracle">
+		<property name="databaseAccessObjectDao"><ref bean="databaseAccessObjectDao"/></property>
+		<property name="dataSource"><ref bean="dataSource"/></property>
+		<property name="schemaName"><value>WORKFLOW</value></property> 
+	</bean>
+	<bean id="databaseAccessObjectDao" class="net.mast.workform.database.weblogic.oracle.dao.jdbc.FormDBJdbcDao_weblogic_oracle">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	-->
+	<!--weblogic + oracle 10G DAO配置 结束-->
+			<!--workformmanage-->
+   <bean id="workformmanagerquery" class="net.mast.workform.iforms.cmd.FormManagerQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="workformmanagerforward"/></entry>
+	        </map>
+        </property>          	
+	</bean>
+	
+    <bean id="workformmanagerforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/workform/formmanager_query.jsp</prop>
+			</props>
+		</property>
+	</bean>
+   <bean id="workformmanagerhelpquery" class="net.mast.workform.iforms.cmd.FormManagerHelpQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="workformmanagerhelpforward"/></entry>
+	        </map>
+        </property>   
+	</bean>
+    <bean id="workformmanagerhelpforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/workform/formmanager_helpquery.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	
+    <bean id="formmanager" class="net.mast.workform.iforms.cmd.FormManagerCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="formmanagerView"><ref bean="formmanagerView"/></entry>
+	            <entry key="formmanagerViewChain"><ref bean="formmanagerViewChain"/></entry>
+	        </map>
+		</property>
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+    </bean>
+    <bean id="formmanagerView" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+				<!-- 3.2.1的表单定制界面 -->
+			    <prop key="forinsert">jsp/workflow/workform/formmanager_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/workflow/workform/formmanager_forupdate.jsp</prop>
+			    <prop key="FormConfigXml">jsp/workflow/workform/FormConfigXml.jsp</prop>
+			    <prop key="formquerydisplay">jsp/workflow/workform/formquerydisplay.jsp</prop>
+			    <prop key="processtypeforcreate">jsp/workflow/workform/processtype_dialog.jsp</prop>
+			    <prop key="detail">jsp/workflow/workform/formmanager_detail.jsp</prop>
+			    <!-- 传统的表单定制界面 -->
+			    <prop key="forinsert_traditional">jsp/workflow/workform_traditional/formmanager_forinsert.jsp</prop>
+			    <prop key="forupdate_traditional">jsp/workflow/workform_traditional/formmanager_forupdate.jsp</prop>
+			    <prop key="detail_traditional">jsp/workflow/workform_traditional/formmanager_detail.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="formmanagerViewChain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="workformmanagerquery"/></entry>
+			</map>
+		</property>
+    </bean>
+	<bean id="wfWorkformId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>WF_WORKFORM_ID</value></property>
+	</bean>
+	<bean id="wfMaxId" class="net.mast.bsp.base.id.dao.jdbc.IncrementDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+	<property name="id"><value>WF_MAX_ID</value></property>
+	</bean>	
+    <bean id="formdataquery" class="net.mast.workform.iforms.cmd.FormDataQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="formdataqueryforward"/></entry>
+	        </map>
+        </property>   
+        <property name="beforIntercept">
+	        <list>
+	            <ref bean="wf_state_interceptor"/>
+	            <ref bean="wf_taskinfoquery_interceptor"/>
+	        </list>
+        </property>          	
+	</bean>
+	<bean id="formdataqueryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="daiBan">jsp/workflow/taskinfo/taskinfo_formsearch_daiban.jsp</prop>
+			    <prop key="yiBan">jsp/workflow/taskinfo/taskinfo_formsearch_yiban.jsp</prop>
+			    <prop key="wanCheng">jsp/workflow/taskinfo/taskinfo_formsearch_finish.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	   <bean id="workformforquery" class="net.mast.workform.iforms.cmd.FormManagerHelpQueryCmd" singleton="false">
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="workformforqueryforward"/></entry>
+	        </map>
+        </property>          	
+	</bean>
+    <bean id="workformforqueryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="query">jsp/workflow/workform/formmanager_forquery.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	<!--图片域    start-->
+	<bean id="graphview" class="net.mast.workflow.file.view.graphView" singleton="false" />
+	<bean id="workformgraph" class="net.mast.workflow.file.GetFileSelectTreeCommand" singleton="false">
+	<property name="view"> <ref bean="graphview"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="graphforward"><ref bean="graphforward"/></entry>
+	        </map>
+        </property>          	
+	</bean>
+    <bean id="graphforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="fileselecttree">left.jsp</prop>
+			       <prop key="fileselectimgdisplay">images.jsp</prop>
+			     <prop key="uploadfiles">uploadFile.jsp</prop>   
+			</props>
+		</property>
+	</bean>
+	
+	
+</beans>

@@ -1,0 +1,316 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>表单定制工具</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<META NAME="Author" CONTENT="">
+<META NAME="Keywords" CONTENT="">
+<META NAME="Description" CONTENT="">
+<link href="XMLSelTree.css" rel="stylesheet">
+</HEAD>
+<script language="javascript">
+var SubFormIndex=1;//子表单名称
+//初始化
+function init(xmlstr)
+{
+		//showtabwin();
+		var tabstr='<TABLE id="tab1" borderColor=#000000 cellSpacing=0 cellPadding=0 width="100%" bgColor=#ffffff border=1><COLGROUP><COL width="20%"><COL><COL><COL><COL><COL></COLGROUP>';
+		for(var i=0;i<5;i++)
+		{
+			tabstr+="<tr>";
+			for(var j=0;j<6;j++)
+			{
+			tabstr+='<td phcol="'+(j+1)+'" phrow="'+(i+1)+'" ></td>' ;
+			}
+			tabstr+="</tr>";
+		}
+		tabstr+="</table><iframe width='100%' frameborder='1' height='100%' style='top:-1;position:absolute;z-index:-1;'></iframe>";
+		document.frames.ff.document.all("page1").innerHTML=tabstr;
+		document.frames.ff.OBJ.init();
+}
+//外部getFormXml
+function getFormXml()
+{
+	return	document.frames.ff.OBJ.getFormXml();
+}
+//外部getFormTemplate
+function getFormTemplate()
+{
+	return	document.frames.ff.OBJ.getFormTemplate();
+}
+
+//外部getFormHtml
+function getFormHtml()
+{
+	return	document.frames.ff.OBJ.getFormHtml();
+}
+
+//外部set url
+function setUrl(url)
+{
+		document.frames.ff.OBJ.setUrl(url);
+}
+//外部set 编辑区HTML
+function setFormHtml(str)
+{
+		document.frames.ff.OBJ.setFormHtml(str);
+}
+
+//外部set 打印模板
+function setFormPrintTemplate(str)
+{
+		document.frames.ff.OBJ.setFormPrintTemplate(str);
+}
+//外部set 正文模板
+function setFormTextTemplate(str)
+{
+		document.frames.ff.OBJ.setFormTextTemplate(str);
+}
+
+  function openMbPer()
+  {
+  var curobj=document.frames.ff.OBJ.getCurXmlNode();
+  if(curobj==null)
+  {
+  alert("没有选择板块！");
+  return;
+  }
+  window.showModalDialog("bankuai.htm",window,"dialogWidth:300px;dialogHeight:300px;status:no");
+  }
+    function openTdPer()
+  {
+   var curobj=document.frames.ff.OBJ.getFirstTd();
+  if(curobj==null)
+  {
+  alert("没有选择单元格！");
+  return;
+  }
+  window.showModalDialog("cell_attrib.htm",window,"dialogWidth:400px;dialogHeight:300px;status:no");
+  }
+
+  function showtabwin()
+  {
+    window.showModalDialog("template.htm",window,"dialogWidth:400px;dialogHeight:400px;status:no");
+
+  }
+  function dozoom()
+  {
+  var obj=event.srcElement;
+  document.frames.ff.document.body.style.zoom=obj.options[obj.selectedIndex].value;
+  }
+  function redo()
+  {
+	var str=document.frames.ff.OBJ.reDo();
+	if(str==null) return;
+	document.frames.ff.OBJ.reDraw(str,1);
+  }
+  function repeate()
+  {
+  var str=document.frames.ff.OBJ.repertDo();
+  	if(str==null) return;
+	document.frames.ff.OBJ.reDraw(str,1);
+  }
+  function noborder()
+  {
+  //alert(document.frames.ff.document.all('tt').outerHTML);
+  var img=window.event.srcElement;
+  var tt=document.frames.ff.document.all('tt');
+  if(tt.className=="noborder")
+  {
+  img.src="images/12.gif";
+  tt.className="";
+  }
+  else
+  {
+    img.src="images/12_h.gif";
+	tt.className="noborder";
+  }
+  }
+  function doview(){
+	tex2.value=ff.document.body.innerHTML;
+	document.frames.ff.OBJ.makeTabXml();
+  }
+ function dosave()
+ {
+ tex1.value=document.frames.ff.OBJ.getAllHtmlStr();
+//alert(xmlstr.xml);
+ }
+ function WBTB_format(what,opt)
+{
+	if (opt=="removeFormat")
+	{
+		what=opt;
+		opt=null;
+	}
+	ff.focus();
+	if (opt==null)
+	{
+		ff.document.execCommand(what);
+	}else{
+		ff.document.execCommand(what,"",opt);
+	}
+//	ff.focus();
+}
+function WBTB_foreColor()
+{
+	//if (!WBTB_validateMode()) return;
+	var arr = showModalDialog("selcolor.html", "", "dialogWidth:18.5em; dialogHeight:17.5em; status:0; help:0");
+	if (arr != null) WBTB_format('forecolor', arr);
+	else WBTB_Composition.focus();
+}
+
+function InsertTextFiled()
+{
+var insertPoint=document.frames.ff.document.selection.createRange();
+insertPoint.pasteHTML('<input type="text"/>');
+}
+function InsertTextArea()
+{
+var insertPoint=document.frames.ff.document.selection.createRange();
+insertPoint.pasteHTML('<textarea></textarea');
+}
+function InsertSelect()
+{
+var insertPoint=document.frames.ff.document.selection.createRange();
+insertPoint.pasteHTML('<select ></select>');
+}
+function insertsubform()
+{
+var tabtab=document.frames.ff.document.all("tabpage");
+var obody=null;
+for(var jj=0;jj<tabtab.rows[0].cells.length;jj++)
+{
+	var otd=tabtab.rows[0].cells[jj];
+	if(otd.className=="taboncss")
+	{
+	obody=document.frames.ff.document.all("page"+(jj+1));
+	break;
+	}
+}
+
+var tabstr='<TABLE id="sub'+SubFormIndex+'" formname="${sub'+SubFormIndex+'}" type="sub" borderColor=#000000 cellSpacing=0 cellPadding=0 width="100%" bgColor=#ffffff border=1><COLGROUP><COL width="20%"><COL><COL><COL><COL><COL></COLGROUP>';
+for(var i=0;i<2;i++)
+{
+	tabstr+="<tr>";
+	for(var j=0;j<6;j++)
+	{
+	tabstr+='<td phcol="'+(j+1)+'" phrow="'+(i+1)+'" ></td>' ;
+	}
+	tabstr+="</tr>";
+}
+tabstr+="</table>";
+obody.insertAdjacentHTML("beforeEnd","<hr style='height:5px;background-color:#646464'>"+tabstr);
+SubFormIndex++;
+
+}
+function InsertNewPage()
+{
+var tabtab=document.frames.ff.document.all("tabpage");
+for(var jj=0;jj<tabtab.rows[0].cells.length;jj++)
+{
+var otd=tabtab.rows[0].cells[jj];
+otd.className="taboffcss";
+}
+var ntd=tabtab.rows[0].insertCell();
+var index=ntd.cellIndex;
+ntd.className="taboncss";
+ntd.innerText="第"+(index+1)+"页";
+ntd.width=50;
+var tabstr='<TABLE  id="tab'+parseInt(index+1)+'" borderColor=#000000 cellSpacing=0 cellPadding=0 width="100%" bgColor=#ffffff border=1><COLGROUP><COL width="20%"><COL><COL><COL><COL><COL></COLGROUP>';
+		for(var i=0;i<5;i++)
+		{
+			tabstr+="<tr>";
+			for(var j=0;j<6;j++)
+			{
+			tabstr+='<td phcol="'+(j+1)+'" phrow="'+(i+1)+'" ></td>' ;
+			}
+			tabstr+="</tr>";
+		}
+		tabstr+="</table>";
+document.frames.ff.document.all("pages").insertAdjacentHTML("beforeEnd","<div unselectable=on style='position:absolute;top:42;z-index:100;background-color:red;height:100%;width:100%' id='page"+(index+1)+"'>"+tabstr+"  <iframe width='100%' frameborder='1' height='100%' style='top:-1;position:absolute;z-index:-1;'></iframe></div>");
+//ntd.onclick();
+}
+</script>
+<BODY topmargin=0 onload="init()" ondragstart="return false;">
+<TABLE width="100%" border=1 height="100%" cellspacing=0 cellpadding=0>
+<!--<TR bgcolor="#A3CFF2">
+	<TD  height="23" colspan=2><img src="images/document.frames.gif"><textarea id="tex1"></textarea><textarea id="tex2"></textarea>
+</TD>
+</TR>-->
+<TR>
+	<TD   colspan=2 width="100%" height="38" background="images/menu_bg.gif">
+	<!--	<img border="0" src="images/01.gif" title="保存" onclick="dosave();">
+		<img border="0" src="images/02.gif" title="预览" onclick="doview();">-->
+		<img border="0" src="images/def_file.gif"  title="控件属性" onclick="openMbPer()">
+		<img border="0" src="images/04.gif" onclick="openTdPer()" title="单元格属性">
+		<img border="0" src="images/05.gif" id="05" title="表单属性" onclick="showtabwin();">
+		<img border="0" src="images/06.gif" onclick="ff.merge();">
+		<img border="0" src="images/07.gif" onclick="ff.split();">
+		<img border="0" src="images/08.gif" onclick="document.frames.ff.OBJ.addRow();" title="插入一行">
+		<img border="0"  onclick="document.frames.ff.OBJ.delRow();" title="删除一行" src="images/09.gif">
+		<img border="0" src="images/10.gif"  onclick="document.frames.ff.OBJ.addCol();" title="插入一列">
+		<img border="0" src="images/11.gif"  onclick="document.frames.ff.OBJ.delCol();" title="删除一列">
+		<img border="0" src="images/12.gif" title="表格边框" onclick="noborder();">
+		<img border="0" src="images/def_text.gif" onclick="InsertTextFiled();" title="插入文本域">
+		<img border="0" src="images/copy.gif"  onclick="insertsubform();"  title="插入子表单">
+
+		<img border="0" src="images/new.gif"  title="插入新页面" onclick="InsertNewPage();">
+		<img border="0" title="字体颜色"  onclick="WBTB_foreColor();" src="images/def_fontcolor.gif">
+		<img border="0" src="images/def_left.gif"  onclick="WBTB_format('justifyleft');"  title="左对齐">
+		<img border="0" src="images/def_middle.gif"  onclick="WBTB_format('justifycenter');"  title="居中">
+		<img border="0" src="images/def_right.gif"  onclick="WBTB_format('justifyright');" title="右对齐">
+		
+		<img border="0" src="images/bold.gif" onclick="WBTB_format('bold');" title="粗体">
+		<img border="0" src="images/italic.gif"  onclick="WBTB_format('italic');" title="斜体">
+		<img border="0" src="images/underline.gif"  onclick="WBTB_format('underline');" title="下划线">
+	<select name="zoom" onchange="dozoom();"><option value="20%">20%</option><option value="30%">30%</option><option value="40%">40%</option><option value="50%">50%</option><option value="75%">75%</option><option value="100%" selected>100%</option><option value="150%">150%</option><option value="200%">200%</option><option value="250%">250%</option><option value="300%">300%</option></select>
+	<select language="javascript" class="WBTB_TBGen" id="FontName" onchange="WBTB_format('fontname',this[this.selectedIndex].value);"> 
+							<option class="heading" selected>字体
+							<option value="宋体">宋体
+							<option value="黑体">黑体
+							<option value="楷体_GB2312">楷体
+							<option value="仿宋_GB2312">仿宋
+							<option value="隶书">隶书
+							<option value="幼圆">幼圆
+							<option value="新宋体">新宋体
+							<option value="细明体">细明体
+							<option value="Arial">Arial
+							<option value="Arial Black">Arial Black
+							<option value="Arial Narrow">Arial Narrow
+							<option value="Bradley Hand ITC">Bradley Hand ITC
+							<option value="Brush Script	MT">Brush Script MT
+							<option value="Century Gothic">Century Gothic
+							<option value="Comic Sans MS">Comic Sans MS
+							<option value="Courier">Courier
+							<option value="Courier New">Courier New
+							<option value="MS Sans Serif">MS Sans Serif
+							<option value="Script">Script
+							<option value="System">System
+							<option value="Times New Roman">Times New Roman
+							<option value="Viner Hand ITC">Viner Hand ITC
+							<option value="Verdana">Verdana
+							<option value="Wide Latin">Wide Latin
+							<option value="Wingdings">Wingdings</option>
+						</select>
+	<select language="javascript" class="WBTB_TBGen" id="FontSize" onchange="WBTB_format('fontsize',this[this.selectedIndex].value);">
+							<option class="heading" selected>字号
+							<option value="1">1
+							<option value="2">2
+							<option value="3">3
+							<option value="4">4
+							<option value="5">5
+							<option value="6">6 
+							<option value="7">7</option>
+						</select>
+</TD>
+	
+</TR>
+<TR onmousedown="document.frames.ff.OBJ.FrameMouseDown();" onmousemove="document.selection.empty();">
+
+	<TD width="100%" id="treetd"><iframe width="100%" height="100%" id=ff src="blank.htm"></iframe></TD>
+</TR>
+</TABLE>
+
+
+</BODY>
+</HTML>

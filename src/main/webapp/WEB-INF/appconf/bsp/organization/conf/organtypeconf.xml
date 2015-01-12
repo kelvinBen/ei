@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean id="organtypequery" class="net.mast.waf.mvc.CommonQueryCommandWithInit">
+	<property name="mappings">
+	   <props>
+			<prop key="success">jsp/bsp/organization/organtype/query.jsp</prop>				
+       </props>
+    </property>    
+    <property name="pageSize"><value>15</value></property> 
+	<property name="collection"><ref bean="sqlPageCollection"/></property>
+	</bean>
+	
+<bean id="organtypeQueryInit" class="net.mast.waf.mvc.CommonQueryCommandWithInit">
+	<property name="mappings">
+	   <props>
+			<prop key="success">jsp/bsp/organization/organtype/query.jsp</prop>				
+       </props>
+    </property>   
+    <property name="pageSize"><value>15</value></property>   
+	<property name="collection"><ref bean="sqlPageCollection"/></property>
+</bean>
+
+<bean id="organTypeView"  class="net.mast.bsp.organization.view.OrganTypeView" singleton="false"/>
+
+  
+<bean id="organtype" class="net.mast.bsp.organization.cmd.OrganTypeCmd" singleton="false">
+    <property name="organTypeService"><ref bean="organTypeService"/></property>
+    <property name="view"><ref bean="organTypeView"/></property>
+    <property name="forwards">
+        <map>
+            <entry key="organtypeView"><ref bean="organtypeforward"/></entry>
+            <entry key="organtypeViewChain"><ref bean="organtypeforwardchain"/></entry>
+        </map>
+	</property>
+	<property name="beforIntercept">
+        <list>
+            <ref bean="organtypeinsertinterceptor"/>
+        </list>
+    </property>
+</bean>
+    
+ <bean id="organtypeinsertinterceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+    <property name="collections">
+	    <map>
+            <entry key="organTypeCollection"><ref bean="organTypeCollection"/></entry>
+	    </map>
+	</property>
+</bean>
+
+
+<bean id="organTypeDao" class="net.mast.bsp.organization.dao.jdbc.OrganTypeJdbcDao">
+        <property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+
+<bean id="organtypeforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+    <property name="mappings">
+		<props>		    		    
+		    <prop key="detail">jsp/bsp/organization/organtype/detail.jsp</prop>
+		    <prop key="forinsert">jsp/bsp/organization/organtype/forinsert.jsp</prop>
+		    <prop key="forupdate">jsp/bsp/organization/organtype/forupdate.jsp</prop>
+		</props>
+	</property>
+</bean>
+<bean id="organtypeforwardchain" class="net.mast.waf.mvc.ChainForward">
+    <property name="mappings">
+		<map>
+		    <entry key="success"><ref bean="organtypeQueryInit"/></entry>
+		</map>
+	</property>
+</bean>
+
+<bean id="organTypeService" class="net.mast.bsp.organization.service.support.OrganTypeServiceImpl"> 
+	    <property name="organTypeDomain"><ref bean="organTypeDomain"/></property>   	
+    	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+</bean>
+
+
+<bean id="organTypeDomain" class="net.mast.bsp.organization.domain.support.OrganTypeImpl"> 
+	    <property name="organTypeDao"><ref bean="organTypeDao"/></property>   	
+</bean>
+
+</beans>
+
+
+

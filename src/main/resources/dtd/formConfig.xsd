@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified">
+	<xsd:element name="config">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" minOccurs="1" ref="reserve-key">
+					<xsd:annotation>
+						<xsd:documentation>保留域</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element maxOccurs="unbounded" minOccurs="0" ref="edit-field">
+					<xsd:annotation>
+						<xsd:documentation>复杂的编辑域</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element maxOccurs="unbounded" minOccurs="0" ref="select-field">
+					<xsd:annotation>
+						<xsd:documentation>选择域</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element maxOccurs="unbounded" minOccurs="0" ref="special-edit">
+					<xsd:annotation>
+						<xsd:documentation>特殊编辑域（签名域），此类域只能对没有发送的数据进行编辑，且每个环节只能插入一条数据或修改已保存但未发送的数据。</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element maxOccurs="unbounded" minOccurs="1" ref="verify">
+					<xsd:annotation>
+						<xsd:documentation>域数据约束</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element maxOccurs="unbounded" minOccurs="0" ref="dynamic-default">
+					<xsd:annotation>
+						<xsd:documentation>动态默认值，供表单定制时选择</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element maxOccurs="unbounded" minOccurs="0" ref="fixed-field">
+					<xsd:annotation>
+						<xsd:documentation>固定隐藏域，这些域将在所有表单中存在</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element minOccurs="0" maxOccurs="1" ref="support-lock">
+					<xsd:annotation>
+						<xsd:documentation>是否支持表单锁定</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element minOccurs="0" maxOccurs="1" ref="use-cache">
+					<xsd:annotation>
+						<xsd:documentation>是否使用缓存</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="special-edit">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="init-parameter" minOccurs="0" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>特殊编辑域的其他参数，一般在显示类中使用</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="edit-url" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>编辑界面的URL地址，用于提供数据的编辑界面</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="key" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>特殊编辑域的标示</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>特殊编辑域的显示名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="show-class" type="xsd:string" use="optional" default="com.ntmast.workform.manager.formimps.ShowSpecialForTemplate">
+				<xsd:annotation>
+					<xsd:documentation>用于构造显示字符串的Java类全名，该类须实现com.ntmast.workform.manager.iforms.SpecialEditData接口</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="style-name" type="xsd:string" use="optional" default="default">
+				<xsd:annotation>
+					<xsd:documentation>显示样式名称，必须是fieldResource.xml配置中已定义的样式名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="init-parameter">
+		<xsd:complexType>
+			<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="name" type="xsd:string" use="required">
+						<xsd:annotation>
+							<xsd:documentation>参数名称</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:extension>
+			</xsd:simpleContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="checkbox">
+		<xsd:complexType>
+			<xsd:attribute name="name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>多项选择域的显示名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="select-url" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>选择界面的URL地址，用于选择具体数据</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="edit-field">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="hidden" minOccurs="0" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>与编辑域关联的隐藏域。</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="edit-url" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>编辑域内容的URL地址</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>编辑域的名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="key" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>编辑域的标示名</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="style-name" type="xsd:string" use="optional" default="default">
+				<xsd:annotation>
+					<xsd:documentation>显示样式名称，必须是fieldResource.xml配置中已定义的样式名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="hidden">
+		<xsd:complexType>
+			<xsd:attribute name="name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>关联的隐藏域的名称，必须是在extend-fields.xml中预定义的隐藏域名称。</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="radio">
+		<xsd:complexType>
+			<xsd:attribute name="name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>单项选择域的显示名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="select-url" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>选择界面的URL地址，用于选择具体数据</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="reserve-key">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:choice minOccurs="0" maxOccurs="1">
+					<xsd:element name="edit-field">
+						<xsd:complexType>
+							<xsd:attribute name="edit-url" type="xsd:string" use="optional" />
+							<xsd:attribute name="key" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="select-field">
+						<xsd:complexType>
+							<xsd:attribute name="edit-url" type="xsd:string" use="optional" />
+							<xsd:attribute name="key" type="xsd:string" use="required" />
+							<xsd:attribute name="permission-id" type="xsd:string" use="optional" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="special-edit">
+						<xsd:complexType>
+							<xsd:attribute name="edit-url" type="xsd:string" use="optional" />
+							<xsd:attribute name="key" type="xsd:string" use="required" />
+							<xsd:attribute name="show-class" type="xsd:string" use="optional" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="check">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:choice minOccurs="0" maxOccurs="unbounded">
+									<xsd:element ref="option" />
+								</xsd:choice>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+
+					<xsd:element name="date-time">
+						<xsd:annotation>
+							<xsd:documentation>时间字段</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:attributeGroup ref="attlist.date-time" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="drop-down">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:choice minOccurs="0" maxOccurs="unbounded">
+									<xsd:element ref="option" />
+								</xsd:choice>
+							</xsd:sequence>
+							<xsd:attributeGroup ref="attlist.drop-down" />
+						</xsd:complexType>
+					</xsd:element>
+
+					<xsd:element name="hidden">
+						<xsd:complexType>
+							<xsd:attributeGroup ref="attlist.hidden" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="radio">
+						<xsd:complexType>
+							<xsd:choice minOccurs="0" maxOccurs="unbounded">
+								<xsd:element ref="option" />
+							</xsd:choice>
+							<xsd:attributeGroup ref="attlist.radio" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="text">
+						<xsd:complexType>
+							<xsd:attributeGroup ref="attlist.text" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="textarea">
+						<xsd:complexType>
+							<xsd:attributeGroup ref="attlist.textarea" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:sequence>
+			<xsd:attribute name="edit-url" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>保留域的编辑地址，若是可直接编辑则可不填此属性</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="key" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>保留域的标识名</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>保留域的显示名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="process-type" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>保留域所属类型，null表示公用</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== 字段子元素 ==================== -->
+	<xsd:element name="option">
+		<xsd:complexType>
+			<xsd:attributeGroup ref="attlist.option" />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="select-field">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="radio" minOccurs="0" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>单选选择域</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element ref="checkbox" minOccurs="0" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>复选选择域</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element maxOccurs="unbounded" minOccurs="0" ref="select-item">
+					<xsd:annotation>
+						<xsd:documentation>可选择的选择项</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element maxOccurs="unbounded" minOccurs="0" ref="init-parameter">
+					<xsd:annotation>
+						<xsd:documentation>初始化参数</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="key" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>选择域的标识名</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="name" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>选择域模块的显示名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="permission-class" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>选择域的查看权限控制类，需要实现com.ntmast.workform.config.SelectFieldSecurity接口，用于控制用户是否可浏览选择的内容，若该属性为null或空字符串，表示此选择域公开，所有人均可查看。</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="select-person" type="xsd:boolean" use="optional" default="false">
+				<xsd:annotation>
+					<xsd:documentation>是否可用来决定人员</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="icon" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>浏览图标</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="style-name" type="xsd:string" use="optional" default="default">
+				<xsd:annotation>
+					<xsd:documentation>显示样式名称，必须是fieldResource.xml配置中已定义的样式名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="select-item">
+		<xsd:complexType>
+			<xsd:attribute name="name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>选择项显示名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="select-type" use="optional" default="radio">
+				<xsd:annotation>
+					<xsd:documentation>选择项类型，单选为radio，多选为checkbox</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:enumeration value="radio" />
+						<xsd:enumeration value="checkbox" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="key" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>选择项的标识符</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="verify">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="parameter" minOccurs="0" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>校验函数的参数</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="function" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>用于进行数据校验的JavaScript函数名，指定的函数需要写入到formVerify.js文件中，函数要求请参见formVerify.js文件</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>校验的显示名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="fieldtype" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>校验的域类型</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:enumeration value="String" />
+						<xsd:enumeration value="Long" />
+						<xsd:enumeration value="Float" />
+						<xsd:enumeration value="Time" />
+						<xsd:enumeration value="Date" />
+						<xsd:enumeration value="Timestamp" />
+						<xsd:enumeration value="String|Long" />
+						<xsd:enumeration value="String|Float" />
+						<xsd:enumeration value="Long|Float" />
+						<xsd:enumeration value="String|Long|Float" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="parameter">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="option" minOccurs="0" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>校验函数的选择类型参数的选择项，第一项为默认选择项</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>参数显示名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="type" use="optional" default="field">
+				<xsd:annotation>
+					<xsd:documentation>参数类型，分field、string和select三种。 field：表单中某个域的域名，用户定制表单时可为此参数选择一个表单中的域； string：固定值，用户定制表单时可为此参数设置一个具体的值； select：枚举值，用户定制表单时可为此参数选择一个option节点中列出的枚举值中的一个。</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:enumeration value="field">
+							<xsd:annotation>
+								<xsd:documentation>表单中某个域的域名，用户定制表单时可为此参数选择一个表单中的域</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="string">
+							<xsd:annotation>
+								<xsd:documentation>固定值，用户定制表单时可为此参数设置一个具体的值</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+						<xsd:enumeration value="select">
+							<xsd:annotation>
+								<xsd:documentation>枚举值，用户定制表单时可为此参数选择一个option节点中列出的枚举值中的一个</xsd:documentation>
+							</xsd:annotation>
+						</xsd:enumeration>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<!--	<xsd:element name="option">
+		<xsd:complexType>
+		<xsd:attribute name="name" type="xsd:string" use="required">
+		<xsd:annotation>
+		<xsd:documentation>选项显示名称</xsd:documentation>
+		</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="value" type="xsd:string" use="required">
+		<xsd:annotation>
+		<xsd:documentation>选项值</xsd:documentation>
+		</xsd:annotation>
+		</xsd:attribute>
+		</xsd:complexType>
+		</xsd:element>-->
+	<xsd:element name="fixed-field">
+		<xsd:complexType>
+			<xsd:attribute name="default-type" use="optional" default="none">
+				<xsd:annotation>
+					<xsd:documentation>默认值类型，若选择无默认值，则此属性值为none；若是固定默认值，则为fixed；若是动态默认值，则为dynamic</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:enumeration value="none" />
+						<xsd:enumeration value="fixed" />
+						<xsd:enumeration value="dynamic" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="default-value" use="optional" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>域默认值，固定默认值即为用户设定的值，动态默认值则为获取该默认值的实现类全名，此类必须实现com.ntmast.workform.manager.defaults.DefaultValue接口。</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="reserved" use="optional" type="xsd:boolean" default="false">
+				<xsd:annotation>
+					<xsd:documentation>保留字段，若reserved为true，则在流程定制时不可见。</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="name" type="wordchar" use="required" />
+			<xsd:attribute name="title" type="xsd:string" use="required" />
+			<xsd:attribute name="reserveKey" type="xsd:string" use="optional" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<xsd:simpleType name="wordchar">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="([A-Z]|[a-z]|_)+(\w|_)*"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="dynamic-default">
+		<xsd:complexType>
+			<xsd:attribute name="key" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>动态默认值的实现类的完整类名，此类须实现com.ntmast.workform.manager.defaults.DefaultValue接口</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>动态默认值的名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="support-lock" type="xsd:boolean" default="true"></xsd:element>
+	<xsd:element name="use-cache" type="xsd:boolean" default="true"></xsd:element>
+
+	<!-- ================== 保留域关联的字段类型==================== -->
+	<xsd:attributeGroup name="attlist.date-time">
+		<xsd:attribute name="type" default="timestamp">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:token">
+					<xsd:enumeration value="timestamp" />
+					<xsd:enumeration value="date" />
+					<xsd:enumeration value="time" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="attlist.display">
+		<xsd:attribute name="relative-field" type="xsd:string" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>关联主表的字段</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="attlist.drop-down">
+		<xsd:attribute name="allow-empty" default="false">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:token">
+					<xsd:enumeration value="true" />
+					<xsd:enumeration value="false" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+
+		<xsd:attribute type="xsd:string" name="no-current-selected-key">
+			<xsd:annotation>
+				<xsd:documentation>默认不选择任何值.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute type="xsd:string" name="current-description" />
+		<xsd:attribute type="xsd:string" name="Enumeration-Type" />
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="attlist.hidden"></xsd:attributeGroup>
+	<xsd:attributeGroup name="attlist.hyperlink">
+
+		<xsd:attribute type="xsd:string" name="target" use="optional">
+			<xsd:annotation>
+				<xsd:documentation>目标地址.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute type="xsd:string" name="description">
+			<xsd:annotation>
+				<xsd:documentation>显示文字.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute type="xsd:string" name="target-window" />
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="attlist.image">
+		<xsd:attribute type="xsd:nonNegativeInteger" name="border" default="0" />
+		<xsd:attribute type="xsd:nonNegativeInteger" name="width" default="0" />
+		<xsd:attribute type="xsd:nonNegativeInteger" name="height" default="0" />
+		<xsd:attribute type="xsd:string" name="value" />
+
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="attlist.radio">
+		<xsd:attribute type="xsd:string" name="no-current-selected-key" />
+		<xsd:attribute type="xsd:string" name="Enumeration-Type" />
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="attlist.text">
+		<xsd:attribute type="xsd:nonNegativeInteger" name="size" default="25" use="optional" />
+		<xsd:attribute type="xsd:nonNegativeInteger" name="maxlength" default="0" use="optional" />
+	</xsd:attributeGroup>
+	<xsd:attributeGroup name="attlist.textarea">
+		<xsd:attribute type="xsd:positiveInteger" name="cols" default="60" />
+		<xsd:attribute type="xsd:positiveInteger" name="rows" default="3" />
+	</xsd:attributeGroup>
+
+	<!--	<xsd:attributeGroup name="attlist.select-data">
+		<xsd:attribute type="xsd:string" name="ref_url">
+		<xsd:annotation>
+		<xsd:documentation>相关url.</xsd:documentation>
+		</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute type="xsd:string" name="ref_field">
+		<xsd:annotation>
+		<xsd:documentation>相关字段.</xsd:documentation>
+		</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute type="xsd:string" name="ref_param" default="id">
+		<xsd:annotation>
+		<xsd:documentation>参数名称.</xsd:documentation>
+		</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute type="xsd:string" name="select-url">
+		<xsd:annotation>
+		<xsd:documentation>编辑时选择数据的url.</xsd:documentation>
+		</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute type="xsd:string" name="permission-id">
+		<xsd:annotation>
+		<xsd:documentation>察看数据的权限id.</xsd:documentation>
+		</xsd:annotation>
+		</xsd:attribute>
+		</xsd:attributeGroup>-->
+	<xsd:attributeGroup name="attlist.option">
+		<xsd:attribute type="xsd:string" name="key" use="required" />
+		<xsd:attribute type="xsd:string" name="description">
+			<xsd:annotation>
+				<xsd:documentation>显示属性.</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:attributeGroup>
+
+</xsd:schema>

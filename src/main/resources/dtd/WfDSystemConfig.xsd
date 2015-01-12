@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             targetNamespace="http://WfDSystemConfig.config.wfdefinition.mast.org"
+		     xmlns="http://WfDSystemConfig.config.wfdefinition.mast.org"
+		     elementFormDefault="qualified">
+    <xsd:element name="auto-task">
+        <xsd:annotation>
+            <xsd:documentation>系统自动任务,一般分配到各个环节执行</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="1" ref="task"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="condition">
+        <xsd:annotation>
+            <xsd:documentation>属性:id 条件id ,name 条件名称</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:simpleContent>
+                <xsd:extension base="xsd:string">
+                    <xsd:attribute name="id" type="xsd:string" use="optional"/>
+                    <xsd:attribute name="name" type="xsd:string" use="optional"/>
+                    <xsd:attribute name="description" type="xsd:string" use="optional"/> 
+                </xsd:extension>
+            </xsd:simpleContent>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="system-condition">
+        <xsd:annotation>
+            <xsd:documentation>系统内置的操作条件,一般作为环节操作条件</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="1" ref="condition"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="system-config">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="auto-task" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="system-condition" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="limit" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="adjunct-right" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="participant-option" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="trans-event" minOccurs="0" maxOccurs="1"/>
+				<xsd:element ref="enumerates" minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="task">
+        <xsd:annotation>
+            <xsd:documentation>属性:id 任务id,name 任务名称,task-class
+                任务执行类,description 任务说明,flow-type流程类型</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="description" type="xsd:string" use="optional"/>
+            <xsd:attribute name="id" type="xsd:string" use="optional"/>
+            <xsd:attribute name="name" type="xsd:string" use="optional"/>
+            <xsd:attribute name="task-class" type="xsd:string" use="optional"/>
+            <xsd:attribute name="flow-type" type="xsd:string" use="optional"/>
+            <xsd:attribute name="Execution" use="optional" default="SYNCHR"> 
+            	<xsd:simpleType>
+             		<xsd:restriction base="xsd:NMTOKEN">
+                  		<xsd:enumeration value="ASYNCHR"/>
+                  		<xsd:enumeration value="SYNCHR"/>
+               		</xsd:restriction>            	
+            	</xsd:simpleType> 
+            </xsd:attribute>            
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="limit">
+        <xsd:annotation>
+            <xsd:documentation>流程、环节超时限制配置选项</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="agent"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="agent">
+        <xsd:annotation>
+            <xsd:documentation>属性:id 限制id,name 限制名称,agent-class
+                代理执行类,flow-type 流程类型，description 限制说明</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="description" type="xsd:string" use="optional"/>
+            <xsd:attribute name="id" type="xsd:string" use="optional"/>
+            <xsd:attribute name="name" type="xsd:string" use="optional"/>
+            <xsd:attribute name="agent-class" type="xsd:string" use="optional"/>
+            <xsd:attribute name="flow-type" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="adjunct-right">
+        <xsd:annotation>
+            <xsd:documentation>流程附件(例如：word正文)权限配置项</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="1" ref="tab"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="tab">
+        <xsd:annotation>
+            <xsd:documentation>tab标签，用来标示一类选项</xsd:documentation>
+            <xsd:documentation>align排列：horizontal水平，Vertical垂直</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="option"/>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="title" type="xsd:string" use="optional"/>
+            <xsd:attribute name="flow-type" type="xsd:string" use="optional"/>
+            <xsd:attribute name="align" use="optional"> 
+            	<xsd:simpleType>
+             		<xsd:restriction base="xsd:NMTOKEN">
+                  		<xsd:enumeration value="horizontal"/>
+                  		<xsd:enumeration value="Vertical"/>
+               		</xsd:restriction>            	
+            	</xsd:simpleType> 
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="option">
+        <xsd:annotation>
+            <xsd:documentation>枚举选项</xsd:documentation>
+            <xsd:documentation>key对应流程相关信息中的正文权限扩展属性</xsd:documentation>
+            <xsd:documentation>type展现类型，radio单选按钮，checkbox复选按钮，label标签</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+            	<xsd:element maxOccurs="unbounded" minOccurs="0" ref="enum-group"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="enum-value"/>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="title" type="xsd:string" use="optional"/>
+            <xsd:attribute name="key" type="xsd:string" use="optional"/>
+            <xsd:attribute name="type" use="required">
+            	<xsd:simpleType>
+             		<xsd:restriction base="xsd:NMTOKEN">
+                  		<xsd:enumeration value="radio"/>
+                  		<xsd:enumeration value="checkbox"/>
+                  		<xsd:enumeration value="label"/>
+               		</xsd:restriction>            	
+            	</xsd:simpleType> 
+            </xsd:attribute>   
+            <xsd:attribute name="align" use="optional"> 
+            	<xsd:simpleType>
+             		<xsd:restriction base="xsd:NMTOKEN">
+                  		<xsd:enumeration value="horizontal"/>
+                  		<xsd:enumeration value="Vertical"/>
+               		</xsd:restriction>            	
+            	</xsd:simpleType> 
+            </xsd:attribute>  
+			<xsd:attribute name="isdefault" type="xsd:string" use="optional" default="false"/>                  
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="enum-group">
+        <xsd:annotation>
+            <xsd:documentation>选项值分组</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="1" ref="enum-value"/>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="title" type="xsd:string" use="optional"/>  
+            <xsd:attribute name="align" use="optional"> 
+            	<xsd:simpleType>
+             		<xsd:restriction base="xsd:NMTOKEN">
+                  		<xsd:enumeration value="horizontal"/>
+                  		<xsd:enumeration value="Vertical"/>
+               		</xsd:restriction>            	
+            	</xsd:simpleType> 
+            </xsd:attribute>                        
+        </xsd:complexType>
+    </xsd:element>    
+    <xsd:element name="enum-value">
+        <xsd:annotation>
+            <xsd:documentation>一般选项</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="id" type="xsd:string" use="required"/>
+            <xsd:attribute name="title" type="xsd:string" use="optional"/>
+            <xsd:attribute name="key" type="xsd:string" use="optional"/>
+            <xsd:attribute name="type" use="optional">
+            	<xsd:simpleType>
+             		<xsd:restriction base="xsd:NMTOKEN">
+                  		<xsd:enumeration value="radio"/>
+                  		<xsd:enumeration value="checkbox"/>
+               		</xsd:restriction>            	
+            	</xsd:simpleType> 
+            </xsd:attribute>  
+            <xsd:attribute name="isdefault" type="xsd:string" use="optional"/>          	
+        </xsd:complexType>
+    </xsd:element>
+	
+    <xsd:element name="participant-option">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="1" ref="select-item">
+                	<xsd:annotation>
+                		<xsd:documentation>参与者选择项配置,包括组织机构、历史环节参与者、业务模块等相关配置</xsd:documentation>
+                	</xsd:annotation>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>	
+	<xsd:element name="select-item">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" minOccurs="1" ref="select-type">
+					<xsd:annotation>
+						<xsd:documentation>选择项对应的选择类型</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>				
+			</xsd:sequence>			
+			<xsd:attribute name="key" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>关键值</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="display-name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>选择项显示名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="radio-url" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>单选url</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="checkbox-url" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>多选url</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>						
+            <xsd:attribute name="use-mode" use="required">
+				<xsd:annotation>
+					<xsd:documentation>用途,组织机构\历史环节参与者\业务模块等</xsd:documentation>
+				</xsd:annotation>
+            	<xsd:simpleType>
+             		<xsd:restriction base="xsd:NMTOKEN">
+                  		<xsd:enumeration value="organization"/>
+                  		<xsd:enumeration value="historyact"/>
+						<xsd:enumeration value="formconfig"/>
+					</xsd:restriction>            	
+            	</xsd:simpleType> 
+            </xsd:attribute>  								
+		</xsd:complexType>
+	</xsd:element>	
+	<xsd:element name="select-type">
+		<xsd:complexType>
+			<xsd:attribute name="key" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>关键值</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="name" type="xsd:string" use="required">
+				<xsd:annotation>
+					<xsd:documentation>类型名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="select-url" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>值选择界面的URL地址，用于选择具体数据,如果不填,则根据radio-url、checkbox-url来确定</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>	
+            <xsd:attribute name="select-type" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>选择类型，单选或多选</xsd:documentation>
+				</xsd:annotation>
+            	<xsd:simpleType>
+             		<xsd:restriction base="xsd:NMTOKEN">
+                  		<xsd:enumeration value="radio"/>
+                  		<xsd:enumeration value="checkbox"/>
+						<xsd:enumeration value="text"/>
+					</xsd:restriction>            	
+            	</xsd:simpleType> 
+            </xsd:attribute>  							
+		</xsd:complexType>
+	</xsd:element>		
+		
+    <xsd:element name="trans-event">
+        <xsd:annotation>
+            <xsd:documentation>迁移事件执行类配置</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="event"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="event">
+        <xsd:annotation>
+            <xsd:documentation>属性:id 限制id,name 限制名称,agent-class
+                代理执行类,flow-type 流程类型，description 限制说明</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="description" type="xsd:string" use="optional"/>
+            <xsd:attribute name="id" type="xsd:string" use="optional"/>
+            <xsd:attribute name="name" type="xsd:string" use="optional"/>
+            <xsd:attribute name="execution" type="xsd:string" use="optional"/>
+            <xsd:attribute name="flow-type" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>	
+	
+    <xsd:element name="enumerates">
+        <xsd:annotation>
+            <xsd:documentation>系统枚举类型配置，包括：流程监控者角色、环节参与者接受方式等</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="enumerate"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="enumerate">
+        <xsd:annotation>
+            <xsd:documentation>枚举类型</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="enum-item"/>
+            </xsd:sequence>
+            <xsd:attribute name="description" type="xsd:string" use="optional"/>
+            <xsd:attribute name="id" type="xsd:string" use="optional"/>
+            <xsd:attribute name="name" type="xsd:string" use="optional"/>	
+			<xsd:attribute name="flow-type" type="xsd:string" use="optional"/>		
+        </xsd:complexType>
+    </xsd:element>	
+    <xsd:element name="enum-item">
+        <xsd:annotation>
+            <xsd:documentation>属性:id ,name 类型名称,description 类型描述</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attribute name="description" type="xsd:string" use="optional"/>
+            <xsd:attribute name="id" type="xsd:string" use="optional"/>
+            <xsd:attribute name="name" type="xsd:string" use="optional"/>
+        </xsd:complexType>
+    </xsd:element>		
+</xsd:schema>

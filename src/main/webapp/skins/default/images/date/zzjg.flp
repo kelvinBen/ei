@@ -1,0 +1,5 @@
+﻿<flash_project name="zzjg" version="1">
+    <project_file path="./Node.as" filetype="as" />
+    <project_file path="./XmlZzjgTree.as" filetype="as" />
+    <project_file path="./zzjgt.fla" filetype="fla" profile="" def_file="true" />
+</flash_project>

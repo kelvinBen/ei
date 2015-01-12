@@ -1,0 +1,9 @@
+##可以使用的变量$field,$disp,$ref
+#set ($ref=$field.getMofReference()) 
+#if($field.isKey())
+    #parse("${standardTemplatePath}/StandardKeyGrid.vm")
+#elseif($disp.isHidden())
+	#parse("${standardTemplatePath}/StandardHiddenGrid.vm")
+#else
+	#parse("${standardTemplatePath}/StandardTextGrid.vm")
+#end

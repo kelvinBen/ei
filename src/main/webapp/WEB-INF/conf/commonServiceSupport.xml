@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="GBK"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<bean id="jdbcTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+	</bean>
+	<bean id="jdbcTransactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager">
+			<ref bean="jdbcTransactionManager"/>
+		</property>
+	</bean>
+	<bean id="jdbcTransactionProxy" abstract="true"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="jdbcTransactionManager"/>
+		</property>
+		<!--
+		注意： 事物配置必须配置在service层下面。
+		
+		PROPAGATION_MANDATORY： 要求调用该方法的线程必须处于事务环境中，否则抛出异常；
+		PROPAGATION_NESTED：如果执行该方法的线程已处于事务环境下，依然启动新的事务，方法在嵌套的事务里执行。如果执行该方法的线程并未处于事务中，也启动新的事务，然后执行该方法，此时与 PROPAGATION_REQUIRED相同；
+		PROPAGATION_NEVER：不允许调用该方法的线程处于事务环境下，如果调用该方法的线程处于事务环境下，则抛出异常；
+		PROPAGATION_NOT_SUPPORTED：如果调用该方法的线程处于事务中，则先暂停当前事务，然户执行该方法；
+		PROPAGATION_REQUIRED：要求在事务环境中执行该方法，如果当前线程已处于事务中，则直接调用，然后执行该方法；
+		PROPAGATION_REQUIRES_NEW：该方法要求有一个在新的事务环境中执行，如果当前线程已处于事务中，先暂停当前事务，启动新事务后执行该方法，如果当前调用线程不处在事务中，则启动新的事务方法后执行方法；
+		PROPAGATION_SUPPORTS：如果当前执行线程处于事务中，则执行当前事务，否则不使用事务。
+		-->
+		<property name="transactionAttributes">
+			<props>
+				<prop key="creat*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="delet*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="updat*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="inser*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="batch*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="jump*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="reject*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="find*">
+					PROPAGATION_NOT_SUPPORTED,ISOLATION_DEFAULT,readOnly</prop>
+				<prop key="get*">
+					PROPAGATION_NOT_SUPPORTED,ISOLATION_DEFAULT,readOnly</prop>
+				<prop key="query*">
+					PROPAGATION_NOT_SUPPORTED,ISOLATION_DEFAULT,readOnly</prop>
+				<prop key="*">
+					PROPAGATION_REQUIRED,ISOLATION_DEFAULT,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	<!--
+	配置样例：
+	<bean id="infoRequisitionPublicityService" parent="jdbcTransactionProxy">
+	<property name="target">
+	<bean class="com.mast.infoPublicity.requisition.service.impl.InfoRequisitionPublicityServiceImpl">
+	<property name="dao">
+	<ref local="infoRequisitionPublicityDao" />
+	</property>
+	</bean>
+	</property>
+	</bean>
+	如果以该模式配置，那么代码级的事物控制就取消掉
+	
+	-->
+	
+	<bean id="pageTemplateService"
+		class="net.mast.waf.ext.service.template.PageTemplateServiceSupport">
+		<property name="template">
+			<value></value>
+		</property>
+		<property name="jspPath">
+			<value></value>
+		</property>
+		<property name="configFiles">
+			<list>
+				<value>/WEB-INF/template/screens.xml</value>
+			</list>
+		</property>
+	</bean>
+	<!--缓存-->
+	<bean id="globalCacheConfiguration"
+		class="net.mast.commons.cache.ConfigurationSupport">
+		<property name="cacheSize">
+			<value>1000</value>
+		</property>
+		<property name="entryLifeTime">
+			<value>5000000</value>
+		</property>
+	</bean>
+	<bean id="dictGroupCacheConfiguration"
+		class="net.mast.commons.cache.ConfigurationSupport">
+		<property name="cacheSize">
+			<value>1000</value>
+		</property>
+		<property name="entryLifeTime">
+			<value>5000000</value>
+		</property>
+	</bean>
+	<bean id="cacheBuilder" class="net.mast.commons.cache.CacheBuilderSupport">
+	</bean>
+	<!--huangdos 2005-12-20 修改 添加缓存的监控和管理功能-->
+	<bean id="cacheManager" class="net.mast.commons.cache.CacheManagerSupport">
+		<property name="cacheLifeTime">
+			<value>-1</value>
+		</property>
+		<property name="cacheMonitor">
+			<ref bean="cacheMonitor"/>
+		</property>
+	</bean>
+	<!-- 缓存监控器  -->
+	<bean id="cacheMonitor"
+		class="net.mast.commons.cache.monitor.CacheMonitorSupport"></bean>
+	<bean id="cacheService"
+		class="net.mast.waf.ext.service.cache.CacheServiceSupport">
+		<property name="cacheBuilder">
+			<ref bean="cacheBuilder"/>
+		</property>
+		<property name="cacheManager">
+			<ref bean="cacheManager"/>
+		</property>
+		<property name="cacheConfiguration">
+			<map>
+				<entry key="global">
+					<ref bean="globalCacheConfiguration"/>
+				</entry>
+				<entry key="dict.global">
+					<ref bean="dictGroupCacheConfiguration"/>
+				</entry>
+				<!--工作流  start-->
+				<entry key="workflowcommon.appdataCache">
+					<ref bean="cache.workflowcommon.appdataCache"/>
+				</entry>
+				<entry key="workflowcommon.defineCache">
+					<ref bean="cache.workflowcommon.defineCache"/>
+				</entry>
+				<entry key="workflowcommon.pkgIdVer.cache">
+					<ref bean="cache.workflowcommon.pkgIdVer.cache"/>
+				</entry>
+				<entry key="workflowcommon.WorkFormCache.FormData">
+					<ref bean="cache.workflowcommon.WorkFormCache.FormData"/>
+				</entry>
+				<!--工作流  end-->
+			</map>
+		</property>
+	</bean>
+	<bean id="DictService"
+		class="net.mast.waf.ext.service.dict.DictServiceSupport">
+		<property name="cacheService">
+			<ref bean="cacheService"/>
+		</property>
+		<property name="dataSource">
+			<ref bean="dataSource"/>
+		</property>
+		<property name="configFiles">
+			<list>
+				<value>/WEB-INF/dict/dictionaries.xml</value>
+			</list>
+		</property>
+	</bean>
+	<!--缓存结束-->
+	<bean id="enumService"
+		class="net.mast.waf.ext.service.enums.EnumServiceSupport">
+		<property name="dir">
+			<value>/WEB-INF/enum</value>
+		</property>
+		<property name="includes">
+			<value>**/*.properties</value>
+		</property>
+	</bean>
+	<bean id="ResourcesService"
+		class="net.mast.waf.ext.service.resources.ResourcesServiceSupport">
+		<property name="dir">
+			<value>/WEB-INF</value>
+		</property>
+		<property name="includes">
+			<value>**/table/*.properties,**/tables/*.properties</value>
+		</property>
+		<!--  	<property name="configFiles">
+		<list>
+		<value>/WEB-INF/appconf/workflow/wfmessage.properties</value>
+		<value>/WEB-INF/appconf/workflow/dcwork.properties</value>
+		</list>
+		</property>-->
+	</bean>
+	<!--工作流 start-->
+	<bean id="cache.workflowcommon.appdataCache"
+		class="net.mast.commons.cache.ConfigurationSupport">
+		<property name="cacheSize">
+			<value>1000</value>
+		</property>
+		<property name="entryLifeTime">
+			<value>-1</value>
+		</property>
+	</bean>
+	<bean id="cache.workflowcommon.defineCache"
+		class="net.mast.commons.cache.ConfigurationSupport">
+		<property name="cacheSize">
+			<value>-1</value>
+		</property>
+		<property name="entryLifeTime">
+			<value>-1</value>
+		</property>
+	</bean>
+	<bean id="cache.workflowcommon.WorkFormCache.FormData"
+		class="net.mast.commons.cache.ConfigurationSupport">
+		<property name="cacheSize">
+			<value>1000</value>
+		</property>
+		<property name="entryLifeTime">
+			<value>-1</value>
+		</property>
+	</bean>
+	<bean id="cache.workflowcommon.pkgIdVer.cache"
+		class="net.mast.commons.cache.ConfigurationSupport">
+		<property name="cacheSize">
+			<value>1000</value>
+		</property>
+		<property name="entryLifeTime">
+			<value>-1</value>
+		</property>
+	</bean>
+	<!--工作流  end-->
+	<!--下面添加你的公共服务-->
+	<!--
+	<bean id="roleManager" class="net.mast.bsp.permit.management.profile.provider.support.RoleManagerDefaultImpl">
+	<property name="conflictRoleService"><ref bean="conflictRoleService"/></property>	
+	</bean>
+	
+	<bean id="parmsService" class="net.mast.bsp.sys.parms.service.support.ParmsServiceImpl">
+	<property name="parmsDomain"><ref bean="parmsDomain"/></property>	
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>		-->
+</beans>

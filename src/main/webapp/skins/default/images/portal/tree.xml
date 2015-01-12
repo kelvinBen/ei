@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<root text="ROOT" nodeType="node" id="dai"    openAction="true">
+	
+		<menu nodeType="node" id="1"   url="inboxmailquery.cmd"   text="未读邮件"  >
+		</menu>
+		<menu nodeType="node" id="2"   url="newMenu.cmd?method=forChangeMenu"   text="切换菜单"   iscanmake="false" >
+		</menu>
+		<menu nodeType="node" id="3"   url="mylist.cmd"   text="我的议案建议"   iscanmake="false" >
+		</menu>
+</root>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean id="commonSingleParmsView"  class="net.mast.bsp.lc.view.CommonSingleParmsView" singleton="false"/>
+
+
+    <bean id="commonsingleparms" class="net.mast.bsp.lc.cmd.CommonSingleParmsCmd" singleton="false">
+	    <property name="commonSingleParmsService"><ref bean="commonSingleParmsService"/></property>
+	    <property name="view"><ref bean="commonSingleParmsView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="commonsingleparmsView"><ref bean="commonsingleparmsoforward"/></entry>
+	        </map>
+		</property>
+ 
+    </bean>
+    
+    <bean id="commondesktopcopy" class="net.mast.bsp.lc.cmd.CommonSingleParmsCmd" singleton="false">
+	    <property name="commonSingleParmsService"><ref bean="commonSingleParmsService"/></property>
+	    <property name="view"><ref bean="commonSingleParmsView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="commonsingleparmsView"><ref bean="commonsingleparmsoforward"/></entry>
+	        </map>
+		</property>
+ 
+    </bean>
+    
+	<bean id="commonSingleParmsDao" class="net.mast.bsp.lc.dao.CommonSingleParmsJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	<bean id="commonSingleParmsService" class="net.mast.bsp.lc.service.CommonSingleParmsServiceImpl"> 
+		<property name="commonSingleParmsDao"><ref bean="commonSingleParmsDao"/></property>  
+		<property name="docContentDomain"><ref bean="docContentDomain"/></property>  	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+
+	<bean id="commonsingleparmsoforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+		<property name="mappings">
+			<props>		    		    
+				 <prop key="detail">/jsp/portal/index.jsp</prop>
+				 <prop key="portal">/jsp/portal/portal.jsp</prop>
+				 <prop key="defaultportal">/jsp/portal/defaultportal.jsp</prop>
+				 <prop key="getstyle">/jsp/portal/customization.jsp</prop>
+				 
+				 <prop key="forcopy">/jsp/portal/forcopy.jsp</prop>
+			</props>
+		</property>
+	</bean> 
+
+</beans>

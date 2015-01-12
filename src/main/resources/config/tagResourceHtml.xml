@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fields selectSplit="," xmlns="http://tagResource.workflow.mast.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://tagResource.workflow.loushang.org ../dtd/tagResource.xsd ">
+	<!-- html标签 -->
+	
+	<!-- 一般文本展示 -->
+  <field description="一般文本展示" name="TEXT域" type="text">
+    <common description="普通域代码" name="default">
+    	<![CDATA[<input type="text"   name="${name}"  value="${value}"  accesskey="${accesskey?if_exists}"  alt="${alt?if_exists}"  onchange="${onchange?if_exists}"  onclick="${onclick?if_exists}"  onblur="${onblur?if_exists}"  ondblclick="${ondblclick?if_exists}"  onfocus="${onfocus?if_exists}"  onkeydown="${onkeydown?if_exists}"  onkeypress="${onkeypress?if_exists}"  onkeyup="${onkeyup?if_exists}"  onmousedown="${onmousedown?if_exists}"  onmousemove="${onmousemove?if_exists}"  onmouseout="${onmouseout?if_exists}"  onmouseover="${onmouseover?if_exists}"  onmouseup="${onmouseup?if_exists}"  notnull="${notnull?if_exists}"	size="${sizeValue?if_exists}"  style="${style?if_exists}"  styleClass="${styleClass?if_exists}"  styleId="${styleId?if_exists}"  title="${title?if_exists}"  maxlength="${maxlength?if_exists}"	verifyFuncName="${verifyFuncName?if_exists}">${notnullMark?if_exists}]]>
+    </common>
+    <readonly description="只读域代码" name="default">
+    	<![CDATA[<span name="${name}">${value}</span>]]>
+    </readonly>
+    <hidden description="隐藏域代码" name="default">
+    	<![CDATA[ ]]>
+    </hidden>
+    <hidden-edit description="隐藏可修改" name="default">
+    	<![CDATA[<input type="hidden"  name="${name}"  value="${value?if_exists}">]]>
+    </hidden-edit>
+    <readonly-edit description="只读可修改" name="default">
+		<![CDATA[<span name="${name}" title="${title?if_exists}">${value?if_exists}</span><input type="hidden" name="${name}" value="${value?if_exists}">]]>
+	</readonly-edit>
+  </field>
+  
+  <!-- 文本域展示 -->
+  <field description="文本域展示" name="TEXTAREA域" type="textarea">
+    <common description="普通域代码" name="default">
+		<![CDATA[<textarea name="${name}" 	rows="${rows?if_exists}"  notnull="${notnull?if_exists}"  cols="${cols?if_exists}" accesskey="${accesskey?if_exists}"  alt="${alt?if_exists}"  onblur="${onblur?if_exists}"  onchange="${onchange?if_exists}"  onclick="${onclick?if_exists}"  ondblclick="${ondblclick?if_exists}"  onfocus="${onfocus?if_exists}"  onkeydown="${onkeydown?if_exists}"  onkeypress="${onkeypress?if_exists}" onkeyup="${onkeyup?if_exists}"  onmousedown="${onmousedown?if_exists}"  onmousemove="${onmousemove?if_exists}"  onmouseout="${onmouseout?if_exists}"  onmouseover="${onmouseover?if_exists}"  onmouseup="${onmouseup?if_exists}"  style="${style?if_exists}"  styleClass="${styleClass?if_exists}" styleId="${styleId?if_exists}"  title="${title?if_exists}" verifyFuncName="${verifyFuncName?if_exists}">${value?if_exists}</textarea>${notnullMark?if_exists}]]>
+	</common>
+    <readonly description="只读域代码" name="default">
+    	<![CDATA[<span name="${name}">${value?if_exists}</span>]]>
+    </readonly>
+    <hidden description="隐藏域代码" name="default">
+    	<![CDATA[]]>
+    </hidden>
+    <hidden-edit description="隐藏可修改" name="default">
+    	<![CDATA[<input type="hidden" name="${name}"  value="${value?if_exists}">]]>
+    </hidden-edit>
+    <readonly-edit description="只读可修改" name="default">
+    	<![CDATA[<span name="${name}" title="${title?if_exists}">${value?if_exists}</span><input type="hidden" name="${name}" value="${value?if_exists}">]]>
+    </readonly-edit>
+  </field>
+  
+  <!-- 单选框展示 -->
+  <field description="单选框展示" name="RADIO域" type="radio">
+    <common description="普通域代码" name="default">
+    	<![CDATA[<#list list as lv><input type="radio" name="${name}" value="${lv.key}" onclick="${onclick?if_exists}" alt="${alt?if_exists}" 	accesskey="${accesskey?if_exists}" onblur="${onblur?if_exists}" onchange="${onchange?if_exists}" onclick="${onclick?if_exists}" onfocus="${onfocus?if_exists}" onkeydown="${onkeydown?if_exists}" onkeypress="${onkeypress?if_exists}" onkeyup="${onkeyup?if_exists}" onmousedown="${onmousedown?if_exists}" onmousemove="${onmousemove?if_exists}" tabindex="${tabindex?if_exists}" onmouseover="${onmouseover?if_exists}" onmouseup="${onmouseup?if_exists}" title="${title?if_exists}" style="${style?if_exists}" styleClass="${styleClass?if_exists}"	styleId="${styleId?if_exists}" notnull="${notnull?if_exists}" onmouseout="${onmouseout?if_exists}" <#if lv.key==checkValue>checked</#if> >${lv.value}</#list>${notnullMark?if_exists}]]>
+    </common>
+    <readonly description="只读域代码" name="default">
+    	<![CDATA[<#list list as lv><#if lv.key==checkValue><span name="${name}">${lv.value}</span></#if></#list>]]>
+    </readonly>
+    <hidden description="隐藏域代码" name="default">
+		<![CDATA[]]>
+	</hidden>
+    <hidden-edit description="隐藏可修改" name="default">
+    	<![CDATA[<#list list as lv><#if lv.key==checkValue><input type="hidden" name="${name}" value="${lv.key}" ></#if></#list>]]>
+    </hidden-edit>
+    <readonly-edit description="只读可修改" name="default">
+    	<![CDATA[<#list list as lv><#if lv.key==checkValue><span name="${name}" title="${title?if_exists}">${lv.value}</span><input type="hidden" name="${name}" value="${lv.key}"></#if></#list>]]>
+    </readonly-edit>
+  </field>
+  
+  <!-- 复选框展示 -->
+  <field description="复选框展示" name="CHECKBOX域" type="checkbox">
+    <common description="普通域代码" name="default">
+    	<![CDATA[<#list list as lv><input type="checkbox" name="${name}" value="${lv.key}" notnull="${notnull?if_exists}" alt="${alt?if_exists}" accesskey="${accesskey?if_exists}" onblur="${onblur?if_exists}" onchange="${onchange?if_exists}" ondblclick="${ondblclick?if_exists}" onclick="${onclick?if_exists}" onfocus="${onfocus?if_exists}" onmouseout="${onmouseout?if_exists}" onkeydown="${onkeydown?if_exists}"  onkeypress="${onkeypress?if_exists}" onkeyup="${onkeyup?if_exists}" onmousedown="${onmousedown?if_exists}" onmousemove="${onmousemove?if_exists}" onmouseover="${onmouseover?if_exists}" onmouseup="${onmouseup?if_exists}" title="${title?if_exists}" style="${style?if_exists}" styleClass="${styleClass?if_exists}" styleId="${styleId?if_exists}"<#list list1 as lv1><#if lv.key==lv1.value>checked</#if></#list>>${lv.value}</#list>${notnullMark?if_exists}]]>
+    </common>
+    <readonly description="只读域代码" name="default">
+    	<![CDATA[<#list list as lv><#list list1 as lv1><#if lv.key==lv1.value><span name="${name}" value="${lv.key}">${lv.value}</span></#if></#list></#list>]]>
+    </readonly>
+    <hidden description="隐藏域代码" name="default">
+    	<![CDATA[]]>
+    </hidden>
+    <hidden-edit description="隐藏可修改" name="default">
+    	<![CDATA[<#list list as lv><#list list1 as lv1><#if lv.key==lv1.value><input type="hidden" name="${name}" value="${lv.key}"></#if></#list></#list>]]>
+    </hidden-edit>
+    <readonly-edit description="只读可修改" name="default">
+    	<![CDATA[<#list list as lv><#list list1 as lv1><#if lv.key==lv1.value><span name="${name}">${lv.value}</span><input type="hidden" name="${name}" value="${lv.key}"></#if></#list></#list>]]>
+    </readonly-edit>
+  </field>
+  
+  <!-- 下拉框 -->
+  <field description="下拉框展示" name="下拉选择" type="select">
+  	<common description="普通域代码" name="default">
+  		<![CDATA[<select name="${name}" size="${sizeValue?if_exists}" notnull="${notnull?if_exists}" alt="${alt?if_exists}" onblur="${onblur?if_exists}" ondblclick="${ondblclick?if_exists}" onchange="${onchange?if_exists}" onclick="${onclick?if_exists}" onfocus="${onfocus?if_exists}" onmouseout="${onmouseout?if_exists}" onkeydown="${onkeydown?if_exists}" onkeypress="${onkeypress?if_exists}" onkeyup="${onkeyup?if_exists}" onmousedown="${onmousedown?if_exists}" onmousemove="${onmousemove?if_exists}" style="${style?if_exists}" styleClass="${styleClass?if_exists}" styleId="${styleId?if_exists}" onmouseover="${onmouseover?if_exists}" onmouseup="${onmouseup?if_exists}" title="${title?if_exists}"><#list list as lv><option value="${lv.key}" ${lv.selected}>${lv.value}</option></#list></select>${notnullMark?if_exists}]]>
+  	</common>
+  	<readonly description="只读域代码" name="default">
+		<![CDATA[<#list list as lv><#if lv.selected=="selected"><span name="${name}">${lv.value}</span></#if></#list>]]>
+	</readonly>
+  	<hidden description="隐藏域代码" name="default">
+  		<![CDATA[]]>
+  	</hidden>
+  	<hidden-edit description="隐藏可修改" name="default">
+  		<![CDATA[<#list list as lv><#if lv.selected=="selected"><input type="hidden" name="${name}" value="${lv.key}"></#if></#list>]]>
+    </hidden-edit>
+	<readonly-edit description="只读可修改" name="default">
+		<![CDATA[<#list list as lv><#if lv.selected=="selected"><span name="${name}">${lv.value}</span><input type="hidden" name="${name}" value="${lv.key}"></#if></#list>]]>
+	</readonly-edit>
+  </field>
+
+	<!-- 日期时间 -->
+  <field description="日期时间展示" name="日期时间域" type="datetime">
+  	<common description="普通域代码" name="default">
+  		<![CDATA[<input class="" type="text" name="${name}" value="${value}" notnull="${notnull?if_exists}" readOnly="true" title="${title?if_exists}" ><button class="date_button" onclick="getDateTime('${name}');"><img class="" title="${title?if_exists}" src="skins/default/images/date/time.gif" style="cursor:pointer;"></button>${notnullMark?if_exists}]]>
+  	</common>
+  	<readonly description="只读域代码" name="default">
+		<![CDATA[<span name="${name}">${value?if_exists}</span>]]>
+	</readonly>
+  	<hidden description="隐藏域代码" name="default">
+  		<![CDATA[]]>
+  	</hidden>
+  	<hidden-edit description="隐藏可修改" name="default">
+  		<![CDATA[<input type="hidden" name="${name}" value="${value?if_exists}" write=false>]]>
+    </hidden-edit>
+	<readonly-edit description="只读可修改" name="default">
+		<![CDATA[<span name="${name}" title="${title?if_exists}">${value?if_exists}<input type="hidden" name="${name}" value="${value}"></span>]]>
+	</readonly-edit>
+  </field>
+  
+  <!-- 日期 -->
+  <field description="日期展示" name="日期域" type="date">
+  	<common description="普通域代码" name="default">
+  		<![CDATA[<input class="" type="text" name="${name}" title="${title?if_exists}" value="${value}" verifyFuncName="${verifyFuncName?if_exists}" notnull="${notnull?if_exists}" readOnly="true"><button class="date_button" onclick="getDate('${name}')"><img class="" title="${title?if_exists}" src="skins/default/images/date/time.gif" style="cursor:pointer;"></button>${notnullMark?if_exists}]]>
+  	</common>
+  	<readonly description="只读域代码" name="default">
+		<![CDATA[<span name="${name}">${value?if_exists}</span>]]>
+	</readonly>
+  	<hidden description="隐藏域代码" name="default">
+  		<![CDATA[]]>
+  	</hidden>
+  	<hidden-edit description="隐藏可修改" name="default">
+  		<![CDATA[<input type="hidden" name="${name}" value="${value?if_exists}" write=false>]]>
+    </hidden-edit>
+	<readonly-edit description="只读可修改" name="default">
+		<![CDATA[<span name="${name}" title="${title?if_exists}">${value?if_exists}<input type="hidden" name="${name}" value="${value}"></span>]]>
+	</readonly-edit>
+  </field>
+  	
+ <!-- menu表单操作 -->
+ <field description="表单操作" name="表单操作" type="menu">
+  	<common description="普通域代码" name="default">
+  		<![CDATA[<#assign htmlTag=JspTaglibs["/WEB-INF/tlds/web-html.tld"]><#list list as lv>&nbsp;<@htmlTag.button name="${lv.id?if_exists}" value="${lv.title?if_exists}" onclick="${lv.funName?if_exists}" title="${title?if_exists}"></@htmlTag.button></#list>]]>
+  	</common>
+ </field>
+  	
+</fields>
+

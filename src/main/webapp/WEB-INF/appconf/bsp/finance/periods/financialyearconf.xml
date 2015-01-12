@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+<bean id="financialyearquery" class="net.mast.bsp.finance.periods.cmd.FinancialYearQuery">
+	    <property name="financialYearService"><ref bean="financialYearService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="yearforward"/></entry>
+	        </map>
+        </property>
+
+	</bean>	
+
+
+
+<bean id="FinancialYearView"  class="net.mast.bsp.finance.periods.view.FinancialYearView" singleton="false"/>
+
+  
+   <bean id="financialyear" class="net.mast.bsp.finance.periods.cmd.FinancialYearCmd" singleton="false">
+	    <property name="financialYearService"><ref bean="financialYearService"/></property>
+	    <property name="view"><ref bean="FinancialYearView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="FinancialYearView"><ref bean="yearforward"/></entry>
+	            <entry key="FinancialYearViewChain"><ref bean="yearforwardchain"/></entry>
+	        </map>
+		</property>
+	
+   </bean>
+
+
+<bean id="financialMonthDao" class="net.mast.bsp.finance.periods.dao.jdbc.FinancialMonthDaoJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<bean id="financialYearDao" class="net.mast.bsp.finance.periods.dao.jdbc.FinancialYearJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+    <bean id="yearforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/finance/periods/year/detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/finance/periods/year/forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/finance/periods/year/forupdate.jsp</prop>
+			     <prop key="querynopage">jsp/bsp/finance/periods/year/query.jsp</prop> 
+			</props>
+		</property>
+	</bean>
+	
+    <bean id="yearforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="financialyearquery"/></entry>
+			</map>
+		</property>
+    </bean>
+    
+
+<bean id="financialYearService" class="net.mast.bsp.finance.periods.service.support.FinancialYearServiceImpl"> 
+	<property name="financialYearDomain"><ref bean="financialYearDomain"/></property>   	
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+</bean>
+
+<bean id="financialYearDomain" class="net.mast.bsp.finance.periods.domain.support.FinancialYearImpl"> 
+	<property name="financialYearDao"><ref bean="financialYearDao"/></property>   
+	<property name="financialMonthDao"><ref bean="financialMonthDao"/></property>   	
+</bean>
+</beans>

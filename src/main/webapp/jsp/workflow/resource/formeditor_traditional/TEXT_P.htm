@@ -1,0 +1,2069 @@
+<html>
+<head>
+<LINK href="skin.css" rel=stylesheet type=text/css>
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<title>文本域属性　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　</title>
+</head>
+<script language="javascript" src="extendString.js"></script>
+
+<script language="javascript">
+var FIELD_NAM="Ins_";//主表单name的前缀
+
+var canclose=true;
+var topwin=window.dialogArguments;
+var modalObj=topwin.OBJ.CurControl;
+var modalTd=topwin.OBJ.CurControl.parentElement;
+var imagelisturl=topwin.OBJ.imagelisturl;
+var localurl=window.location.toString();
+var re=new RegExp("\/[a-zA-Z0-9_]+","ig");
+var aa=localurl.match(re);
+imagelisturl=aa[1]+imagelisturl;
+while(!(modalTd.tagName=="TD"))
+{
+	modalTd=modalTd.parentElement;
+}
+var tabAll=modalTd.offsetParent;
+var datahid=true;// 数据库属性表格 
+var inputname=null;//对象名
+var zihaoModifystr="";//字号信息的MODIFY部分
+var oldZihao="";//上次保存的字号
+var curentDivtype=null;
+var curentList=null;
+var xmlUrlPath=new Array();//选择域,保留域,编辑域的xml地址
+function init()
+{
+//根据主表单域生成下拉框
+var FieldStr='';
+var ii=0;
+var arrTabs=topwin.document.all("pages");
+for(var i=0;i<arrTabs.children.length;i++)
+{//alert(arrTabs.children[i].children[0].tagName);
+
+	if(arrTabs.children[i].children[0]==tabAll)
+	{
+	ii=i;
+	break;
+	}
+}
+if(tabAll.type=="sub")
+{
+document.all("fsetgs").style.display="none";
+}
+else
+document.all("fsetgs").style.display="block";
+if(tabAll!=null && tabAll.type!="sub")
+{
+	for(var jj=0;jj<tabAll.rows.length;jj++)
+	for(var j=0;j<tabAll.rows[jj].cells.length;j++)
+						{
+							var otd=tabAll.rows[jj].cells[j];
+							if(otd==null) continue;
+							var content=otd.children[0];
+							if(content!=null && (content.tagName=="INPUT" || content.tagName=="SELECT" || content.tagName=="TEXTAREA"))
+							{
+							//if(content.sumtype!=null)
+							//continue;
+							if(content==modalObj)
+							continue;
+							var titlestr=content.getAttribute("titlestr");
+							if(titlestr==null)
+								 titlestr="";
+							var seltedstr="";
+							//if(modalTd.cellIndex==j)
+							//seltedstr=" selected ";
+							var nam='tab'+ii+'defr'+jj+'c'+j;//+tabAll.id;
+							if(content.id==null || content.id=="")
+							{
+								var hasname=topwin.OBJ.checkName(content,nam);
+								while(hasname)
+									{
+									var ind=hasname.toUpperCase().lastIndexOf("Z");
+									if(ind>0)
+										{
+										var num=hasname.substring(ind+1);
+										if(num!=null)
+											num=parseInt(num)+1;
+										nam=hasname.substring(0,ind)+"Z"+num;
+										}
+									else
+										{
+										nam=hasname+"Z"+1;
+										}
+									hasname=topwin.OBJ.checkName(content,nam);
+									}
+									//alert("fieldnamestr"+fieldnamestr);
+
+								if(topwin.OBJ.getCharType()=="1")
+								{
+									content.id=nam.toUpperCase();
+								}
+								else
+								{
+									content.id=nam.toLowerCase();
+								}
+							}
+							else
+							{
+							nam=content.id;
+							}
+							FieldStr+='<option '+seltedstr+' value="'+FIELD_NAM+nam+'">'+titlestr+'</option>';
+							}
+						}
+		if(FieldStr!="")
+		document.all("selTd").innerHTML='<select  name="selField">'+FieldStr+'</select>';
+}
+//end
+var sumhtml=(modalObj.sumHtml);
+if(sumhtml!=null && sumhtml!="")
+document.frames.biaoda.document.body.innerHTML=sumhtml;
+var sumfunc=modalObj.FUNC;
+if(sumfunc!=null)
+{
+selected("selfunction",sumfunc);
+}
+var funcpar=modalObj.FUNARG;
+if(funcpar!=null)
+document.all("modval").value=funcpar;
+//fillsele();
+if(modalObj==null ) return;
+//if(modalObj.tagName!="INPUT") return;
+//if(modalObj.type!="text") return;
+//if(topwin.OBJ.getReadonlyType()=="1")
+//	document.all("fieldname").disabled=true;
+var size=document.all("size").value;
+var rows=document.all("rows");
+var cols=document.all("cols");
+var datetype=document.all("datetype").value;
+var radiochecktype=document.all("radiochecktype").value;
+var titlestr=document.all("titlestr").value;
+var tooltip=document.all("tooltip").value;
+var definput=document.all("definput").value;
+var arrdefval=document.all("morenzhi");
+var allxmldoc=loadData(topwin.OBJ.getUrl());
+if(allxmldoc!=null)
+{
+	for(var ii=0;ii<allxmldoc.childNodes.length;ii++)
+	{
+	if(allxmldoc.childNodes[ii].nodeType=="1")
+	xmlUrlPath[xmlUrlPath.length]=allxmldoc.childNodes[ii].text;//保留域xml
+	//xmlUrlPath[1]=allxmldoc.childNodes[1].text;//编辑域xml
+	//xmlUrlPath[2]=allxmldoc.childNodes[2].text;//选择域xml
+	//xmlUrlPath[3]=allxmldoc.childNodes[3].text;//特殊编辑域xml
+	//xmlUrlPath[4]=allxmldoc.childNodes[4].text;//验证域xml
+	//xmlUrlPath[5]=allxmldoc.childNodes[5].text;//动态默认值xml
+	}
+}
+//curentDivtype=document.all("divtext");
+document.all("reserveTd").innerHTML=getReserveStr();//保留域
+document.all("select-fieldTd").innerHTML=getSelectStr();//选择域
+document.all("edit-fieldTd").innerHTML=getEditStr();//编辑域
+document.all("special-editTd").innerHTML=getSpecialEditStr();//保留域
+document.all("defselTd").innerHTML=getDynamicStr();//动态默认值
+var tabtype='';
+if(tabAll!=null && tabAll.tagName=="TABLE")
+	if(tabAll.type!=null)
+		tabtype=tabAll.type;
+document.all("verifyTd").innerHTML=getVerifyStr("String",tabtype);//约束条件
+
+
+var len=modalObj.style.width;
+if(len!=null && len!="")
+document.all("size").value=parseInt(len);
+if(tabAll.type=="sub")
+{
+if(modalTd.parentElement.previousSibling.cells[modalTd.cellIndex]!=null && modalTd.parentElement.previousSibling.cells[modalTd.cellIndex].tagName=="TD")
+document.all("titlestr").value=modalTd.parentElement.previousSibling.cells[modalTd.cellIndex].innerText;
+}
+else
+{
+if(modalTd.previousSibling!=null && modalTd.previousSibling.tagName=="TD")
+document.all("titlestr").value=modalTd.previousSibling.innerText;
+
+}
+var titlestrstr=modalObj.titlestr;
+if(titlestrstr!=null)
+document.all("titlestr").value=titlestrstr;
+var maxlengthstr=modalObj.maxLength;
+if(maxlengthstr==2147483647)
+maxlengthstr='20';
+if(maxlengthstr!=null)
+document.all("maxlength").value=maxlengthstr;
+var rowsstr=modalObj.rows;
+if(rowsstr!=null)
+rows.value=rowsstr;
+var colsstr=modalObj.cols;
+if(colsstr!=null)
+cols.value=colsstr;
+//样式
+var stylestr=modalObj.stylecss;
+var styleobj=document.all("defstyle");
+/*
+var stylewidth=modalObj.style.width;
+if(stylewidth!=null && stylewidth!="")
+stylestr+='width:'+stylewidth+';';
+var stylebgcolor=modalObj.style.backgroundColor;
+if(stylebgcolor!=null && stylebgcolor!="")
+stylestr+='background-color:'+stylebgcolor+';';
+var stylebordercolor=modalObj.style.borderColor;
+if(stylebordercolor!=null && stylebordercolor!="")
+stylestr+='border-color:'+stylebordercolor+';';
+*/
+if(stylestr!=null && stylestr!="")
+styleobj.value=stylestr;
+
+//日期类型
+var datetypestr=modalObj.datetype;
+if(datetypestr!=null)
+{
+selected("datetype",datetypestr);
+document.all("datetype").onchange();
+document.all("datewidth").value=parseInt(len);
+}
+//数据类型
+var datatypestr=modalObj.datatype;
+if(datatypestr!=null)
+{
+selected("datatype",datatypestr);
+document.all("datatype").onchange();
+}
+var target=document.all("target");
+var linkdescription=document.all("linkdescription");
+var targetwindow=document.all("target-window");
+
+var targetstr=modalObj.target;
+if(targetstr!=null)
+target.value=targetstr;
+
+var linkdescriptionstr=modalObj.description;
+if(linkdescriptionstr!=null)
+linkdescription.value=linkdescriptionstr;
+
+var targetwindowstr=modalObj.getAttribute("target-window");
+if(targetwindowstr!=null)
+targetwindow.value=targetwindowstr;
+
+var imgheightstr=modalObj.imgheight;
+if(imgheightstr!=null)
+document.all("imgheight").value=imgheightstr;
+
+var imgborderstr=modalObj.imgborder;
+if(imgborderstr!=null)
+document.all("imgborder").value=imgborderstr;
+
+var imgwidthstr=modalObj.imgwidth;
+if(imgwidthstr!=null)
+document.all("imgwidth").value=imgwidthstr;
+
+var imgsrcstr=modalObj.imgsrc;
+if(imgsrcstr!=null)
+document.all("imgsrc").value=imgsrcstr;
+
+if(modalObj.checked==true)
+selected("radiochecktype","true");
+var tooltipstr=modalObj.tooltip;
+if(tooltipstr!=null)
+document.all("tooltip").value=tooltipstr;
+var morenzhiobj=document.all("morenzhi");
+if(modalObj.getAttribute("default-type")=="fixed")
+{
+	morenzhiobj[1].checked=true;
+	morenzhiobj[1].onclick();
+	document.all("definput").value=modalObj.getAttribute("default-value");
+}
+if(modalObj.getAttribute("default-type")=="dynamic")
+	{
+	morenzhiobj[2].checked=true;
+	morenzhiobj[2].onclick();
+	selected("seldynamic",modalObj.getAttribute("default-value"));
+	}
+
+	//域name
+	if(modalObj.id!=null && modalObj.id!="" )
+		document.all("fieldname").value=modalObj.id;
+
+	//上次保存的是radio
+	if(modalObj.getAttribute("fieldtype")=="radio")
+	{
+		for(var rr=0;rr<modalTd.children.length;rr++)
+		{
+		var ora=modalTd.children[rr];
+		if(ora==null && ora.type!="radio")
+			continue;
+		var okey=ora.getAttribute("key");
+		var odes=ora.getAttribute("description");
+		var selectedstr=ora.checked.toString();
+		curentList=document.all("divradiolist");
+		addTabList(okey,odes,selectedstr);
+		}
+	}
+		//上次保存的是check
+	if(modalObj.getAttribute("fieldtype")=="check")
+	{
+		for(var cc=0;cc<modalTd.children.length;cc++)
+		{
+		var ora=modalTd.children[cc];
+		if(ora==null && ora.type!="checkbox")
+			continue;
+		var okey=ora.getAttribute("key");
+		var odes=ora.getAttribute("description");
+		var selectedstr=ora.checked.toString();
+		curentList=document.all("divchecklist");
+		addTabList(okey,odes,selectedstr);
+		}
+	}
+		//上次保存的是select
+	if(modalObj.getAttribute("fieldtype")=="drop-down" && modalObj.tagName=="SELECT")
+	{
+		for(var ss=0;ss<modalObj.options.length;ss++)
+		{
+		var ora=modalObj.options[ss];
+		if(ora==null)
+			continue;
+		var okey=ora.getAttribute("value");
+		var odes=ora.innerText;
+		var selectedstr=ora.selected.toString();
+		curentList=document.all("divdrop-downlist");
+		addTabList(okey,odes,selectedstr);
+		}
+		var selwidth=modalObj.style.width;
+		if(selwidth!=null)
+		document.all("selwidth").value=parseInt(selwidth);
+	}
+	if(modalObj.getAttribute("fieldtype")=="select-field")
+	{
+	selected("selselect",modalObj.getAttribute("key"));
+	}
+	if(modalObj.getAttribute("fieldtype")=="edit-field")
+	{
+	selected("seledit",modalObj.getAttribute("key"));
+	}
+	if(modalObj.getAttribute("fieldtype")=="special-edit")
+	{
+	selected("selspecialedit",modalObj.getAttribute("key"));
+	}
+	//保留域
+	if(modalObj.reserveKey!=null)
+	selected("selreserve",modalObj.reserveKey);
+	//else
+	{
+		var radio=document.all("r1");
+		if(radio!=null)
+			{
+				var ratype=modalObj.getAttribute("fieldtype");
+				if(ratype==null || ratype=="")
+					ratype="text";
+				selected("r1",ratype);
+				
+			}
+	}
+
+		if(modalObj.restriction!=null)
+	{
+	var selverifyval="";
+	var selverifypam="";
+	if(modalObj.restriction!="")
+		{
+		if(modalObj.restriction.indexOf(",")>-1)
+		{
+		selverifyval=modalObj.restriction.substring(0,modalObj.restriction.indexOf(","));
+		selverifypam=modalObj.restriction.substring(modalObj.restriction.indexOf(",")+1);
+		}
+		else
+		selverifyval=modalObj.restriction;
+		}
+	selected("selverify",selverifyval);
+	if(selverifypam!="")
+	setVerifyParmVal(selverifypam.split(","));
+	}
+
+}
+//xml读取数据，数据来自一个xml文件，参数是这个xml文件的textOverColor
+function loadData (url,param) {
+	var xmlDoc = new ActiveXObject("Msxml.DOMDocument");
+	xmlDoc.async = false;
+	xmlDoc.preserveWhiteSpace = true;
+	if (param == null)
+	{
+		var restr=/>\s</g;
+		url=url.replace(restr,"");
+	  xmlDoc.loadXML(url);
+	 }
+	else
+	  xmlDoc.load(window.location.protocol + "//" + window.location.host+url);
+	if(xmlDoc.childNodes[1]!=null)
+		return xmlDoc.childNodes[1];
+}
+//得到保留域
+function getReserveStr()
+{
+//if(xmlUrlPath[0]==null) return ;
+var xmldoc=loadData(xmlUrlPath[0],1);
+//xmldoc=loadData(' <?xml version="1.0" encoding="GBK"?><reserve-keys><reserve-key key="zihao" name="11" process-type="222" /><reserve-key key="biaoti" name="33" /> 	<reserve-key key="shouji" name="44"><drop-down><option key="11" description="11"/><option key="22" description="涓夋湀"/><option key="33" description="33"/><option key="44" description="44"/> 		</drop-down></reserve-key><reserve-key key="shuiguo" name="姘存灉"><check><option key="11" description="ww"/> 			<option key="22" description="22"/><option key="33" description="333"/><option key="44" description="444"/> 		</check> 	</reserve-key><reserve-key key="jiaotong" name="浜ら?氳垂"/></reserve-keys>');
+if(xmldoc!=null)
+{
+	var allstr="";
+			for(var i=0;i<xmldoc.childNodes.length;i++)
+			{
+			var onode=xmldoc.childNodes[i];
+			if(onode.nodeType!="1")
+				continue;
+			if(onode.getAttribute("key")!=null)
+				if(topwin.OBJ.isHasFieldByKey(onode.getAttribute("key"),"reserveKey",modalTd))
+				continue;
+			allstr+='<option value="'+onode.getAttribute("key")+'"';
+			if(onode.childNodes.length>0)
+			{
+				for(var j=0;j<onode.childNodes.length;j++)
+				{
+				var oonode=onode.childNodes[j];
+				if(oonode.nodeType!="1")
+				continue;
+				var fieldtype=oonode.tagName;
+				var optkeys='';
+				var optvals='';
+					if(oonode.childNodes.length>0)
+					{
+						for(var k=0;k<oonode.childNodes.length;k++)
+						{
+							var optnode=oonode.childNodes[k];
+							if(optnode.nodeType!="1")
+							continue;
+							optkeys+=optnode.getAttribute("key")+"@";
+							optvals+=optnode.getAttribute("description")+"@";
+						}
+					}
+				optkeys=optkeys.substring(0,optkeys.length-1);
+				optvals=optvals.substring(0,optvals.length-1);
+				switch(fieldtype)
+				{
+				case "date-time":
+				var datetype=oonode.getAttribute("type");
+				allstr+=' fieldtype="date-time" datetype="'+datetype+'" ';
+				break;
+				case "edit-field":
+				var key=oonode.getAttribute("key");
+				allstr+=' fieldtype="edit-field" key="'+key+'" ';
+				break;
+				case "select-field":
+				var key=oonode.getAttribute("key");
+				allstr+=' fieldtype="select-field" key="'+key+'" ';
+				break;
+				case "special-edit":
+				var key=oonode.getAttribute("key");
+				allstr+=' fieldtype="special-edit" key="'+key+'" ';
+				break;
+				case "text":
+				var maxlength=oonode.getAttribute("maxlength");
+				var size=oonode.getAttribute("size");
+				allstr+=' fieldtype="text" maxlength="'+maxlength+'"  size="'+size+'" ';
+				break;
+				case "textarea":
+				var cols=oonode.getAttribute("cols");
+				var rows=oonode.getAttribute("rows");
+				allstr+=' fieldtype="textarea" cols="'+cols+'"  rows="'+rows+'" ';
+				break;
+				default:
+				allstr+=' fieldtype="'+fieldtype+'" ';
+				break;
+				}
+				}
+			}
+			allstr+=' optkeys="'+optkeys+'"  optvals="'+optvals+'" >'+onode.getAttribute("name")+'</option>';
+			}
+allstr="<select id='selreserve' onchange='doreservechange();'><option value=''>---无---</option>"+allstr+"</select>";
+}
+return allstr;
+}
+//保留域onchange事件
+function doreservechange()
+{
+var osel=document.all("selreserve");
+var opt=osel.options[osel.selectedIndex];
+var fieldtype=opt.getAttribute("fieldtype");
+switch(fieldtype)
+				{
+				case "date-time":
+				var datetype=opt.getAttribute("datetype");
+				selected("datetype",datetype);
+				break;
+				case "edit-field":
+				var key=opt.getAttribute("key");
+				selected("seledit",key);
+				break;
+				case "select-field":
+				var key=opt.getAttribute("key");
+				selected("selselect",key);
+				break;
+				case "special-edit":
+				var key=opt.getAttribute("key");
+				selected("selspecialedit",key);
+				break;
+				case "text":
+				var maxlength=opt.getAttribute("maxlength");
+				var size=opt.getAttribute("size");
+				if(maxlength!=null)
+					document.all("maxlength").value=maxlength;
+				if(size!=null)
+					document.all("size").value=size;
+				break;
+				case "textarea":
+				var cols=opt.getAttribute("cols");
+				var rows=opt.getAttribute("rows");
+				if(cols!=null)
+					document.all("cols").value=cols;
+				if(rows!=null)
+					document.all("rows").value=rows;
+				break;
+				case "drop-down":
+				var optkeys=opt.getAttribute("optkeys");
+				var optvals=opt.getAttribute("optvals");
+				var arroptkey=optkeys.split("@");
+				var arroptval=optvals.split("@");
+				curentList=document.all("divdrop-downlist");
+				for(var jj=curentList.rows.length-1;jj>=0;jj--)
+				{
+				curentList.rows[jj].removeNode(true);
+				}
+				for(var ss=0;ss<arroptkey.length;ss++)
+				{
+				var okey=arroptkey[ss];
+				var odes=arroptval[ss];
+				addTabList(okey,odes);
+				}
+				break;
+				case "radio":
+				var optkeys=opt.getAttribute("optkeys");
+				var optvals=opt.getAttribute("optvals");
+				var arroptkey=optkeys.split("@");
+				var arroptval=optvals.split("@");
+				curentList=document.all("divradiolist");
+				for(var jj=curentList.rows.length-1;jj>=0;jj--)
+				{
+				curentList.rows[jj].removeNode(true);
+				}
+				for(var ss=0;ss<arroptkey.length;ss++)
+				{
+				var okey=arroptkey[ss];
+				var odes=arroptval[ss];
+				addTabList(okey,odes);
+				}
+				break;
+				case "check":
+				var optkeys=opt.getAttribute("optkeys");
+				var optvals=opt.getAttribute("optvals");
+				var arroptkey=optkeys.split("@");
+				var arroptval=optvals.split("@");
+				curentList=document.all("divchecklist");
+				for(var jj=curentList.rows.length-1;jj>=0;jj--)
+				{
+				curentList.rows[jj].removeNode(true);
+				}
+				for(var ss=0;ss<arroptkey.length;ss++)
+				{
+				var okey=arroptkey[ss];
+				var odes=arroptval[ss];
+				addTabList(okey,odes);
+				}
+				break;
+				}
+selected("r1",fieldtype);
+}
+//得到编辑域
+function getEditStr()
+{
+//if(xmlUrlPath[1]==null) return ;
+var xmldoc=loadData(xmlUrlPath[1],1);
+//xmldoc=loadData(' <?xml version="1.0" encoding="GBK"?><edit-fields><edit-field edit-url="" key="single" name="单例复杂内容" singletone="true"/><edit-field edit-url="" key="multi" name="多例复杂内容" singletone="false"/></edit-fields>');
+if(xmldoc!=null)
+{
+	var allstr="";
+			for(var i=0;i<xmldoc.childNodes.length;i++)
+			{
+			var onode=xmldoc.childNodes[i];
+			if(onode.nodeType!="1")
+				continue;
+			if(onode.getAttribute("singletone")=="true")
+				if(topwin.OBJ.isHasFieldByKey(onode.getAttribute("key"),"key",modalTd))
+				continue;
+			allstr+='<option url="'+onode.getAttribute("edit-url")+'" value="'+onode.getAttribute("key")+'" singletone="'+onode.getAttribute("singletone")+'">'+onode.getAttribute("name")+'</option>';
+			}
+allstr="<select id='seledit'>"+allstr+"</select>";
+}
+return allstr;
+}
+//得到选择域
+function getSelectStr()
+{
+//if(xmlUrlPath[2]==null) return ;
+var xmldoc=loadData(xmlUrlPath[2],1);
+//xmldoc=loadData(' <?xml version="1.0" encoding="GBK"?><select-fields><select-field select-url="url1" key="renliziyuan-radio" name="人力资源-单选" permission-id="2"/><select-field select-url="url2" key="renliziyuan-checkbox" name="人力资源-多选" permission-id="1"/></select-fields>');
+if(xmldoc!=null)
+{
+	var allstr="";
+			for(var i=0;i<xmldoc.childNodes.length;i++)
+			{
+			var onode=xmldoc.childNodes[i];
+			if(onode.nodeType!="1")
+				continue;
+			allstr+='<option url="'+onode.getAttribute("select-url")+'" permission-id="'+onode.getAttribute("permission-id")+'" value="'+onode.getAttribute("key")+'">'+onode.getAttribute("name")+'</option>';
+			}
+allstr="<select id='selselect'>"+allstr+"</select>";
+}
+return allstr;
+}
+//得到约束条件
+function getVerifyStr(fieldtype,partype)
+{
+//if(xmlUrlPath[4]==null) return ;
+var xmldoc=loadData(xmlUrlPath[4],1);
+//xmldoc=loadData('<?xml version="1.0" encoding="GBK"?><verifys><verify function="afterVerify1" name="数字" fieldtype="Long|Float" /><verify function="afterVerify" name="在...之后" fieldtype="String|date"><parameter type="string" name="比较域"/><parameter type="field" name="值"/><parameter name="包含小值" type="select"><option description="包含" key="true"/><option description="不包含" key="false"/></parameter></verify></verifys>');
+if(xmldoc!=null)
+{
+	var allstr="";
+			for(var i=0;i<xmldoc.childNodes.length;i++)
+			{
+			var onode=xmldoc.childNodes[i];
+			if(onode.nodeType!="1")
+				continue;
+			var fieldtypestr=onode.getAttribute("fieldtype");
+			var flag=0;
+			var arrfield=fieldtypestr.split("|");
+			for(var pp=0;pp<arrfield.length;pp++)
+			{
+				var op=arrfield[pp];
+				if(op.toUpperCase()==fieldtype.toUpperCase())
+				{flag=1;break;}
+			}
+			if(flag==0)
+			continue;
+			//if(onode.childNodes.length>0  && partype=="sub")
+			//continue;
+			allstr+='<option  value="'+onode.getAttribute("function")+'"';
+				if(onode.childNodes.length>0)
+				{
+				var partypestr="";
+				var parnamestr="";
+				for(var j=0;j<onode.childNodes.length;j++)
+					{
+					var oonode=onode.childNodes[j];
+					if(oonode.nodeType!="1")
+					continue;
+					if(partype=="sub" && oonode.getAttribute("type")=="field")
+					continue;
+					partypestr+=oonode.getAttribute("type")+",";
+					parnamestr+=oonode.getAttribute("name")+",";
+					
+						if(oonode.getAttribute("type")=="select" && oonode.childNodes.length>0)
+						{
+							var seloptionstr='@select#';
+							for(var k=0;k<oonode.childNodes.length;k++)
+							{
+							var node3=oonode.childNodes[k];
+							if(node3.nodeType!="1")
+								continue;
+							seloptionstr+='@option value='+node3.getAttribute("key")+'#'+node3.getAttribute("description")+'@/option#';
+							}
+							seloptionstr+='@/select#';
+						allstr+=' selectoption="'+seloptionstr+'" ';
+						}
+					}
+					allstr+=' partype="'+partypestr.substring(0,partypestr.length-1) +'" parname="'+parnamestr.substring(0,parnamestr.length-1) +'"';
+				}
+			allstr+='>'+onode.getAttribute("name")+'</option>';
+			}
+allstr="<select id='selverify' onchange='doparachange();'><option value=''>---无---</option>"+allstr+"</select>";
+}
+return allstr;
+}
+//得到特殊编辑域
+function getSpecialEditStr()
+{
+//if(xmlUrlPath[3]==null) return ;
+var xmldoc=loadData(xmlUrlPath[3],1);
+//xmldoc=loadData(' <?xml version="1.0" encoding="GBK"?><special-edits><special-edit edit-url="" show-class="" key="qianming" name="签名域"/></special-edits>');
+if(xmldoc!=null)
+{
+	var allstr="";
+			for(var i=0;i<xmldoc.childNodes.length;i++)
+			{
+			var onode=xmldoc.childNodes[i];
+			if(onode.nodeType!="1")
+				continue;
+			allstr+='<option url="'+onode.getAttribute("edit-url")+'" show-class="'+onode.getAttribute("show-class")+'" value="'+onode.getAttribute("key")+'">'+onode.getAttribute("name")+'</option>';
+			}
+allstr="<select id='selspecialedit'>"+allstr+"</select>";
+}
+return allstr;
+}
+
+//得到动态默认值
+function getDynamicStr()
+{
+//if(xmlUrlPath[5]==null) return ;
+var xmldoc=loadData(xmlUrlPath[5],1);
+//xmldoc=loadData(' <?xml version="1.0" encoding="GBK"?> <dynamic-defaults><dynamic-default key="com.ntmast.workform.defaults.CurrentDate" name="当前日期" /><dynamic-default key="com.ntmast.workform.defaults.CurrentTime" name="当前时间" /></dynamic-defaults>');
+if(xmldoc!=null)
+{
+	var allstr="";
+			for(var i=0;i<xmldoc.childNodes.length;i++)
+			{
+			var onode=xmldoc.childNodes[i];
+			if(onode.nodeType!="1")
+				continue;
+			allstr+='<option  value="'+onode.getAttribute("key")+'">'+onode.getAttribute("name")+'</option>';
+			}
+allstr="<select id='seldynamic'><option value=''>---无---</option>"+allstr+"</select>";
+}
+return allstr;
+}
+//选择约束条件时改变
+function doparachange(arrval)
+{
+var sel=document.all("selverify");
+var opt=sel.options[sel.selectedIndex];
+if(typeof(opt.parname)=="undefined" || opt.parname==null || opt.parname=="")
+	{
+	document.all("verifyParaTd").innerHTML="";
+	return;
+	}
+var parname=opt.parname;
+var partype=opt.partype;
+var selectoption=opt.selectoption;
+if(selectoption!=null)
+{
+var res1=/@/g;
+var res2=/#/g;
+selectoption=selectoption.replace(res1,'<');
+selectoption=selectoption.replace(res2,'>');
+}
+parname=parname.split(",");
+partype=partype.split(",");
+var tabstr='<table id="verifyParTab" width="100%" border=1 style="border:1 solid black"><tr><td>参数名称</td><td>参数值</td></tr>';
+var scriptstr='';
+	for(var i=0;i<parname.length;i++)
+	{
+	if(partype[i]=="string")
+	tabstr+='<tr><td bgcolor="#ffffff">'+parname[i]+'</td><td bgcolor="#ffffff"><input size=5 ></td></tr>';
+	if(partype[i]=="field")
+	{
+	tabstr+='<tr><td bgcolor="#ffffff">'+parname[i]+'</td><td bgcolor="#ffffff">'+getAllFieldselstr()+'</td></tr>';
+	}
+	if(partype[i]=="select")
+	{
+	tabstr+='<tr><td bgcolor="#ffffff">'+parname[i]+'</td><td bgcolor="#ffffff">'+selectoption+'</td></tr>';
+	}
+	}
+document.all("verifyParaTd").innerHTML=tabstr+"</table>";
+}
+//初始时让约束条件参数显示上次的值
+function setVerifyParmVal(arrval)
+{
+if(arrval==null||arrval=="")
+return;
+var tabpam=document.all("verifyParTab");
+if(tabpam==null) return;
+	for(var i=1;i<tabpam.rows.length;i++)
+	{
+	if(arrval[i-1]==null) continue;
+	var tdobj=tabpam.rows[i].cells[1].children[0];
+	if(tdobj!=null && tdobj.tagName=="INPUT")
+		tdobj.value=arrval[i-1];
+	if(tdobj!=null && tdobj.tagName=="SELECT")
+		{
+		selectedBySel(tdobj,arrval[i-1]);
+		}
+	}
+}
+//遍历所有域,得到一个select
+function getAllFieldselstr()
+{
+var type=document.all("r1").value;
+var str='';
+if(type=="text")
+str=document.all("datatype").value;
+else
+str=document.all("datetype").value;
+return topwin.OBJ.getTabSelect(str);
+}
+//修改时处理文号信息
+function fillzihao(str)
+{
+if(str==null|| str=="")
+	return ;
+var arrstr=str.split("</zihao>");
+for(var i=0;i<arrstr.length-1;i++)
+{	
+	var indexzh=arrstr[i].indexOf("\"");
+	var lindex=arrstr[i].indexOf("\" ");
+	var zhstr=arrstr[i].substring(indexzh+1,lindex);
+	var index1=arrstr[i].search("name=\"");
+	var index2=arrstr[i].lastIndexOf("\"");
+	var namestr=arrstr[i].substring(index1+6,index2);
+	addTabList(zhstr,namestr);
+}
+}
+//修改时获得原有标签
+function getolddiv()
+{
+if(modalObj==null)
+	return;
+var sdiv=modalObj.getAttribute("displayname");
+if(sdiv!=null)
+	{
+	var seldiv=document.all("seldiv");
+	var optiondiv=document.createElement("<OPTION>");
+	seldiv.options.add(optiondiv);
+	optiondiv.innerText=sdiv;
+	optiondiv.selected=true;
+	}
+
+}
+function onbeforclose()
+{
+	if(canclose)
+	{
+	return("您所选择的控件将被删除！");
+	}
+}
+function onclose()
+{
+/*if(topwin.obj==null) return;
+if(modalObj==null) return;
+if(modalObj.getAttribute("displayname")==null && canclose)
+	{
+	try{
+	//topwin.obj.delpro();
+	}
+	catch(e)
+	{
+	}
+	}
+	*/
+window.close();
+}
+
+
+function modifypro()
+{
+/*
+if(modalTd!=null)
+	inputname="def_r"+modalTd.parentElement.rowIndex+"c"+modalTd.cellIndex;
+else
+	inputname="def_r"+modalObj.parentElement.parentElement.rowIndex+"c"+modalObj.parentElement.cellIndex;
+	*/
+var size=document.all("size").value;
+if(isNaN(size))
+{
+alert("宽度应输入数字!");
+document.all("size").focus();
+return false;
+}
+
+if(size!=null)
+size=parseInt(size);
+var datewidth=document.all("datewidth").value;
+if(datewidth!=null)
+datewidth=parseInt(datewidth);
+var maxlength=document.all("maxlength").value;
+if(isNaN(maxlength))
+{
+alert("最大长度应输入数字!");
+document.all("maxlength").focus();
+return false;
+}
+var rows=document.all("rows").value;
+var cols=document.all("cols").value;
+var datetype=document.all("datetype").value;
+var target=document.all("target").value;
+var linkdescription=document.all("linkdescription").value;
+var targetwindow=document.all("target-window").value;
+var imgheight=document.all("imgheight").value;
+var imgborder=document.all("imgborder").value;
+var imgwidth=document.all("imgwidth").value;
+var imgsrc=document.all("imgsrc").value;
+var radiochecktype=document.all("radiochecktype").value;
+var titlestr=document.all("titlestr").value;
+var tooltip=document.all("tooltip").value;
+var definput=document.all("definput").value;
+var arrdefval=document.all("morenzhi");
+var datatype=document.all("datatype");
+
+//默认值
+var FieldDefVal="";
+for(var jj=0;jj<3;jj++)
+{
+var ora=arrdefval[jj];
+	if(ora.checked)
+	{
+	if(ora.deftype=="input")
+		FieldDefVal=' default-type="fixed" default-value="'+definput+'" ';
+	else if(ora.deftype=="select")
+		FieldDefVal=' default-type="dynamic" default-value="'+document.all("seldynamic").value+'" ';
+	else
+		FieldDefVal=' default-type="none" ';
+	}
+}
+//保留域
+var ReserveFieldStr=' reserveKey="'+document.all("selreserve").value+'" ';
+//约束条件
+var VerifyFieldStr="";
+var selverifyval=document.all("selverify").value;
+var selverifyTab=document.all("verifyParaTd");
+var verpamstr="";
+if(selverifyTab.children[0]!=null && selverifyTab.children[0].tagName=="TABLE")
+{
+	for(var kk=1;kk<selverifyTab.children[0].rows.length;kk++)
+	{
+	var otr=selverifyTab.children[0].rows[kk];
+	if(otr.cells[1].children[0]!=null)
+		verpamstr+=","+otr.cells[1].children[0].value;
+	}
+}
+VerifyFieldStr=' restriction="'+selverifyval+verpamstr+'" ';
+
+//
+
+var FieldStr="";
+var seletype=document.all("r1");
+var typestr=seletype.value;
+//字段名称
+var idstr="";
+var fieldname=document.all("fieldname").value;
+if(fieldname!=null && fieldname!="")
+{
+		if(typeof(topwin.KEYS)!="undefined")
+		{
+		if(topwin.KEYS.indexOf('"'+fieldname.toUpperCase()+'"')>=0)
+			{
+			alert("字段名称请不要使用关键字！");
+			document.all("fieldname").focus();
+			return false;
+			}
+		}
+if(!fieldname.isWord())
+			{
+			alert("字段名称请不要使用特殊字符！");
+			document.all("fieldname").focus();
+			return false;
+			}
+	if(topwin.OBJ.checkName(modalObj,fieldname))
+	{
+	alert("字段名称有重复!请重新输入!");
+	document.all("fieldname").focus();
+	return false;
+	}
+	idstr=' id="'+fieldname+'" ';
+}
+var stylestr="";
+var styleobj=document.all("defstyle");
+if(styleobj.value!="")
+stylestr=' stylecss="'+styleobj.value+'" ';
+switch(typestr)
+{
+case "hidden":
+			FieldStr='<input titlestr="'+titlestr+'"  tooltip="'+tooltip+'"  class="disabled" fieldtype="hidden" value="隐藏域" '+FieldDefVal+ReserveFieldStr+idstr+stylestr+'>';
+			break;
+case "textarea":
+			FieldStr='<textarea  titlestr="'+titlestr+'"  tooltip="'+tooltip+'" fieldtype="textarea"  cols="'+cols+'" rows="'+rows+'" '+FieldDefVal+ReserveFieldStr+idstr+stylestr+'></textarea>';
+			break;
+case "date-time":
+			FieldStr='<input class="disabled" style="width:'+datewidth+';" titlestr="'+titlestr+'"  tooltip="'+tooltip+'" fieldtype="date-time" datetype="'+datetype+'" value="'+document.all("datetype").options[document.all("datetype").selectedIndex].innerText+'" '+FieldDefVal+ReserveFieldStr+VerifyFieldStr+idstr+stylestr+'>';
+			break;
+case "calculate":
+			FieldStr='<input titlestr="'+titlestr+'"  tooltip="'+tooltip+'"  class="disabled" fieldtype="calculate" value="计算域" '+FieldDefVal+ReserveFieldStr+idstr+stylestr+'>';
+			break;
+case "check":
+			var tabchecklist=document.all("divchecklist");
+			var checkstr="";
+			for(var i=0;i<tabchecklist.rows.length;i++)
+			{
+			var otr=tabchecklist.rows[i];
+			var checkedstr="";
+			if(otr.getAttribute("selected")=="true")
+			checkedstr=" checked ";
+				checkstr+='<input type="checkbox" fieldtype="check" titlestr="'+titlestr+'"  tooltip="'+tooltip+'" key="'+otr.cells[0].innerText+'" description="'+otr.cells[1].innerText+'"  '+checkedstr+FieldDefVal+ReserveFieldStr+idstr+stylestr+'>';
+			}
+			FieldStr=checkstr;
+			break;
+case "radio":
+			var tabradiolist=document.all("divradiolist");
+			var radiostr="";
+			var checkstr="";
+			for(var i=0;i<tabradiolist.rows.length;i++)
+			{
+			var otr=tabradiolist.rows[i];
+			if(checkstr!=" checked " && otr.getAttribute("selected")=="true")
+			checkstr=" checked ";
+				radiostr+='<input type="radio"  '+checkstr+' fieldtype="radio"  titlestr="'+titlestr+'"  tooltip="'+tooltip+'" key="'+otr.cells[0].innerText+'" description="'+otr.cells[1].innerText+'" '+FieldDefVal+ReserveFieldStr+idstr+stylestr+'>';
+			checkstr="";
+			}
+			FieldStr=radiostr;
+			break;
+case "drop-down":
+			var tabdropdownlist=document.all("divdrop-downlist");
+			var dropdownstr="";
+			for(var i=0;i<tabdropdownlist.rows.length;i++)
+			{
+			var otr=tabdropdownlist.rows[i];
+			var selectedstr='';
+			if(otr.getAttribute("selected")=="true")
+			selectedstr='selected';
+				dropdownstr+='<option  value="'+otr.cells[0].innerText+'"  '+selectedstr+'>'+otr.cells[1].innerText+'</option>';
+			}
+			var selwidth=document.all("selwidth").value;
+			FieldStr='<select  titlestr="'+titlestr+'" fieldtype="drop-down" style="width:'+selwidth+';" tooltip="'+tooltip+'" '+FieldDefVal+ReserveFieldStr+idstr+stylestr+'>'+dropdownstr+'</select>';
+			break;
+case "hyperlink":
+			FieldStr='<input class="disabled"  titlestr="'+titlestr+'"  tooltip="'+tooltip+'"  target="'+target+'"  description="'+linkdescription+'"  target-window="'+targetwindow+'" fieldtype="hyperlink" value="超链接" '+FieldDefVal+ReserveFieldStr+idstr+stylestr+'>';
+			break;
+case "image":
+			FieldStr='<input class="disabled" type="image"  titlestr="'+titlestr+'"  tooltip="'+tooltip+'"  imgheight="'+imgheight+'"  imgwidth="'+imgwidth+'" imgborder="'+imgborder+'"  imgsrc="'+imgsrc+'" src="'+imgsrc+'"  fieldtype="image" value="图片域" '+FieldDefVal+ReserveFieldStr+idstr+stylestr+'>';
+			break;
+case "file":
+			FieldStr='<input class="disabled"  titlestr="'+titlestr+'"  tooltip="'+tooltip+'"   fieldtype="file" value="文件上传" '+FieldDefVal+ReserveFieldStr+idstr+stylestr+'>';
+			break;
+case "display":
+			FieldStr='<input class="disabled"  titlestr="'+titlestr+'"  tooltip="'+tooltip+'"   fieldtype="display" value="DISPLAY" '+FieldDefVal+ReserveFieldStr+idstr+stylestr+'>';
+			break;
+case "select-field":
+			var selobj=document.all("selselect");
+			var selopt=selobj.options[selobj.selectedIndex];
+			var otext='选择域';
+			if(selobj.value!=null && selobj.value!="")
+			otext=selopt.innerText;
+			FieldStr='<input class="disabled"  titlestr="'+titlestr+'"  tooltip="'+tooltip+'"  edit-url="'+selopt.getAttribute("url")+'"  permission-id="'+selopt.getAttribute("permission-id")+'"  key="'+selopt.getAttribute("value")+'"   fieldtype="select-field" value="'+otext+'" '+FieldDefVal+ReserveFieldStr+idstr+stylestr+'>';
+			break;
+case "edit-field":
+			var selobj1=document.all("seledit");
+			var selopt1=selobj1.options[selobj1.selectedIndex];
+			var otext='编辑域';
+			if(selobj1.value!=null && selobj1.value!="")
+			otext=selopt1.innerText;
+			FieldStr='<input class="disabled"  titlestr="'+titlestr+'"  tooltip="'+tooltip+'"  edit-url="'+selopt1.getAttribute("url")+'"  key="'+selopt1.getAttribute("value")+'"   fieldtype="edit-field" value="'+otext+'" '+FieldDefVal+ReserveFieldStr+idstr+stylestr+'>';
+			break;
+case "special-edit":
+			var selobj2=document.all("selspecialedit");
+			var selopt2=selobj2.options[selobj2.selectedIndex];
+			var otext='特殊编辑域';
+			if(selobj2.value!=null && selobj2.value!="")
+			otext=selopt2.innerText;
+			FieldStr='<input class="disabled"  titlestr="'+titlestr+'"  tooltip="'+tooltip+'"  edit-url="'+selopt2.getAttribute("url")+'"  key="'+selopt2.getAttribute("value")+'"  show-class="'+selopt2.getAttribute("show-class")+'"   fieldtype="special-edit" value="'+otext+'" '+FieldDefVal+ReserveFieldStr+idstr+stylestr+'>';
+			break;
+default:
+			FieldStr='<input titlestr="'+titlestr+'" maxlength="'+maxlength+'" style="width:'+size+';" datatype="'+datatype.value+'" tooltip="'+tooltip+'"  class="disabled" fieldtype="text" value="'+document.all("datatype").options[document.all("datatype").selectedIndex].innerText+'" '+FieldDefVal+ReserveFieldStr+VerifyFieldStr+idstr+stylestr+'>';
+			break;
+
+}
+
+if(modalTd==null)
+	return;
+
+modalTd.innerHTML=FieldStr;
+var newmodalObj=modalTd.children[0];
+//表达式
+var biaodadiv=document.frames.biaoda.document.body;
+if(biaodadiv.children[0]!=null && biaodadiv.children[0].tagName=="P")
+biaodadiv=biaodadiv.children[0];
+var biaoda='';
+var biaodastr='';
+var sumFieldstr='';
+var sumHtmlstr='';
+for(var i=0;i<biaodadiv.children.length;i++)
+{
+biaoda=0;
+var od=biaodadiv.children[i];
+//alert(od.outerHTML);
+if(od.type=="shuzi")
+	{
+
+	if(od.innerText!=null && od.innerText!=="")
+	biaoda=od.innerText;
+	}
+else
+if(od.text!=null && od.text!="")
+	biaoda=od.text;
+biaodastr+=biaoda;
+}
+if(topwin.OBJ.getCharType()==1)
+biaodastr=biaodastr.toUpperCase();
+else
+biaodastr=biaodastr.toLowerCase();
+if(biaodastr!="")
+//sumFieldstr=' sumField="'+biaodastr+'" ';
+newmodalObj.sumField=biaodastr;
+var biaodasumHtml=biaodadiv.innerHTML;
+if(biaodasumHtml!="")
+{
+//sumHtmlstr=' sumHtml="'+biaodasumHtml+'" ';
+newmodalObj.sumHtml=biaodasumHtml;
+}
+var biaodaFunc='';
+var biaodaFunarg='';
+var sel=document.all("selfunction");
+if(sel.value!=null && sel.value!="")
+{
+	var selectedval=sel.value;
+	//biaodaFunc=' FUNC="'+selectedval+'" ';
+	//biaodaFunarg=' FUNARG="'+document.all("modval").value+'" ' ;
+	newmodalObj.FUNC=selectedval;
+	if(document.all("modval")!=null)
+	newmodalObj.FUNARG=document.all("modval").value;
+}
+//end表达式
+
+	canclose=false;
+	window.close();
+}
+//
+//根据主页面的DIV来添加下拉域选项
+function fillsele()
+{
+if(modalTd==null)
+	return;
+var tab=topwin.document.all("t");
+var row=modalTd.parentElement.rowIndex;
+var col=modalTd.cellIndex;
+var selediv=document.all("seldiv");
+for(var i=0;i<tab.rows.length;i++)
+	for(var j=0;j<tab.rows[i].cells.length;j++)
+		{
+		var td=tab.rows[i].cells[j];
+		if(td==null)
+			continue;
+		if(td.children[0]==null || typeof(td.children[0])=="undefined")
+			continue;
+		if(td.children[0].tagName=="DIV")
+			{
+			if(td.children[0].innerText!="")
+				{var opn=document.createElement("<OPTION>");
+				selediv.options.add(opn);
+				opn.innerText=td.children[0].innerText;
+				opn.value=td.children[0].innerText;
+				}
+			}
+		else
+		{
+			var olddiv=td.children[0].getAttribute("displayname");
+			if(olddiv!="" || olddiv!=null)
+			{
+			for(k=0;k<selediv.options.length;k++)
+				{
+				if(selediv.options[k].innerText==olddiv)
+					selediv.options.remove(k);
+				}
+			}
+		}
+		}
+}
+//根据下拉域的ＮＡＭＥ，选项使该项selected
+function selected(sel,opi)
+{
+var select=document.all(sel);
+if(select==null || select.tagName!="SELECT")
+	return;
+	for(var i=0;i<select.options.length;i++)
+	{
+	if(select.options[i].value==opi)
+		select.options[i].selected=true;
+	}
+	if(select.onchange!=null)
+	select.onchange();
+}
+//根据下拉域，选项使该项selected
+function selectedBySel(sel,opi)
+{
+var select=sel;
+if(select==null || select.tagName!="SELECT")
+	return;
+	for(var i=0;i<select.options.length;i++)
+	{
+	if(select.options[i].value==opi)
+		select.options[i].selected=true;
+	}
+	if(select.onchange!=null)
+	select.onchange();
+}
+
+//打开保留域得类型窗口
+function openBLtype()
+{
+//var chk=document.all("baoliu");
+//if(chk==null || chk.checked==false)
+//	return;
+var selbl=document.all("getBLname");
+if(selbl.style.display=="none")
+	selbl.style.display="block";
+else
+	selbl.style.display="none";
+}
+//选择域类型改变时
+function dochange()
+{
+var ratype=document.all("r1");
+if(ratype==null) return;
+var typeval=ratype.options[ratype.selectedIndex].value;
+var divobj=document.all("div"+typeval);
+if(curentDivtype!=null)
+	curentDivtype.style.display="none";
+if(divobj!=null)
+	divobj.style.display="block";
+
+curentDivtype=divobj;
+var taball=document.all("taballp");
+	if(typeval=="hidden")
+	{
+	taball.rows[1].style.display="none";
+	//taball.rows[3].style.display="none";
+	}
+	else if(typeval=="hyperlink" ||typeval=="image" ||typeval=="file" || typeval=="display" || typeval=="calculate")
+	{
+	taball.rows[1].style.display="block";
+	taball.rows[3].style.display="none";
+	}
+	else
+	{
+	taball.rows[1].style.display="block";
+	taball.rows[3].style.display="block";
+	}
+	if(typeval=="text" || typeval=="date-time")
+			taball.rows[4].style.display="block";
+	else
+		taball.rows[4].style.display="none";
+	if(typeval=="check" ||typeval=="drop-down" ||typeval=="radio")
+		taball.rows[2].style.display="none";
+	else
+		taball.rows[2].style.display="block";
+	if(typeval=="date-time")
+	document.all("datetype").onchange();
+
+}
+//保留域为文号时
+function doselzihao()
+{
+
+
+if(document.all("getBLname").value=="fileNo")
+{
+	//selected("getBLname","fileNo");	
+	document.all("baoliu").disabled=true;
+	document.all("getBLname").disabled=true;
+}
+
+}
+//
+//先隐藏所有下拉域，再显示文号编辑页
+function showzihao()
+{
+var form1=document.form1;
+if(form1==null) return;
+for(var i=0;i<form1.elements.length;i++)
+{
+var obj=form1.elements[i];
+if(obj.tagName=="SELECT")
+obj.style.display="none";
+divzihao.style.display="block";
+}
+}
+//
+//先文号所有下拉域，再显示隐藏编辑页
+function hiddenzihao()
+{
+var form1=document.form1;
+if(form1==null) return;
+for(var i=0;i<form1.elements.length;i++)
+{
+var obj=form1.elements[i];
+if(obj.tagName=="SELECT")
+obj.style.display="block";
+divzihao.style.display="none";
+}
+}
+//
+var selectTr=null;//全局变量，表示选择的一行
+
+//打开添加页
+function showadd(namestr)
+{
+if(namestr!="")
+	curentList=document.all(namestr);
+var hascheck=false;
+if(curentList!=null && curentList.tagName=="TABLE")
+{
+	for(var i=0;i<curentList.rows.length;i++)
+	{
+	var otr=curentList.rows[i];
+	if(otr.selected=="true")
+		hascheck=true;
+	}
+}
+var addtab=document.all("addtab");
+if(addtab!=null)
+{
+	document.all("checktype").options[1].selected=true;
+	if(hascheck && namestr!="divchecklist")
+		{
+		document.all("checktype").disabled=true;
+		}
+	else
+		document.all("checktype").disabled=false;
+
+	addtab.style.display="block";
+	var radiokey=document.all("radiokey");
+	if(radiokey!=null)
+		{
+		radiokey.value="";
+		//radiokey.focus();
+		}
+}
+}
+//取消
+function canceladd()
+{
+var addtab=document.all("addtab");
+if(addtab!=null)
+{
+		var radiokey=document.all("radiokey");
+	if(radiokey!=null)
+		radiokey.value="";
+		var radiodes=document.all("radiodes");
+	if(radiodes!=null)
+		radiodes.value="";
+	addtab.style.display="none";
+}
+}
+//确定，添加一项
+function additem()
+{
+	var radiokey=document.all("radiokey");
+	var itemnamestr="";
+	if(radiokey!=null)
+	itemnamestr=radiokey.value;
+	if(itemnamestr=="") 
+	{
+	alert("选项的KEY不能为空！");
+	radiokey.focus();
+	return;
+	}
+	var radiodes=document.all("radiodes");
+	var radiodesstr="";
+	if(radiodes!=null)
+	radiodesstr=radiodes.value;
+	if(radiodesstr=="") 
+	{
+	alert("选项的描述不能为空！");
+	radiodes.focus();
+	return;
+	}
+	var selected=document.all("checktype").value;
+	addTabList(itemnamestr,radiodesstr,selected);
+	return true;
+}
+//添加选项列表
+function addTabList(txt,namestr,selected)
+{
+if(curentList==null) return;
+var tablist=curentList;
+var tr=tablist.insertRow();
+if(selected!=null)
+tr.selected=selected;
+var td=tr.insertCell();
+td.innerText=txt;
+td.height="15px";
+td.align="center";
+var td=tr.insertCell();
+td.innerText=namestr;
+td.height="15px";
+td.align="center";
+
+
+}
+//使选项列表的某一行选中
+function trSelected()
+{
+var otd=window.event.srcElement;
+if(otd.tagName!="TD") return;
+var otr=otd.parentElement;
+if(selectTr!=null)
+	selectTr.style.backgroundColor="";
+	if(otr!=null) 
+	{
+	otr.style.backgroundColor="#3399FF";
+	selectTr=otr;
+	}
+}
+//删除一项
+function delitem(tablist)
+{
+	if(selectTr!=null && selectTr.tagName=="TR" )
+	{
+	//var tablist=document.all(tablist);
+	var selename=selectTr.children[0];
+	var namestr="";
+	if(selename!=null && selename.tagName=="TD")
+		namestr=selename.innerText;
+
+	selectTr.removeNode(true);
+	selectTr=null;
+	}
+}
+//修改一项
+function modiitem(tabstr)
+{
+if(tabstr!="")
+	curentList=document.all(tabstr);
+	var hascheck=false;
+if(curentList!=null && curentList.tagName=="TABLE")
+{
+	for(var i=0;i<curentList.rows.length;i++)
+	{
+	var otr=curentList.rows[i];
+	if(otr.selected=="true")
+		hascheck=true;
+	}
+}
+
+var moditab=document.all("moditab");
+	if(moditab!=null)
+	{
+		moditab.style.display="block";
+	}
+	if(selectTr!=null && selectTr.tagName=="TR" )
+	{
+	//var tablist=document.all("tablist");
+	var selename=selectTr.children[0];
+	var namestr="";
+	if(selename!=null && selename.tagName=="TD")
+		namestr=selename.innerText;
+	var seledes=selectTr.children[1];
+	var seledesstr="";
+	if(seledes!=null && seledes.tagName=="TD")
+		seledesstr=seledes.innerText;
+	var selected=selectTr.getAttribute("selected");
+	if(selected=="true")
+	{
+	document.all("modichecktype").disabled=false;
+	document.all("modichecktype").options[0].selected=true;
+	}
+	else
+	{
+	document.all("modichecktype").options[1].selected=true;
+	if(hascheck && tabstr!="divchecklist")
+		document.all("modichecktype").disabled=true;
+	else
+		document.all("modichecktype").disabled=false;
+	}
+	var modiradiokey=document.all("modiradiokey");
+	if(modiradiokey!=null)
+		{
+		modiradiokey.value=namestr;
+		modiradiokey.focus();
+		}
+		var modiradiodes=document.all("modiradiodes");
+	if(modiradiodes!=null)
+		{
+		modiradiodes.value=seledesstr;
+		modiradiodes.focus();
+		}
+	
+	}
+}
+//修改确定
+function savechange(tablist)
+{
+	var modiname=document.all("modiradiokey");
+	var mnamestr="";
+	if(modiname!=null)
+		mnamestr=modiname.value;
+var modides=document.all("modiradiodes");
+	var modidesstr="";
+	if(modides!=null)
+		modidesstr=modides.value;
+	//var tablist=document.all("tablist");
+	if(selectTr==null)
+		return false;
+	var selected=document.all("modichecktype").value;
+	selectTr.selected=selected;
+	var selename=selectTr.children[0];
+	var seledes=selectTr.children[1];
+	var oname="";
+	var ovalue="";
+	var oseled="";
+	if(selename!=null && selename.tagName=="TD")
+		{
+		oname=selename.innerText;
+		selename.innerText=mnamestr;
+		seledes.innerText=modidesstr;
+		}
+		cancelmodi();
+}
+//关闭修改的TABLE
+function cancelmodi()
+{
+	var modiradiokey=document.all("modiradiokey");
+	if(modiradiokey!=null)
+		modiradiokey.value="";
+	var modiradiodes=document.all("modiradiodes");
+	if(modiradiodes!=null)
+		modiradiodes.value="";
+		moditab.style.display="none";
+}
+// 继续添加
+function goonadd()
+{
+additem();
+var radiokey=document.all("radiokey");
+	if(radiokey!=null)
+		radiokey.value="";
+var radiodes=document.all("radiodes");
+	if(radiodes!=null)
+		radiodes.value="";
+
+}
+//文号属性定义完毕
+function getzihao()
+{
+var tablist=document.all("tablist");
+if(tablist==null) return;
+if(tablist.rows.length==0)
+{
+	return "";
+}
+var zihaostr="";
+for(var i=0;i<tablist.rows.length;i++)
+{
+var td=tablist.rows[i].cells[0];
+if(td==null)
+	continue;
+zihaostr=zihaostr+'<zihao value="'+td.innerText+'" name="0"></zihao>';
+}
+//return zihaostr;
+document.all("zihaotype").value=zihaostr;
+hiddenzihao();
+}
+function closezihao()
+{
+hiddenzihao();
+}
+function  hiddenMrz()
+{
+	var objarr=document.all("morenzhi");
+	//window.event.srcElement.checked=true;
+	for(var i=2;i>=0;i--)
+	{
+	var obj=objarr[i];
+	if(!obj.checked) continue;
+	if(obj.deftype=="input")
+		{
+		document.all("definput").style.visibility="visible";
+		document.all("defselTd").style.visibility="hidden";
+		}
+	else if(obj.deftype=="select")
+		{
+		document.all("definput").style.visibility="hidden";
+		document.all("defselTd").style.visibility="visible";
+		}
+	else
+		{
+		document.all("definput").style.visibility="hidden";
+		document.all("defselTd").style.visibility="hidden";
+		}
+	}
+}
+//改变数据类型,改变验证条件
+function dodatetypechange(objid)
+{
+var obj=document.all(objid);
+var tabtype='';
+if(tabAll!=null && tabAll.tagName=="TABLE")
+	if(tabAll.type!=null)
+		tabtype=tabAll.type;
+document.all("verifyTd").innerHTML=getVerifyStr(obj.value,tabtype);
+}
+　//浏览图片
+function selectImage(imgName){
+ var reValue = window.showModalDialog(imagelisturl,'','dialogWidth:600px;dialogHeight:300px;status:no');
+ if (reValue == null){
+  return;
+ }
+ document.getElementById(imgName).value = reValue["url"];
+ document.getElementById("imgwidth").value = reValue["width"];
+ document.getElementById("imgheight").value = reValue["height"];
+}
+//插入计算公式中的域
+function inserfield()
+{
+document.frames.biaoda.document.body.focus();
+var sel=document.all("selField");
+if(sel==null) return;
+	if(sel.value=="")
+	{
+	alert("请选择一个域!");
+	return;
+	}
+var insertp=document.frames.biaoda.document.selection.createRange();
+insertp.pasteHTML('<input    style="border:1 solid #ffffff;width:40px" value="'+sel.options[sel.selectedIndex].innerText+'" text="{'+sel.value+'}">');
+document.frames.biaoda.document.body.focus();
+
+}
+function inserjia()
+{
+document.frames.biaoda.document.body.focus();
+var obj=window.event.srcElement;
+var odiv=document.all("biaoda");
+var insertp=document.frames.biaoda.document.selection.createRange();
+insertp.pasteHTML('<input   value="'+obj.innerText+'"  style="border:1 solid #ffffff;width:20px" text="'+obj.key+'">');
+document.frames.biaoda.document.body.focus();
+}
+function insershu()
+{
+document.frames.biaoda.document.body.focus();
+var obj=window.event.srcElement;
+var insertp=document.frames.biaoda.document.selection.createRange();
+insertp.pasteHTML('<span type="shuzi" style="border:1 solid;width:30;"></span>');
+document.frames.biaoda.document.body.focus();
+}
+function doselfunchange()
+{
+var sel=document.all("selfunction");
+if(sel.value=="MOD")
+{
+document.all("funarg").innerHTML='取余参数:<input size=5 name="modval">';
+document.all("funarg").style.display="inline";
+}
+else if(sel.value=="NUM")
+{
+document.all("funarg").innerHTML='保留小数位数:<input size=5 name="modval">';
+document.all("funarg").style.display="inline";
+}
+else if(sel.value=="PERCENT")
+{
+document.all("funarg").innerHTML='保留小数位数:<input size=5 name="modval">';
+document.all("funarg").style.display="inline";
+}
+
+else if(sel.value=="CURNUM")
+{
+document.all("funarg").innerHTML='(￥1000,200.00)';
+document.all("funarg").style.display="inline";
+}
+else if(sel.value=="CUR")
+{
+document.all("funarg").innerHTML='(壹仟贰佰叁拾圆整)';
+document.all("funarg").style.display="inline";
+}
+else if(sel.value=="DATE")
+{
+document.all("funarg").innerHTML='(一九八四年三月七日)';
+document.all("funarg").style.display="inline";
+}
+else
+{
+document.all("funarg").style.display="none";
+}
+}
+
+//
+</script>
+
+<body  bgcolor="menu"  style="BORDER-RIGHT: 0px; BORDER-TOP: 0px; MARGIN: 2px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px" onload="init();">
+<form name="form1" align=center>
+<fieldset align=center class="radiogroup" style="padding:10px"><legend class=title>域属性</legend>
+  <table border="0" cellpadding="0" cellspacing="0" id="teta" width="100%" >
+    <tr>
+      <td align="center" nowrap class="TdLeft">类型:</td>
+      <td align="left"  valign="middle" >
+		<select name="r1" onchange="dochange();">
+		<option value="text" selected>文本域</option>
+		<option value="hidden">隐藏域</option>
+		<option value="textarea">文本区</option>
+		<option value="date-time">日期，时间</option>
+		<!--  <option value="calculate">计算</option>-->
+		<option value="check">多项选择</option>
+		<option value="radio">单项选择</option>
+		<option value="drop-down">下拉选择</option>
+		<option value="hyperlink">超链接</option>		
+		<option value="image">图片</option>
+		<!--  <option value="file">文件上传</option>
+		<option value="display">显示</option>-->
+		<option value="select-field">选择域</option>
+		<option value="edit-field">编辑域</option>
+		<option value="special-edit">特殊编辑域</option>
+		</select>
+      </td>
+    </tr>
+	 <tr>
+		  <td align="center" nowrap height="20"  class="TdLeft">字段名称:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="fieldname" size="10" ></p>
+		  </td>
+		</tr>
+	</table>
+	<div id="divtext" style="display:none">
+	 <table border="0" cellpadding="0" cellspacing="0"  width="100%" >
+	  <tr>
+		  <td align="center" nowrap height="20"  class="TdLeft">类型:</td>
+		  <td align="center" height="20" >
+			<p align="left"><select  id="datatype"  onchange="dodatetypechange('datatype');"><option value="Float">小数</option><option value="Long">整数</option><option value="String" selected>字符</option></select></p>
+		  </td>
+		</tr>
+		
+	    <tr>
+		  <td align="center" nowrap height="20"  class="TdLeft">宽度:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="size" size="10" value="120"></p>
+		  </td>
+		</tr>
+		 <tr>
+		  <td  nowrap height="20"   class="TdLeft" >最大字符数:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="maxlength" size="10" value="20"></p>
+		  </td>
+		</tr>
+	 </table>
+	 </div>
+	 
+	 
+	 <div id="divtextarea" style="display:none">
+	 <table border="0" cellpadding="0" cellspacing="0"  width="100%" >
+	    <tr>
+		  <td align="center" nowrap height="20"  class="TdLeft">行:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="rows" size="10" value="5"></p>
+		  </td>
+		</tr>
+		 <tr>
+		  <td  nowrap height="20"  class="TdLeft">列:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="cols" size="10" value="10"></p>
+		  </td>
+		</tr>
+	 </table>
+	 </div>
+
+	 <div id="divdate-time" style="display:none">
+	 <table border="0" cellpadding="0" cellspacing="0"  width="100%" >
+	    <tr>
+		  <td  nowrap height="20"  class="TdLeft">类型:</td>
+		  <td align="center" height="20" >
+			<p align="left"><select id="datetype" onchange="dodatetypechange('datetype');"><option value="date">日期</option><option value="time">时间</option><option value="timestamp">日期时间</option></select></p>
+		  </td>
+		</tr>
+		<tr>
+		  <td align="center" nowrap height="20"  class="TdLeft">宽度:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="datewidth" size="10" value="120"></p>
+		  </td>
+		</tr>
+	 </table>
+	 </div>
+
+ <div id="divhyperlink"  style="display:none">
+	 <table border="0" cellpadding="0" cellspacing="0"  width="100%" >
+	    <tr>
+		  <td  nowrap height="20"  class="TdLeft">链接地址:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="target" size="10"></p>
+		  </td>
+		</tr>
+		 <tr>
+		  <td  nowrap height="20"   class="TdLeft">描述:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="linkdescription" size="10" ></p>
+		  </td>
+		</tr>
+		<tr>
+		  <td  nowrap height="20"   class="TdLeft">链接窗口:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="target-window" size="10" ></p>
+		  </td>
+		</tr>
+	 </table>
+	 </div>
+	  <div id="divimage"  style="display:none">
+	 <table border="0" cellpadding="0" cellspacing="0"  width="100%" >
+	    <tr>
+		  <td  nowrap height="20"  class="TdLeft">边框:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="imgborder" size="5" value="0"></p>
+		  </td>
+		</tr>
+		 <tr>
+		  <td  nowrap height="20"   class="TdLeft">高度:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="imgheight" size="10" value="20"></p>
+		  </td>
+		</tr>
+		<tr>
+		  <td  nowrap height="20"   class="TdLeft">宽度:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="imgwidth" size="10"  value="20"></p>
+		  </td>
+		</tr>
+		<tr>
+		  <td  nowrap height="20"   class="TdLeft">图片地址:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="imgsrc" name="imgsrc" size="10" ><img src="images/liulan.gif" onclick = "selectImage('imgsrc');" style="cursor:pointer;"></p>
+		  </td>
+		</tr>
+	 </table>
+	 </div>
+ <div id="divradio" style="display:none">
+	 <table border="0" cellpadding="0" cellspacing="0"  width="100%" >
+	    <tr style="display:none">
+		  <td  nowrap height="20"  class="TdLeft">默认选中:</td>
+		  <td align="center" height="20" >
+			<p align="left"><select id="radiochecktype"><option value="true">是</option><option value="false">否</option></select></p>
+		  </td>
+		</tr>
+		 <tr>
+		  <td align="center" nowrap colspan=2 >
+	<div id=""  width="100%" height="300">
+	<table border="0" style="border:1 solid #808080" width="90%" cellpadding="0" cellspacing="0" height="150" bgcolor="#D6D3CE">
+  <tr>
+    <td width="250" height="100" valign="top"  colspan="2">
+    
+	  <div style="background-color: #ffffff; width: 100%; height: 150px; overflow: auto;"   bgcolor="#ffffff">
+	   <table border="0" cellpadding="0" height="16"  cellspacing="0"  width="100%" bgcolor="#929292">
+	   <tr><td align=center>KEY</td><td style="border-left:1 solid #ffffff" align=center>描述</td></tr>
+      </table>
+	   <table border="0" cellpadding="0" onclick="trSelected();" id="divradiolist" cellspacing="0" bgcolor="#ffffff" width="100%" >
+      </table>
+	  </div>
+    </td>
+    <td width="1%" height="150"  align="center"><button onclick="showadd('divradiolist');">添加</button><p><button onclick="delitem();" >删除</button></p><p><button onclick="modiitem('divradiolist');">修改</button></p></td>
+  </tr>
+
+  <!--<tr>
+    <td width="100%" height="16" colspan="3" align="center"><button onclick="getzihao();">确定</button>&nbsp;&nbsp;&nbsp;<button onclick="closezihao();">取消</button></td>
+  </tr>-->
+</table>
+</div>
+</td></tr></table>
+</div>
+ <div id="divcheck" style="display:none">
+	 <table border="0" cellpadding="0" cellspacing="0"  width="100%" >
+	    
+		 <tr>
+		  <td align="center" nowrap colspan=2 >
+	<div id=""  width="100%" height="300">
+	<table border="0" style="border:1 solid #808080" width="90%" cellpadding="0" cellspacing="0" height="150" bgcolor="#D6D3CE">
+  <tr>
+    <td width="250" height="100" valign="top"  colspan="2">
+    
+	  <div style="background-color: #ffffff; width: 100%; height: 150px; overflow: auto;"   bgcolor="#ffffff">
+	  <table border="0" cellpadding="0" height="16"  cellspacing="0"  width="100%" bgcolor="#929292">
+	   <tr><td align=center>KEY</td><td style="border-left:1 solid #ffffff" align=center>描述</td></tr>
+      </table>
+	   <table border="0" cellpadding="0" onclick="trSelected();" id="divchecklist" cellspacing="0" bgcolor="#ffffff" width="100%" >
+      </table>
+	  </div>
+    </td>
+    <td width="1%" height="150"  align="center"><button onclick="showadd('divchecklist');">添加</button><p><button onclick="delitem();" >删除</button></p><p><button onclick="modiitem('divchecklist');">修改</button></p></td>
+  </tr>
+
+  <!--<tr>
+    <td width="100%" height="16" colspan="3" align="center"><button onclick="getzihao();">确定</button>&nbsp;&nbsp;&nbsp;<button onclick="closezihao();">取消</button></td>
+  </tr>-->
+</table>
+</div>
+</td></tr></table>
+
+</div>
+ <div id="divdrop-down" style="display:none">
+	 <table border="0" cellpadding="0" cellspacing="0"  width="100%" >
+	   <tr>
+		  <td align="center" nowrap height="20"  class="TdLeft">宽度:</td>
+		  <td align="center" height="20" >
+			<p align="left"><input type="text" id="selwidth" size="10" value="120"></p>
+		  </td>
+		</tr>
+		 <tr>
+		  <td align="center" nowrap colspan=2 >
+	<div id=""  width="100%" height="300">
+	<table border="0" style="border:1 solid #808080" width="90%" cellpadding="0" cellspacing="0" height="150" bgcolor="#D6D3CE">
+  <tr>
+    <td width="250" height="100" valign="top"  colspan="2">
+    
+	  <div style="background-color: #ffffff; width: 100%; height: 150px; overflow: auto;"   bgcolor="#ffffff">
+	   <table border="0" cellpadding="0" height="16"  cellspacing="0"  width="100%" bgcolor="#929292">
+	   <tr><td align=center>KEY</td><td style="border-left:1 solid #ffffff" align=center>描述</td></tr>
+      </table>
+	   <table border="0" cellpadding="0" onclick="trSelected();" id="divdrop-downlist" cellspacing="0" bgcolor="#ffffff" width="100%" >
+      </table>
+	  </div>
+    </td>
+    <td width="1%" height="150"  align="center"><button onclick="showadd('divdrop-downlist');">添加</button><p><button onclick="delitem();" >删除</button></p><p><button onclick="modiitem('divdrop-downlist');">修改</button></p></td>
+  </tr>
+
+  <!--<tr>
+    <td width="100%" height="16" colspan="3" align="center"><button onclick="getzihao();">确定</button>&nbsp;&nbsp;&nbsp;<button onclick="closezihao();">取消</button></td>
+  </tr>-->
+</table>
+</div>
+</td></tr></table>
+
+</div>
+<div id="addtab" style="display:none;position:absolute;left:20px;top:30px;overflow:hidden">
+<table border="0"  cellpadding="3" style="border:2 solid #808080" cellspacing="0" width="100%" height="170" bgcolor="menu">
+  <tr>
+    <td width="100%" height="20" colspan="2" bgcolor="highlight"><font color="#FFFFFF">单选按钮：</font></td>
+  </tr>
+  	<tr><td colspan=2 height="20" align=center>添加选项:</td>
+	</tr>
+  <tr>
+    <td width="30%" height="20"  align="center">KEY：</td>
+    <td width="70%" height="20"><input type="text" name="radiokey"></td>
+  </tr>
+  <tr>
+    <td width="30%" height="20"  align="center">描述：</td>
+    <td width="70%" height="20"><input type="text" name="radiodes"></td>
+  </tr>
+   <tr>
+    <td width="30%" height="20"  align="center">是否选中：</td>
+    <td width="70%" height="20">  <select id="checktype"><option value="true">是</option><option value="false" selected>否</option></select>
+</td>
+  </tr>
+  <tr>
+    <td width="100%"  colspan="2"  align="center"><button onclick="if(additem())canceladd();">确定</button>&nbsp;<button onclick="goonadd();">继续</button>&nbsp;<button onclick="canceladd();">取消</button></td>
+  </tr>
+</table>
+  <iframe width="100%" frameborder="1" height="100%" style="top:-1;position:absolute;z-index:-1;"></iframe>
+</div>
+<div id="moditab" style="display:none;position:absolute;left:20px;top:30px;overflow:hidden">
+
+<table border="0"  cellpadding="0" style="border:2 solid #808080" cellspacing="0" width="90%" height="170" bgcolor="menu">
+  <tr>
+    <td width="100%" height="20" colspan="2" bgcolor="highlight"><font color="#FFFFFF">单选按钮：</font></td>
+  </tr>
+  <tr><td colspan=2 height="20" align=center>修改选项：</td>
+	</tr>
+  <tr>
+    <td width="30%" height="20"  align="center">KEY：</td>
+    <td width="70%" height="20"><input type="text" name="modiradiokey"></td>
+  </tr>
+  <tr>
+    <td width="30%" height="20"  align="center">描述：</td>
+    <td width="70%" height="20"><input type="text" name="modiradiodes"></td>
+  </tr>
+  <tr>
+    <td width="30%" height="20"  align="center">是否选中：</td>
+    <td width="70%" height="20">  <select id="modichecktype"><option value="true">是</option><option value="false" selected>否</option></select>
+</td>
+  </tr>
+  <tr>
+    <td width="100%" height="" colspan="2"  align="center"><button onclick="savechange();">确定</button>&nbsp;&nbsp;<button onclick="cancelmodi();">取消</button></td>
+  </tr>
+</table>
+  <iframe width="100%" frameborder="1" height="100%" style="top:-1;position:absolute;z-index:-1;"></iframe>
+</div>
+		  
+		  </td>
+		</tr>
+	 </table>
+ <div id="divselect-field" style="display:none">
+	 <table border="0" cellpadding="0" cellspacing="0"  width="100%" >
+	    <tr>
+		  <td  nowrap height="20"  class="TdLeft">类型:</td>
+		  <td align="center" height="20" >
+			<p align="left" id="select-fieldTd"></p>
+		  </td>
+		</tr>
+	 </table>
+	 </div>
+ <div id="divedit-field" style="display:none">
+	 <table border="0" cellpadding="0" cellspacing="0"  width="100%" >
+	    <tr>
+		  <td  nowrap height="20"  class="TdLeft">类型:</td>
+		  <td align="center" height="20" >
+			<p align="left" id="edit-fieldTd"></p>
+		  </td>
+		</tr>
+	 </table>
+	 </div>
+
+	  <div id="divspecial-edit" style="display:none">
+	 <table border="0" cellpadding="0" cellspacing="0"  width="100%" >
+	    <tr>
+		  <td  nowrap height="20"  class="TdLeft">类型:</td>
+		  <td align="center" height="20" >
+			<p align="left" id="special-editTd"></p>
+		  </td>
+		</tr>
+	 </table>
+	 </div>
+	<table width="100%" id="taballp"  border="0" cellpadding="0" cellspacing="0" >
+ 
+	    <tr>
+      <td align="center" nowrap height="20"  class="TdLeft">域标题:</td>
+      <td align="center" height="20" >
+        <p align="left"><input id="titlestr" size=8></p>
+      </td>
+    </tr>
+	  <tr>
+      <td align="center" nowrap height="20"  class="TdLeft">提示信息:</td>
+      <td align="center" height="20" >
+        <p align="left"><input id="tooltip" size=8></p>
+      </td>
+    </tr>
+	 <tr>
+      <td align="center" nowrap height="20"  class="TdLeft">默认值：</td>
+      <td align="center" height="20" >
+        <p align="left"><input type="radio" onclick="hiddenMrz();" checked name="morenzhi">无 <br><input deftype="input"  onclick="hiddenMrz();"  type="radio" name="morenzhi">固定值 <input   style="visibility:hidden"   size="5" name="definput"> <br><input type="radio"  onclick="hiddenMrz();" deftype="select" name="morenzhi">动态 <span style="visibility:hidden" id="defselTd"></span></p>
+      </td>
+    </tr>
+	<tr>
+	 <td align="center"  height="20"  class="TdLeft">保留域：</td>
+      <td align="left" nowrap height="20" id="reserveTd">
+	 
+      </td>
+    </tr>
+	<tr  style="display:none">
+	 <td align="center"  height="20"  class="TdLeft">约束条件：</td>
+      <td align="left" nowrap height="20" >
+	 <span id="verifyTd"></span><br><span id="verifyParaTd" style="overflow:auto"></span>
+      </td>
+    </tr>
+  <tr>
+	 <td align="center"  height="20"  class="TdLeft">样式：</td>
+      <td align="left" nowrap height="20">
+	 <input name="defstyle">
+      </td>
+    </tr>
+  </table>
+  </fieldset>
+  <fieldset align=center class="radiogroup" id="fsetgs" style="padding:10px"><legend class=title>计算规则</legend>
+	<table border="0" height="100%" width="100%" cellspacing="0" cellpadding="0" >
+<tr>
+	<td width="50" nowrap>
+	表达式:
+	</td>
+	<td ><iframe id="biaoda" height="30" width="100%" src="blankDiv.htm"></iframe>
+	</td>
+</tr>
+
+<tr>
+	<td nowrap>
+	工具栏:
+	</td>
+	<td ><span id="selTd"></span><button onclick="inserfield();">插入域</button>&nbsp;<button style="width:15" onclick="inserjia();" key="+">＋</button>&nbsp;<button style="width:15" onclick="inserjia();" key="-">－</button>&nbsp;<button style="width:15" onclick="inserjia();" key="*">×</button>&nbsp;<button style="width:15" onclick="inserjia();" key="/">÷</button>&nbsp;<button style="width:15" onclick="inserjia();" key="=">＝</button>&nbsp;<button style="width:15" onclick="inserjia();" key="(">（</button>&nbsp;<button style="width:15" onclick="inserjia();" key=")">）</button>&nbsp;<button onclick="insershu();">加入数字</button>
+	</td>
+</tr>
+<tr>
+	<td  nowrap>
+	数学函数:
+	</td>
+	<td >
+	<select id="selfunction" onchange="doselfunchange();"><option>--无--</option><option  value="AVE">平均</option><option value="MAX">最大值</option><option  value="MIN">最小值</option><option value="MOD">取余</option><option value="CURNUM">货币格式</option><option value="CUR">货币大写</option><option value="NUM">数字格式化</option><option value="PERCENT">百分比</option><option value="DATE">日期大写</option><option value="CHARUP">字符大写</option><option value="CHARLOW">字符小写</option></select><SPAN ID="funarg" style="display:none">取余参数:<input size=5 name="modval"></span>
+	</td>
+</tr>
+
+	</table>
+  </fieldset>
+  <center>
+    <input type="button" value="确定" onclick="modifypro();" >&nbsp;&nbsp;&nbsp;<input type="button" value="取消" onclick="onclose();" >  
+  </center>
+  </form>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+<!-- 消息队列-->
+<!--***********************jdbcdao配置************-->
+	<bean id="mpMessagDao" class="net.mast.messageplatform.MP_MESSAG.dao.impl.MpMessagJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+<!--***********************service配置***********-->
+	<bean id="mpMessagService" parent="jdbcTransactionProxy">
+		<property name="target">
+		<bean  class="net.mast.messageplatform.MP_MESSAG.service.impl.MpMessagServiceImpl"> 
+			<property name="mpMessagDao"><ref bean="mpMessagDao"/></property>   	
+		</bean>
+		</property>
+	</bean>
+
+</beans>

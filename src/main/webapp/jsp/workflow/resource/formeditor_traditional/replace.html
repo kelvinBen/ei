@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<TITLE>replace</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<Link rel="stylesheet" type="text/css" href="pop.css">
+<SCRIPT LANGUAGE=JavaScript FOR=Ok EVENT=onclick>
+  window.returnValue = a.value+"*"+b.value+"*"+(c.checked?"1":"0")+"*";
+  window.close();
+</SCRIPT>
+<script>
+function IsDigit()
+{
+  return ((event.keyCode >= 48) && (event.keyCode <= 57));
+}
+</script>
+</HEAD>
+
+<BODY bgcolor="menu">
+
+<table border="0" cellspacing="5" cellpadding="0" align=center>
+<tr>
+	<td style="line-height:25px;">
+	<fieldset  class="radiogroup" style="padding:10px"><legend class=title>替换</legend>
+	查找对象: <INPUT TYPE=TEXT SIZE=23 ID=a  ><br>
+	替换成为: <INPUT TYPE=TEXT SIZE=23 ID=b ><br>
+	<input type=checkbox id=c >
+	区分大小写
+	</fieldset></td>
+</tr>
+<tr>
+	<td  align=center>
+	<BUTTON ID=Ok TYPE=SUBMIT>全部替换</BUTTON>&nbsp; &nbsp;<BUTTON ONCLICK="window.close();">取消</BUTTON>
+	</td>
+</tr>
+</table>
+
+</BODY>   
+</HTML>

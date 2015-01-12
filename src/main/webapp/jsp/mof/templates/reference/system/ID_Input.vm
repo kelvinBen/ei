@@ -1,0 +1,9 @@
+##可以使用的变量$field,$disp,$ref
+#set ($ref=$field.getMofReference()) 
+#if($disp.isHidden())
+    #parse("${standardTemplatePath}/StandardHidden.vm")
+#elseif ($disp.isLabel())
+    #parse("${standardTemplatePath}/StandardLabel.vm")
+#else
+    #parse("${standardTemplatePath}/StandardText.vm")
+#end

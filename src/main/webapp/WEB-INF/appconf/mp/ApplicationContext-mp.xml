@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       >
+
+  <bean id="Adaptor" class="org.openadaptor.core.adaptor.Adaptor">
+    <property name="messageProcessor" ref="Router"/>
+<!--	<property name="runInCallingThread" value="true"/>
+	  -->
+  </bean>
+
+   <!--复杂路由，由Map组成 -->
+   <bean id="Router" class="org.openadaptor.core.router.Router">
+   <property name="processMap">
+    <map>
+	<entry key-ref="JDBCReader" value-ref="dateProcessor" />
+	<entry key-ref="dateProcessor">
+		<list>
+			<ref bean="MailWriter"/>
+			<ref bean="SysMessageWriter"/>
+			<!--<ref bean="smsWriterImpl"/>	-->
+			<ref bean="SMSWriter"/>	
+		</list>
+	</entry>
+	<!--肇庆中间表发送短信接口
+	<entry key-ref="smsWriterImpl" value-ref="LogWriter" />	
+	  	-->
+	<!-- 华为短信接口  --> 
+	<entry key-ref="SMSWriter" value-ref="LogWriter" />	
+	
+	<!-- 邮件接口 -->
+	<entry key-ref="MailWriter" value-ref="LogWriter" />
+	
+	<!-- 系统内部消息 -->
+	<entry key-ref="SysMessageWriter" value-ref="LogWriter" />
+    </map>
+   </property>
+   <!-- 抛弃数据路由 -->
+   <property name="discardMap">
+    <map>
+     <entry key-ref="dateProcessor" value-ref="LogWriter" />
+    </map>
+   </property>
+	 <property name="exceptionProcessor" ref="LogWriter"/>
+  </bean>
+	
+	
+  <bean id="FileReader" class="org.openadaptor.core.node.ReadNode">
+    <property name="connector">
+      <bean class="org.openadaptor.auxil.connector.iostream.reader.FileReadConnector">
+        <property name="filename" value="build/data.txt"/>
+        <property name="dataReader">
+          <bean class="org.openadaptor.auxil.connector.iostream.reader.string.LineReader"/>
+        </property>
+		  <property name="batchSize" value="2"/>		  
+      </bean>
+    </property>
+    <property name="processor">
+      <bean class="org.openadaptor.auxil.convertor.delimited.DelimitedStringToOrderedMapConvertor">
+        <property name="delimiter" value=","/>
+        <property name="fieldNames">
+          <list>
+            <value>buySell</value>
+            <value>ticker</value>
+            <value>price</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+
+  <bean id="Writer" class="org.openadaptor.auxil.connector.iostream.writer.FileWriteConnector"/>
+  
+  <bean id="ExceptionHandler" class="org.openadaptor.auxil.connector.iostream.writer.FileWriteConnector">
+    <property name="filename" value="build/puberror.txt"/>
+  </bean>
+
+	<!--消息平台引擎消息队列读取器-->
+	<bean id="JDBCReaderConnector" class="com.ntmast.mp.reader.JDBCReader"> 
+		<property name="mpMessagService"><ref bean="mpMessagService"/></property>
+		<property name="sendNum" ><value>5</value> </property> <!--最大重发次数-->
+		<property name="stateSearch" ><value>0</value> </property><!--0:待发消息,1:已发消息,2：异常消息,3:废弃消息 -->		   	
+	</bean>
+	
+	<bean id="dateProcessor" class="com.ntmast.mp.processFilter.DateProcessor"> 
+		<property name="sendNum" ><value>5</value> </property>   <!--最大重发次数-->
+		<property name="filterKey"><value>法轮 大法</value></property>   <!--过滤关键字 -->
+	</bean>
+	
+  <bean id="JDBCReader" class="org.openadaptor.core.node.ReadNode">
+    <property name="connector">
+		<ref bean="JDBCReaderConnector"/>
+    </property>
+	  <!--
+    <property name="processor">
+		<ref bean="dateProcessor"/>
+    </property>-->
+  </bean>
+	
+	
+	<!--系统消息写入接口 -->
+	<bean id="SysMessageWriter" class="com.ntmast.mp.writer.SysMessageWriter">
+		<property name="senderType"><value>sysMsg</value></property><!--系统短消息枚举值 -->
+		<property name="sysMessagService"><ref bean="sysMessagService"/></property>
+	</bean>
+	<!--邮件发送接口 -->
+	<bean id="MailWriter" class="com.ntmast.mp.writer.MailWriter">
+		<property name="username"><value>huangzicheng</value></property>
+		<property name="password"><value>jonylok</value></property>
+		<property name="hostName"><value>10.68.100.234</value></property><!--系统邮件服务-->
+		<property name="from"><value>huangzicheng@cnooc.com.cn</value></property><!--管理员邮箱-->
+		<property name="needAuth"><value>true</value></property>
+	</bean>
+
+	<bean id="LogWriter" class="com.ntmast.mp.writer.LogWriter"> 
+		<property name="mpMessagLogService"><ref bean="mpMessagLogService"/></property>   	
+		<property name="mpMessagService"><ref bean="mpMessagService"/></property>
+	</bean>
+	
+	<!--华为手机短信发送接口 -->	
+	<bean id="SMSWriter" class="com.ntmast.mp.writer.SMSWriter">
+		<property name="senderType"><value>MB</value></property><!--手机短信枚举值 -->
+	</bean>
+	
+</beans>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<forms xmlns="http://dcworkFromData.config.wf.dcwork.lc.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dcworkFromData.config.wf.dcwork.lc.com dcworkFormData.xsd ">
+	<form id="example_ccjk" name="出差借款">
+		<url>ccjk.cmd</url>
+		<buttons>
+			<button id="direforward" name="发送" readonly-show="false" isDefault="true" description="直接发送"/>
+			<button id="forward" name="发送" readonly-show="false" isDefault="true" description="发送"/>
+			<button id="reject" name="驳回" readonly-show="false" isDefault="true" description="驳回"/>
+			<button id="transmit" name="转发" readonly-show="false" isDefault="true" description="转发"/>
+			<button id="remove" name="删除" readonly-show="false" isDefault="true" description="删除"/>
+			<button id="finish" name="结束" readonly-show="false" isDefault="true" description="结束"/>
+		</buttons>
+    	<fields>
+			<field id="jkMoney"  name="借款额"  datatype="String"  description="">
+			</field>	
+			<field id="userDept" name="申请人部门" datatype="String" description="">
+				<select-field select-url="struhelp.cmd?method=getSelectRoot&amp;organType=2&amp;isCheckBox=0&amp;isIncludeSelf=0&amp;isTree=1&amp;rootId=1" module-key="zuzhijigou"/>
+			</field>					
+		</fields>    		
+	</form>
+</forms>

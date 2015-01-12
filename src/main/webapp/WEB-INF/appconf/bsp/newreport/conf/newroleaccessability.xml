@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+     <bean id="roleaccessability" class="net.mast.bsp.report.cmd.RoleAccessAbilityNewCmd" singleton="false">
+	    <property name="newroleAccessAbilityService"><ref bean="newroleAccessAbilityService"/></property>
+	    <property name="menuSysService"><ref bean="menuSysService"/></property>
+	    <property name="view"><ref bean="roleAccessAbilityView"/></property>
+	    <property name="forwards">
+	        <map>
+	               <entry key="roleAccessAbility"><ref bean="newroleaccessabilityforward"/></entry>
+	        </map>
+	    </property>    	
+     </bean>
+     
+     <bean id="roleAccessAbilityView" class="net.mast.bsp.report.view.RoleAccessAbilityView"> 	
+     </bean>
+
+     <bean id="newroleaccessabilityforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+	              <props>		    		    
+			    <prop key="forquery">jsp/bsp/report/newmenu/roleaccessabilityforquery.jsp</prop>
+			    <prop key="query">jsp/bsp/report/newmenu/roleaccessabilityquery.jsp</prop>
+		      </props>
+            </property>
+     </bean>
+
+     <bean id="newroleAccessAbilityService" class="net.mast.bsp.report.service.support.RoleAccessAbilityNewServiceImpl">     
+     	    <property name="paDomain"><ref bean="paDomain"/></property>
+     	    <property name="roleDomain"><ref bean="roleDomain"/></property>
+     	    <property name="menuSysDomain"><ref bean="menuSysDomain"/></property>
+     	    <property name="menuSysItemDomain"><ref bean="menuSysItemDomain"/></property>
+	    <property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+     </bean>
+</beans>

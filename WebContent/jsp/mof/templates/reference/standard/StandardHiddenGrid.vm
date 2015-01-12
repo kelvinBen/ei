@@ -1,6 +1,0 @@
-##可以使用的变量$field,$disp
-#set ($ref=$field.getMofReference())
-	    <grid:hideCol property="$field.getFormName()" caption="$field.getDescription()"
-		      width="$field.getLength()" index="$field.indexInGrid()" xml="$field.getFormName()" 
-			  name="$field.getFormName()" style="width:100%;" styleClass="default" 
-		/>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean id="initWf" class="com.cnooc.workflow.wfclient.start.InitWfCmd"
+		singleton="false">
+		<property name="forwards">
+			<map>
+				<entry key="WfAdminView">
+					<ref bean="WfAdminView" />
+				</entry>
+			</map>
+		</property>
+
+	</bean>
+
+</beans>

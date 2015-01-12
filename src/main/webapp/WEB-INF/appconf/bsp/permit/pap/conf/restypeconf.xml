@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+
+     <bean id="resTypeDao" class="net.mast.bsp.permit.pap.dao.jdbc.ResTypeJdbcDao">
+	    <property name="dataSource"><ref bean="dataSource"/></property>
+     </bean>
+
+    <bean id="resTypeDomain" class="net.mast.bsp.permit.pap.domain.support.ResTypeImpl"> 
+	    <property name="resTypeDao"><ref bean="resTypeDao"/></property>   	
+    </bean>
+
+</beans>

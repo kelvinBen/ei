@@ -1,0 +1,161 @@
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001001', '消息平台', '', '0', '', '', '', '', '' );  
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001003', '订阅地址管理', '', '0', 'mpreceiveaddressquery_page_init.cmd?clear=true&clearsearch=true', 'main', '', '', '' );  
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001005', '订阅方式查看', '', '0', 'mpinceptmannerquery_page_init.cmd?clear=true&clearsearch=true', '', '', '', '' );  
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001007', '消息管理', '', '0', 'mpmessagequery_page_init.cmd?clear=true&clearsearch=true', '', '', '', '' );  
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001009', '消息历史查询', '', '0', 'mpmessagehistoryquery_page_init.cmd?clear=true&clearsearch=true', '', '', '', '' );  
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001011', '消息类型管理', '', '0', 'mpmessagetypequery_page_init.cmd?clear=true&clearsearch=true', '', '', '', '' );  
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001013', '订阅者类型查看', '', '0', 'mpsubscribertypequery_page_init.cmd?clear=true&clearsearch=true', '', '', '', '' );  
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001017', '用户消息管理', '', '0', 'mpusermessagequery_page_init.cmd?clear=true&clearsearch=true', '', '', '', '' );  
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001019', '订阅列表管理', '', '0', 'mpsubscrlistquery_page_init.cmd?clear=true&clearsearch=true', '', '', '', '' );  
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001023', '异常消息列表', '', '0', 'mpmessagehospitalquery_page_init.cmd?clear=true&clearsearch=true', '', '', '', '' );  
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001025', '基本信息管理', '', '0', '', '', '', '', '' );  
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001027', '消息管理', '', '0', '', '', '', '', '' );  
+INSERT INTO pub_menu_sysitem(MENU_ID, TEXT, TITLE, TYPE, VALUE, TARGET, OPTIONS, FUNCTION_ID, APP_ID ) VALUES ( 'mp0000000000000000000000001029', '消息订阅', '', '0', 'mpsubscrlist.cmd?method=forsubscibe', '', '', '', '' );  
+
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001002', 'mp0000000000000000000000001001', '01', '消息平台', 'BSP000000000000000000000000001', 4, ' ' );  
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001004', 'mp0000000000000000000000001003', '01', '订阅地址管理', 'mp0000000000000000000000001026', 2, ' ' );  
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001006', 'mp0000000000000000000000001005', '01', '订阅方式查看', 'mp0000000000000000000000001026', 1, ' ' );  
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001008', 'mp0000000000000000000000001007', '01', '消息管理', 'mp0000000000000000000000001028', 0, ' ' );  
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001010', 'mp0000000000000000000000001009', '01', '消息历史查询', 'mp0000000000000000000000001028', 1, ' ' );  
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001012', 'mp0000000000000000000000001011', '01', '消息类型管理', 'mp0000000000000000000000001026', 0, ' ' );  
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001014', 'mp0000000000000000000000001013', '01', '订阅者类型查看', 'mp0000000000000000000000001026', 3, ' ' );  
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001018', 'mp0000000000000000000000001017', '01', '用户消息管理', 'mp0000000000000000000000001028', 2, ' ' );  
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001020', 'mp0000000000000000000000001019', '01', '订阅列表管理', 'mp0000000000000000000000001028', 3, ' ' );  
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001024', 'mp0000000000000000000000001023', '01', '异常消息列表', 'mp0000000000000000000000001028', 4, ' ' );  
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001026', 'mp0000000000000000000000001025', '01', '基本设置', 'mp0000000000000000000000001002', 1, ' ' );  
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001028', 'mp0000000000000000000000001027', '01', '消息管理', 'mp0000000000000000000000001002', 0, ' ' );  
+INSERT INTO pub_menu_sys(MENU_SYS_ID, MENU_ID, TYPE_ID, MENU_ALIAS, PARENT_ID, SEQ, IS_LEAF ) VALUES ( 'mp0000000000000000000000001030', 'mp0000000000000000000000001029', '01', '消息订阅', 'mp0000000000000000000000001028', 5, ' ' );  
+
+
+
+INSERT INTO PUB_MODULES(MODULE_ID, MODULE_NAME, PARENT_MODULE_ID, IS_LEAF, SEQ ) VALUES ( 'mp', '消息平台', 'BASE', '1', 8 ); 
+
+INSERT INTO PUB_FUNCTIONS(FUNCTION_ID, FUNCTION_CODE, FUNCTION_NAME, MODULE_ID, IS_SYS, DATA_RES_TYPE, SEQ ) VALUES ( 'mp001', 'mp001', '消息管理', 'mp', '0', null, null );  
+INSERT INTO PUB_FUNCTIONS(FUNCTION_ID, FUNCTION_CODE, FUNCTION_NAME, MODULE_ID, IS_SYS, DATA_RES_TYPE, SEQ ) VALUES ( 'mp002', 'mp002', '历史消息查询', 'mp', '1', null, null );  
+INSERT INTO PUB_FUNCTIONS(FUNCTION_ID, FUNCTION_CODE, FUNCTION_NAME, MODULE_ID, IS_SYS, DATA_RES_TYPE, SEQ ) VALUES ( 'mp003', 'mp003', '异常消息处理', 'mp', '0', null, null );  
+INSERT INTO PUB_FUNCTIONS(FUNCTION_ID, FUNCTION_CODE, FUNCTION_NAME, MODULE_ID, IS_SYS, DATA_RES_TYPE, SEQ ) VALUES ( 'mp004', 'mp004', '用户消息', 'mp', '0', null, null );  
+INSERT INTO PUB_FUNCTIONS(FUNCTION_ID, FUNCTION_CODE, FUNCTION_NAME, MODULE_ID, IS_SYS, DATA_RES_TYPE, SEQ ) VALUES ( 'mp005', 'mp005', '消息订阅', 'mp', '0', null, null );  
+INSERT INTO PUB_FUNCTIONS(FUNCTION_ID, FUNCTION_CODE, FUNCTION_NAME, MODULE_ID, IS_SYS, DATA_RES_TYPE, SEQ ) VALUES ( 'mp006', 'mp006', '消息类型', 'mp', '0', null, null );  
+INSERT INTO PUB_FUNCTIONS(FUNCTION_ID, FUNCTION_CODE, FUNCTION_NAME, MODULE_ID, IS_SYS, DATA_RES_TYPE, SEQ ) VALUES ( 'mp007', 'mp007', '订阅方式', 'mp', '0', null, null );  
+INSERT INTO PUB_FUNCTIONS(FUNCTION_ID, FUNCTION_CODE, FUNCTION_NAME, MODULE_ID, IS_SYS, DATA_RES_TYPE, SEQ ) VALUES ( 'mp008', 'mp008', '订阅地址', 'mp', '0', null, null );  
+INSERT INTO PUB_FUNCTIONS(FUNCTION_ID, FUNCTION_CODE, FUNCTION_NAME, MODULE_ID, IS_SYS, DATA_RES_TYPE, SEQ ) VALUES ( 'mp009', 'mp009', '订阅者类型', 'mp', '0', null, null );  
+
+
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'bsp00101', '查询', '查询', 'mpmessagequery_page_init.cmd;mpmessage.cmd?method=detail', 0, 'mp001', '0', '0', '00', null ); 
+ 
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00102', '增加', '增加', 'mpmessage.cmd?method=insert;mpmessage.cmd?method=forinsert', 0, 'mp001', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00103', '修改', '修改', 'mpmessage.cmd?method=forupdate;mpmessage.cmd?method=update', 0, 'mp001', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00104', '删除', '删除', 'mpmessage.cmd?method=delete', 0, 'mp001', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00105', '确认', '确认', 'mpmessage.cmd?method=forConfirm;mpmessage.cmd?method=confirm;mpmessage.cmd?method=multiConfirm', 0, 'mp001', '0', '0', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00201', '查询', '查询', 'mpmessagehistoryquery_page_init.cmd;mpmessagehistory.cmd?method=detail', 0, 'mp002', '0', '0', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00202', '删除', '删除', 'mpmessagehistory.cmd?method=delete', 0, 'mp002', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00301', '查询', '查询', 'mpmessagehospitalquery_page_init.cmd;mpmessagehospital.cmd?method=detail', 0, 'mp003', '0', '0', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00302', '删除', '删除', 'mpmessagehospital.cmd?method=delete', 0, 'mp003', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00303', '发送', '发送', 'mpmessagehospital.cmd?method=send', 0, 'mp003', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00304', '更正', '更正', 'mpmessagehospital.cmd?method=forupdate;mpmessagehospital.cmd?method=update', 0, 'mp003', '0', '0', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00401', '查询', '查询', 'mpusermessagequery_page_init.cmd;mpusermessage.cmd?method=detail', 0, 'mp004', '0', '0', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00402', '删除', '删除', 'mpusermessage.cmd?method=delete', 0, 'mp004', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00501', '查询', '查询', 'mpsubscrlistquery_page_init.cmd;mpsubscrlist.cmd?method=detail', 0, 'mp005', '0', '0', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00502', '增加', '增加', 'mpsubscrlist.cmd?method=forinsert;mpsubscrlist.cmd?method=insert', 0, 'mp005', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00503', '修改', '修改', 'mpsubscrlist.cmd?method=forupdate;mpsubscrlist.cmd?method=update', 0, 'mp005', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00504', '删除', '删除', 'mpsubscrlist.cmd?method=delete', 0, 'mp005', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00505', '订阅', '订阅', 'mpsubscrlist.cmd?method=forsubscibe;mpsubscrlist.cmd?method=subscibe', 0, 'mp005', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00601', '查询', '查询', 'mpmessagetypequery_page_init.cmd;mpmessagetype.cmd?method=detail', 0, 'mp006', '0', '0', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00602', '增加', '增加', 'mpmessagetype.cmd?method=forinsert;mpmessagetype.cmd?method=insert', 0, 'mp006', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00603', '修改', '修改', 'mpmessagetype.cmd?method=forupdate;mpmessagetype.cmd?method=update', 0, 'mp006', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00604', '删除', '删除', 'mpmessagetype.cmd?method=delete', 0, 'mp006', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00701', '查询', '查询', 'mpinceptmannerquery_page_init.cmd;mpinceptmanner.cmd?method=detail', 0, 'mp007', '0', '0', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00801', '查询', '查询', 'mpreceiveaddressquery_page_init.cmd;mpreceiveaddress.cmd?method=detail', 0, 'mp008', '0', '0', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00802', '增加', '增加', 'mpreceiveaddress.cmd?method=forinsert;mpreceiveaddress.cmd?method=insert', 0, 'mp008', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00803', '修改', '修改', 'mpreceiveaddress.cmd?method=forupdate;mpreceiveaddress.cmd?method=update', 0, 'mp008', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00804', '删除', '删除', 'mpreceiveaddress.cmd?method=delete', 0, 'mp008', '0', '1', '00', null );  
+INSERT INTO PUB_RESOURCES(RESOURCE_ID, RESOURCE_NAME, RESOURCE_ALIAS, URL_NAMES, SECURITY_LEVEL, FUNCTION_ID, IS_DEFAULT, IS_AUDIT, RES_TYPE_ID, SEQ ) VALUES ( 'mp00901', '查询', '查询', 'mpsubscribertypequery_page_init.cmd;mpsubscribertype.cmd?method=detail', 0, 'mp009', '0', '0', '00', null );  
+  
+
+
+
+INSERT INTO PUB_ROLES(ROLE_ID, ROLE_NAME, ROLE_ALIAS, CORPORATION_ID, IS_SYS ) VALUES ( 'xiaoxipingtai', '消息平台管理', '消息平台管理', '1', '0' ); 
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'bsp00101' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00102' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00103' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00104' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00105' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00201' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00202' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00301' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00302' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00303' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00304' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00401' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00402' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00501' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00502' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00503' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00504' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00505' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00601' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00602' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00603' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00604' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00701' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00801' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00802' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00803' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00804' );  
+INSERT INTO pub_role_resource(ROLE_ID, RESOURCE_ID ) VALUES ( 'xiaoxipingtai', 'mp00901' );  
+
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000210', 'mpsubscribertype.cmd?method=detail', 'mp00901', 'mp009', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000209', 'mpsubscribertypequery_page_init.cmd', 'mp00901', 'mp009', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000226', 'mpsubscrlist.cmd?method=forsubscibe', 'mp00501', 'mp005', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000228', 'mpsubscrlist.cmd?method=detail', 'mp00501', 'mp005', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000227', 'mpsubscrlistquery_page_init.cmd', 'mp00501', 'mp005', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000233', 'mpmessage.cmd?method=detail', 'bsp00101', 'mp001', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000234', 'mpmessagequery_page_init.cmd', 'bsp00101', 'mp001', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000237', 'mpmessage.cmd?method=confirm', 'mp00105', 'mp001', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000235', 'mpmessage.cmd?method=forConfirm', 'mp00105', 'mp001', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000236', 'mpmessage.cmd?method=multiConfirm', 'mp00105', 'mp001', 'null' );  
+  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000174', 'mpmessagehistoryquery_page_init.cmd', 'mp00201', 'mp002', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000175', 'mpmessagehistory.cmd?method=detail', 'mp00201', 'mp002', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000176', 'mpmessagehospitalquery_page_init.cmd', 'mp00301', 'mp003', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000177', 'mpmessagehospital.cmd?method=detail', 'mp00301', 'mp003', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000180', 'mpmessagetypequery_page_init.cmd', 'mp00601', 'mp006', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000181', 'mpmessagetype.cmd?method=detail', 'mp00601', 'mp006', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000182', 'mpinceptmannerquery_page_init.cmd', 'mp00701', 'mp007', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000183', 'mpinceptmanner.cmd?method=detail', 'mp00701', 'mp007', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000184', 'mpreceiveaddress.cmd?method=detail', 'mp00801', 'mp008', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000185', 'mpreceiveaddressquery_page_init.cmd', 'mp00801', 'mp008', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000188', 'mpusermessage.cmd?method=detail', 'mp00401', 'mp004', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000189', 'mpusermessagequery_page_init.cmd', 'mp00401', 'mp004', 'null' );  
+ 
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000030', 'mpmessage.cmd?method=forinsert', 'mp00102', 'mp001', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000031', 'mpmessage.cmd?method=insert', 'mp00102', 'mp001', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000032', 'mpmessage.cmd?method=insertContinue', 'mp00102', 'mp001', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000033', 'mpmessage.cmd?method=forupdate', 'mp00103', 'mp001', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000034', 'mpmessage.cmd?method=update', 'mp00103', 'mp001', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000035', 'mpmessage.cmd?method=delete', 'mp00104', 'mp001', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000042', 'mpmessagehospital.cmd?method=forupdate', 'mp00304', 'mp003', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000043', 'mpmessagehospital.cmd?method=update', 'mp00304', 'mp003', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000045', 'mpusermessage.cmd?method=delete', 'mp00402', 'mp004', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000048', 'mpmessagehospital.cmd?method=delete', 'mp00302', 'mp003', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000049', 'mpmessagehospital.cmd?method=send', 'mp00303', 'mp003', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000051', 'mpmessagehistory.cmd?method=delete', 'mp00202', 'mp002', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000069', 'mpsubscrlist.cmd?method=insertContinue', 'mp00502', 'mp005', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000070', 'mpsubscrlist.cmd?method=insert', 'mp00502', 'mp005', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000071', 'mpsubscrlist.cmd?method=forinsert', 'mp00502', 'mp005', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000072', 'mpsubscrlist.cmd?method=update', 'mp00503', 'mp005', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000073', 'mpsubscrlist.cmd?method=forupdate', 'mp00503', 'mp005', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000074', 'mpsubscrlist.cmd?method=delete', 'mp00504', 'mp005', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000085', 'mpmessagetype.cmd?method=update', 'mp00603', 'mp006', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000084', 'mpmessagetype.cmd?method=forupdate', 'mp00603', 'mp006', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000086', 'mpmessagetype.cmd?method=delete', 'mp00604', 'mp006', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000097', 'mpmessagetype.cmd?method=insertContinue', 'mp00602', 'mp006', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000098', 'mpmessagetype.cmd?method=forinsert', 'mp00602', 'mp006', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000099', 'mpmessagetype.cmd?method=insert', 'mp00602', 'mp006', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000104', 'mpreceiveaddress.cmd?method=update', 'mp00803', 'mp008', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000103', 'mpreceiveaddress.cmd?method=forupdate', 'mp00803', 'mp008', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000105', 'mpreceiveaddress.cmd?method=delete', 'mp00804', 'mp008', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000125', 'mpsubscrlist.cmd?method=subscibe', 'mp00505', 'mp005', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000126', 'mpreceiveaddress.cmd?method=insertContinue', 'mp00802', 'mp008', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000127', 'mpreceiveaddress.cmd?method=forinsert', 'mp00802', 'mp008', 'null' );  
+INSERT INTO pub_urls(URL_ID, URL_NAME, RESOURCE_ID, FUNCTION_ID, URL_NOTE ) VALUES ( 'MP0000000000000000000000000128', 'mpreceiveaddress.cmd?method=insert', 'mp00802', 'mp008', 'null' );  

@@ -7,7 +7,7 @@
   j2ee-spec="5.0"
   archive="ei.war">
   <attributes>
-    <attribute name="webrootdir" value="WebContent" />
+    <attribute name="webrootdir" value="src/main/webapp" />
   </attributes>
 </project-module>
 

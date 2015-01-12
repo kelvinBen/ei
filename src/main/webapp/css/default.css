@@ -1,0 +1,114 @@
+body{
+	font-size: 12px;
+	font-family: Arial, Tahoma, Verdana;
+}
+*{
+	margin:0;
+	padding:0;
+}
+img{
+	border:0;
+	margin:1px;
+}
+input[type=button],input[type=submit],button{
+	cursor:pointer;
+	height:24px;
+}
+center{
+	border-top:1px solid #8DB1D1;
+	border-left:1px solid #8DB1D1;
+	border-right:1px solid #8DB1D1;
+}
+th,td{
+	vertical-align:middle;
+}
+.star{
+	color:red;
+}
+label.error {
+	padding-left:5px;
+	color: red;
+	font-style: italic
+}
+.editdiv{
+	background-color:#D5EAFD;
+	margin:5px;
+}
+.sort{
+	cursor:pointer;
+	text-decoration:decoration;
+}
+.sort div{
+	cursor:pointer;
+	text-decoration:underline;
+}
+/**列表页搜索抬头与列表容器样式**/
+div.title{
+	width:100%;
+	margin-top:5px;
+}
+div.title table{
+	 width:100%;
+	 margin:0px;
+	 border:0;
+}
+div.listCon{
+	width:100%;
+	margin-top:5px;
+	overflow:auto;
+}
+div.listCon table{
+	width:100%;
+	overflow:hidden;
+	margin:0px;
+	border:0;
+}
+div.bottom{
+	width:100%;
+}
+div.bottom table{
+	width:100%;
+}
+div.bottom table td,div.bottom table th{
+	width:100%;
+	border:0px; 
+	text-align:center;
+}
+/**sidebar样式**/
+#sidebar{
+	width:100%;
+	height:25px;
+}
+#sidebar ul li{
+	list-style-type:none;
+	/*border-right:1px solid #8DB1D1;*/
+	background: url("../pics/interline.gif") no-repeat right;
+	height:25px;
+	width:60px;
+	text-align:center;
+}
+#sidebar ul li a{
+	text-align:center;
+	font-size:12px;
+	color:black;
+	font-family: Arial, Tahoma, Verdana;
+	text-decoration:none;
+	display:block;
+	padding-top:6px;
+}
+/*
+#sidebar ul li a:visited{
+	font-weight:bold;
+}
+*/
+/*分页部分样式*/
+#pageContainer{
+	text-align:center;
+	width:100%;
+	margin-top:5px;
+	font-size:14px;
+}
+#pageContainer span{
+	cursor:pointer;
+	margin:0 2px;
+}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    
+	<bean id="subcorporationquery" class="net.mast.bsp.permit.pap.cmd.AvailableCorporatonQueryCmd">
+	    <property name="struService"><ref bean="struService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="queryforward"/></entry>
+	        </map>
+        </property>
+        </bean>
+        
+
+
+  
+     <bean id="changecorporation" class="net.mast.bsp.permit.pap.cmd.ChangeCorporationCmd" singleton="false">
+	    <property name="changeCorporationService"><ref bean="changeCorporationService"/></property>
+	    <property name="forwards">
+	        <map>
+	               <entry key="changecorporation"><ref bean="showmenu"/></entry>
+	               <entry key="changecorporationforward"><ref bean="changecorporationforward"/></entry>
+	        </map>
+	    </property>
+     	
+     </bean>
+
+	<bean id="changecorporationforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+	              <props>		    		    
+			    <prop key="forTree">jsp/bsp/permit/pap/changecorporation/forTree.jsp</prop> 
+		      </props>
+            </property>
+     </bean>
+
+
+     <bean id="queryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+	              <props>		    		    
+			    <prop key="querynopage">jsp/bsp/permit/pap/changecorporation/changecorporation.jsp</prop> 
+			    <prop key="querynopage_tree">jsp/bsp/permit/pap/changecorporation/changecorporation_tree.jsp</prop>
+			    <prop key="querynopage_tree_node">jsp/bsp/permit/pap/changecorporation/changecorporation_tree_node.jsp</prop>
+		      </props>
+            </property>
+     </bean>
+     
+     
+    <bean id="showmenu" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="change"><ref bean="menu"/></entry>
+			</map>
+	    </property>  
+    </bean>
+
+    <bean id="changeCorporationService" class="net.mast.bsp.permit.pap.service.support.ChangeCorporationServiceImpl"> 
+	    <property name="struDomain"><ref bean="struDomain"/></property>   	
+    </bean>
+
+</beans>

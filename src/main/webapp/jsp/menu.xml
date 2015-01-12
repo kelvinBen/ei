@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<xmlmenu style="horizontal" background-color="buttonface" background-image="menu/btn_bg.gif" over-color="royalblue" text-overcolor="white" border-color="dimgray" noBorderColor="false">
+	
+
+		<menu id="2" title="title" text="组织机构" link="content.jsp">
+		     <menu id="21" text="定义" title="">
+		         <menu id="211" url="countryquery.cmd" targetframe="main" title="title" text="定义国家(地区)"></menu>
+			<menu id="212" url="cantquery.cmd?method=query" targetframe="main" title="title" text="定义行政区域"></menu>
+			<menu id="213" url="workplacequery.cmd" targetframe="main" title="title" text="定义工作地点"></menu>
+			<menu id="214" url="organtypequery.cmd" targetframe="main" title="title" text="定义组织类型"></menu>
+			<menu id="215" url="strurulequery.cmd" targetframe="main" title="title" text="定义组织结构规则"></menu>	
+		     </menu>  
+	            <menu id="22" text="管理" title="">
+			<menu id="221" url="stru.cmd?method=getroot" targetframe="_tree" title="title" text="管理人力资源组织结构"></menu>
+			<menu id="222" url="struversionquery.cmd" targetframe="main" title="title" text="管理组织结构版本"></menu>			
+			<menu id="223" url="strutypeQueryInit.cmd" targetframe="main" title="title" text="管理组织结构类型"></menu>			
+		    </menu> 	
+		 <menu id="23" title="title" text="日历" link="content.jsp">	          
+	              <menu id="231" url="financialyearquery.cmd" targetframe="main" title="title" text="财务期间"></menu>	          
+	               <menu id="232" url="workday.cmd?method=getRoot" targetframe="_tree" title="title" text="定义工作日历"></menu>         
+	        </menu>
+		    <menu id="24" text="例子" title="">	
+			<menu id="241" url="demoquery.cmd" targetframe="main" title="title" text="选择组织机构"></menu>		
+	            </menu>   
+	        
+	        </menu>
+	        <menu id="3" title="title" text="权限管理" link="content.jsp">
+	            <menu id="31" text="用户/角色" title="">
+	              <menu id="311" url="user.cmd?method=getStruUserRoot" targetframe="_tree" title="title" text="用户"></menu>
+	              <menu id="312" url="role.cmd?method=getroot" targetframe="_tree" title="title" text="角色"></menu>
+		      <menu id="313" url="templates.cmd?method=getroot" targetframe="_tree" title="title" text="角色模板"></menu>
+		      <menu id="313" url="conflictRoleSet.cmd?method=getRoot" targetframe="_tree" title="title" text="不相容角色集"></menu>
+	            </menu>
+	            <menu id="32" text="资源管理" title="">
+	              <menu id="321" url="function.cmd?method=getRoot" targetframe="_tree" title="title" text="功能资源管理"></menu>
+	              <menu id="322" url="datarestypequery.cmd" targetframe="main" title="title" text="数据资源管理"></menu>           
+	            </menu>
+	             <menu id="33" text="自助服务" title="">
+	              <menu id="331" url="subcorporationquery.cmd?method=query" targetframe="main" title="title" text="切换机构"></menu>
+	              <menu id="332" url="user.cmd?method=forResetCorpPassword" targetframe="main" title="title" text="重置所有用户密码"></menu>
+	              <menu id="333" url="user.cmd?method=forResetUserPassword" targetframe="main" title="title" text="修改我的密码"></menu>
+	              <menu id="334" url="user.cmd?method=userdetail" targetframe="main" title="title" text="修改我的个人信息"></menu>
+	              <menu id="335" url="setLoginDate.cmd?method=forSet" targetframe="main" title="title" text="设置登录日期"></menu>
+	              <menu id="336" url="logout.cmd?method=logoutFresh" title="title" text="注销并更新工作区"></menu>
+	              <menu id="337" url="publdapusersquery.cmd" title="title" text="从LDAP同步用户"></menu>
+	            </menu>
+	             <menu id="34" text="审计日志" title="">
+	              <menu id="341" url="onlinequery.cmd" targetframe="main" title="title" text="在线用户查询"></menu>
+	              <menu id="342" url="onlinehistquery.cmd" targetframe="main" title="title" text="在线用户历史查询"></menu>
+	              <menu id="343" url="querySecurityLog.cmd?method=query" targetframe="main" title="title" text="安全日志"></menu>
+	            </menu>
+	        </menu>
+	        
+	        <menu id="4" title="title" text="元数据管理" link="content.jsp">
+	            <menu id="41" text="元模型定义" title="">
+	              <menu id="411" title="title" targetframe="main" text="数据表定义" url="moftablequery.cmd"></menu>
+	              <menu id="412" title="title" targetframe="main" text="窗口定义" url="mofwindowquery.cmd"></menu>
+		      <menu id="413" title="title" targetframe="main" text="参考类型定义" url="mofreferencequery.cmd"></menu>
+		      <menu id="414"  title="title" targetframe="main" text="模型同步" url="generator.cmd?method=synchronModel"></menu>
+	            </menu>
+	            <menu id="43" text="通用帮助定义" title="">	            	
+				   <menu id="431" url="pubcommonhelpquery.cmd?clear=true" targetframe="main" title="title" text="通用帮助维护"></menu>
+				   <menu id="432" url="pubcommonhelptest.cmd?clear=true" targetframe="main" title="title" text="通用帮助演示"></menu>
+	            </menu>
+	        </menu>
+	
+	        <menu id="9" url="logout.cmd?method=logout" title="title" text="注销"></menu>
+
+</xmlmenu>

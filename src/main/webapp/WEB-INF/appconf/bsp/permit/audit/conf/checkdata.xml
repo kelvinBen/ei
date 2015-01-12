@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	 <bean id="checkDataUtil" class="net.mast.bsp.util.database.CheckData">
+		<property name="dataSource"><ref bean="dataSource"/></property>   	
+     </bean>
+
+	<bean id="checkDataCmd" class="net.mast.bsp.util.database.CheckDataCmd" singleton="false">
+	    <property name="checkData"><ref bean="checkDataUtil"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="checkView"><ref bean="checkDataforward"/></entry>
+	        </map>
+		</property>
+   
+      </bean>
+
+    <bean id="checkDataforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="main">jsp/bsp/checkdata/main.jsp</prop>
+			    <prop key="check">jsp/bsp/checkdata/check.jsp</prop>
+			    <prop key="clear">jsp/bsp/checkdata/clear.jsp</prop>
+				<prop key="userDefineCheck">jsp/bsp/checkdata/userDefineCheck.jsp</prop>
+				<prop key="userDefineClear">jsp/bsp/checkdata/userDefineClear.jsp</prop>
+			</props>
+		</property>
+	</bean>
+
+
+</beans>

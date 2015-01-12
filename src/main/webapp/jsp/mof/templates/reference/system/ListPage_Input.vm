@@ -1,0 +1,25 @@
+##可以使用的变量$field,$disp,$ref
+#set ($ref=$field.getMofReference()) 
+#if($disp.isHidden())
+    #parse("${standardTemplatePath}/StandardHidden.vm")
+#elseif ($disp.isLabel())
+    #parse("${standardTemplatePath}/StandardMultiLabel.vm")
+#elseif($disp.isSearch())
+    #parse("${standardTemplatePath}/StandardSelect.vm")
+#elseif($disp.isReadOnly())
+	#parse("${standardTemplatePath}/StandardCollectionText.vm")
+#else
+#set ($colWidth=$field.getMofColumn().getLength()*10)	
+    <list:pageToPage style="width:$colWidth" type="multiImg" name="${field.getFormName()}_multiPage">
+        <list:left size="$field.getLength()" name="${field.getFormName()}_All" value="" multiple="true"  styleTd="align:center;width:40%" style="width:100%">
+            <html:optionsCollection property="${field.getFormName()}_Collection_All" label="Name" value="ID"/>
+        </list:left>
+        <list:right size="$field.getLength()" name="$field.getFormName()" value="" multiple="true" styleTd="align:center;width:40%" style="width:100%">
+            <html:optionsCollection property="${field.getFormName()}_Collection" label="Name" value="ID"/>
+        </list:right>
+   </list:pageToPage>
+   #if ($disp.isMandatory())
+ <font color="#FF0000">*</font>
+   #end
+   $ref.getCustomEvent($field,$ref.hasDisplayTextField())
+#end

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app id="WebApp_1087364390062">
+	<context-param id="ContextParam_1086328608344">
+		<param-name>contextConfigLocation</param-name>
+		<param-value> /WEB-INF/conf/**/*.xml, /WEB-INF/appconf/**/*.xml,  </param-value>
+	</context-param>
+	
+	<filter id="Filter_1086328608359">
+		<filter-name>Set Character Encoding</filter-name>
+		<filter-class>net.mast.util.SetCharacterEncodingFilter</filter-class>
+		<init-param id="InitParam_1086328608359">
+			<param-name>encoding</param-name>
+			<param-value>GBK</param-value>
+		</init-param>
+	</filter>
+	
+	
+	<filter id="Filter_1106482716453">
+		<filter-name>BSP Authentication</filter-name>
+		<filter-class>net.mast.bsp.permit.pep.util.FilterToBeanProxy</filter-class>
+		<init-param id="InitParam_1106482716453">
+			<param-name>targetBean</param-name>
+			<param-value>authFilter</param-value>
+		</init-param>
+	</filter>
+	
+	<!-- <filter>
+		<filter-name>hibernateOpenSessionInViewFilter</filter-name>
+		<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+	</filter> -->
+	
+	
+	<filter>
+		<filter-name>BSP Integration Filter</filter-name>
+		<filter-class>net.mast.bsp.permit.pep.util.FilterToBeanProxy</filter-class>
+		<init-param>
+			<param-name>targetBean</param-name>
+			<param-value>httpSessionIntegrationFilter</param-value>
+		</init-param>
+	</filter>
+	<!-- 安全日志,访问控制 -->
+	<filter id="Filter_1106482716454">
+		<filter-name>BSP HTTP Request</filter-name>
+		<filter-class>net.mast.bsp.permit.pep.util.FilterToBeanProxy</filter-class>
+		<init-param id="InitParam_1106482716454">
+			<param-name>targetBean</param-name>
+			<param-value>securityEnforcementFilter</param-value>
+		</init-param>
+	</filter>
+	
+	<filter-mapping id="FilterMapping_1086328608375">
+		<filter-name>Set Character Encoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	
+	<filter-mapping id="FilterMapping_1106482716469">
+		<filter-name>BSP Authentication</filter-name>
+		<url-pattern>/j_bsp_security_check/*</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping id="FilterMapping_11064827164789">
+		<filter-name>BSP Integration Filter</filter-name>
+		<url-pattern>*.cmd</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping id="FilterMapping_1106482716470">
+		<filter-name>BSP HTTP Request</filter-name>
+		<url-pattern>*.cmd</url-pattern>
+	</filter-mapping>
+	
+	<listener>
+		<listener-class>net.mast.waf.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>net.mast.bsp.permit.audit.online.listener.HttpServletContextListener</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>net.mast.bsp.permit.audit.online.listener.SessionListener</listener-class>
+	</listener>
+	
+	<!-- Spring 刷新Introspector防止内存泄露 -->
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+	
+	<servlet id="Servlet_1086328596032">
+		<servlet-name>jframe</servlet-name>
+		<servlet-class>net.mast.waf.mvc.ServletDispatcher</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>BSP Session</servlet-name>
+		<servlet-class>net.mast.bsp.permit.pep.util.ServletToProxy</servlet-class>
+		<init-param>
+			<param-name>targetBean</param-name>
+			<param-value>sessionServlet</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>login</servlet-name>
+		<servlet-class>net.mast.bsp.permit.login.LoginServlet</servlet-class>
+		<init-param>
+			<param-name>url</param-name>
+			<param-value>/jsp/login.jsp</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>InitWorkflow</servlet-name>
+		<servlet-class>net.mast.workflow.wfclient.start.InitWorkflow</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<!-- 定时器任务 
+	<servlet>
+		<servlet-name>LoadOnStartupServlet</servlet-name>
+		<servlet-class>net.mast.jcrontab.timer.web.LoadCrontabServlet</servlet-class>
+		<init-param>
+			<param-name>PROPERTIES_FILE</param-name>
+			<param-value>timer.properties</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	-->
+	<servlet-mapping id="ServletMapping_1086328608391">
+		<servlet-name>jframe</servlet-name>
+		<url-pattern>*.cmd</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>login</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>BSP Session</servlet-name>
+		<url-pattern>/j_bsp_security_check/*</url-pattern>
+	</servlet-mapping>
+	
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	
+	<welcome-file-list id="WelcomeFileList_1086328608391">
+		<welcome-file>login</welcome-file>
+	</welcome-file-list>
+	
+	<error-page>
+		<error-code>403</error-code>
+		<location>/jsp/nopermit.jsp</location>
+	</error-page>
+	
+	<taglib id="TagLibRef_1086328608406">
+		<taglib-uri>/tags/web-date</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/web-date.tld</taglib-location>
+	</taglib>
+	<taglib id="TagLibRef_1086328608407">
+		<taglib-uri>/tags/web-flex</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/web-flex.tld</taglib-location>
+	</taglib>
+	<taglib id="TagLibRef_1086328608408">
+		<taglib-uri>/tags/web-grid</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/web-grid.tld</taglib-location>
+	</taglib>
+	<taglib id="TagLibRef_1086328608409">
+		<taglib-uri>/tags/web-html</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/web-html.tld</taglib-location>
+	</taglib>
+	<taglib id="TagLibRef_1086328608410">
+		<taglib-uri>/tags/web-list</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/web-list.tld</taglib-location>
+	</taglib>
+	<taglib id="TagLibRef_1086328608411">
+		<taglib-uri>/tags/web-mast</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/web-mast.tld</taglib-location>
+	</taglib>
+	<taglib id="TagLibRef_1086328608412">
+		<taglib-uri>/tags/web-menu</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/web-menu.tld</taglib-location>
+	</taglib>
+	<taglib id="TagLibRef_1086328608413">
+		<taglib-uri>/tags/web-seltree</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/web-seltree.tld</taglib-location>
+	</taglib>
+	<taglib id="TagLibRef_1086328608414">
+		<taglib-uri>/tags/web-tab</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/web-tab.tld</taglib-location>
+	</taglib>
+	<taglib id="TagLibRef_1086328608415">
+		<taglib-uri>/tags/web-tree</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/web-tree.tld</taglib-location>
+	</taglib>
+	<taglib id="TagLibRef_1086328608416">
+		<taglib-uri>/tags/web-widgets</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/web-widgets.tld</taglib-location>
+	</taglib>
+	<taglib id="TagLibRef_1086328608417">
+		<taglib-uri>/tags/mast-support</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/mast-support.tld</taglib-location>
+	</taglib>
+	<taglib id="TagLibRef_1086328608418">
+		<taglib-uri>/tags/pubcommonhelp</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/pubcommonhelp.tld</taglib-location>
+	</taglib>
+	<taglib>
+		<taglib-uri>/tags/mast-bsp</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/mast-bsp.tld</taglib-location>
+	</taglib>
+	<taglib>
+		<taglib-uri>/tags/web-graph</taglib-uri>
+		<taglib-location>/WEB-INF/tlds/web-graph.tld</taglib-location>
+	</taglib>
+	
+</web-app>

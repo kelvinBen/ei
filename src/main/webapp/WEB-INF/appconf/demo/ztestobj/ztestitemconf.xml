@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+<!--***********************dao配置***********************************************-->
+	<bean id="ztestitemDao" class="net.mast.demo.ztest.dao.jdbc.ZtestitemJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+<!--***********************domain配置********************************************
+
+	<bean id="ztestitemDomain" class="net.mast.demo.ztest.domain.support.ZtestitemDomainImpl"> 
+		<property name="ztestitemDao"><ref bean="ztestitemDao"/></property>   	
+	</bean>
+	-->
+<!--***********************service配置*******************************************
+
+	<bean id="ztestitemService" class="net.mast.demo.ztest.service.support.ZtestitemServiceImpl"> 
+		<property name="ztestitemDomain"><ref bean="ztestitemDomain"/></property>   	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+
+-->
+<!--***********************翻页初始化特殊查询配置开始******************************************
+	<bean id="ztestitemquery_page_init" class="net.mast.demo.ztest.query.ZtestitemQueryPageInitCmd">
+	    <property name="ztestitemService"><ref bean="ztestitemService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="speQuery"><ref bean="ztestitemqueryforward"/></entry>
+	        </map>
+        </property>
+        <property name="pageSize">
+        	<value>100</value>
+        </property>
+	</bean>
+	-->
+<!--***********************翻页初始化特殊查询配置结束******************************************-->
+<!--***********************查询界面转向forward配置开始***********************************-->
+	<bean id="ztestitemqueryforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>
+			    <prop key="queryPageInit">jsp/oa/ztestobj/ztestitem_query_init.jsp</prop>  
+			</props>
+	    </property>
+	</bean> 
+<!--***********************查询界面转向forward配置结束***********************************-->
+	
+<!--***********************视图对象View配置****************************************-->
+	<bean id="ztestitemView"  class="net.mast.demo.ztest.view.ZtestitemView" singleton="false"/>
+
+<!--***********************cmd配置开始*********************************************
+    <bean id="ztestitem" class="net.mast.demo.ztest.cmd.ZtestitemCmd" singleton="false">
+	    <property name="ztestitemService"><ref bean="ztestitemService"/></property>
+	    <property name="view"><ref bean="ztestitemView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="ztestitemView"><ref bean="ztestitemforward"/></entry>
+	            <entry key="ztestitemViewChain"><ref bean="ztestitemforwardchain"/></entry>
+	       		<entry key="taskInfoForward"><ref bean="taskInfoForward"/></entry>
+	       		
+	        </map>
+		</property>
+    </bean>
+-->
+<!--***********************cmd配置结束*********************************************-->
+
+<!--***********************界面转向forward配置开始***********************************
+    <bean id="ztestitemforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/oa/ztestobj/ztestitem_detail.jsp</prop>
+			    <prop key="forinsert">jsp/oa/ztestobj/ztestitem_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/oa/ztestobj/ztestitem_forupdate.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="ztestitemforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="ztestitemquery_page_init"/></entry>
+			</map>
+		</property>
+    </bean>
+    -->
+<!--***********************界面转向forward配置结束***********************************-->
+
+
+
+
+</beans>

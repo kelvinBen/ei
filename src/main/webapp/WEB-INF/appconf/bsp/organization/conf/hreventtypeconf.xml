@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="hrEventTypeDao" class="net.mast.bsp.organization.dao.jdbc.HrEventTypeJdbcDao">
+		<property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+
+
+	<bean id="hrEventTypeDomain" class="net.mast.bsp.organization.domain.support.HrEventTypeImpl"> 
+		<property name="hrEventTypeDao"><ref bean="hrEventTypeDao"/></property>   
+		<property name="hrEventDomain"><ref bean="hrEventDomain"/></property>	
+	</bean>
+
+
+	<bean id="hrEventTypeService" class="net.mast.bsp.organization.service.support.HrEventTypeServiceImpl"> 
+		<property name="hrEventTypeDomain"><ref bean="hrEventTypeDomain"/></property>   	
+		<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+	</bean>
+	
+	<bean id="hrEventTypeQuery" class="net.mast.bsp.organization.cmd.HrEventTypeQuery">
+	    <property name="hrEventTypeService"><ref bean="hrEventTypeService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="hreventtypeforward"/></entry>
+	        </map>
+        </property>
+	</bean>	
+
+
+	<bean id="hrEventTypeView"  class="net.mast.bsp.organization.view.HrEventTypeView" singleton="false"/>
+
+
+    <bean id="hreventtype" class="net.mast.bsp.organization.cmd.HrEventTypeCmd" singleton="false">
+	    <property name="hrEventTypeService"><ref bean="hrEventTypeService"/></property>
+	    <property name="view"><ref bean="hrEventTypeView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="hrEventTypeView"><ref bean="hreventtypeforward"/></entry>
+	         <!--   <entry key="hrEventTypeViewChain"><ref bean="hreventtypeforwardchain"/></entry>-->
+	        </map>
+		</property>
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="hreventtypeIntercepter"/>	           
+	        </list>
+     	</property>
+    </bean>
+
+    <bean id="hreventtypeforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/organization/eventtype/detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/organization/eventtype/forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/organization/eventtype/forupdate.jsp</prop>
+			    <prop key="queryforhelp">jsp/bsp/organization/eventtype/query.jsp</prop>
+			</props>
+		</property>
+	</bean>
+	
+  <bean id="PUBHREVENTTYPE_ISSYS_COLLECTION" class="net.mast.waf.data.EnumCollection">
+	    <property name="enumName"><value>PUB_HR_EVENT_TYPE.IS_SYS</value></property>
+	    <property name="enumService"><ref bean="enumService"/></property>
+  </bean>
+	
+  <bean id="hreventtypeIntercepter" class="net.mast.waf.interceptor.CollectionInterceptor">
+		<property name="collections">
+    	    	<map>
+				<entry key="PUBHREVENTTYPE_ISSYS_COLLECTION"><ref bean="PUBHREVENTTYPE_ISSYS_COLLECTION"/></entry>
+			</map>
+    	</property>
+	</bean>
+  <bean id="hreventtypelistinterceptor" class="net.mast.bsp.organization.cmd.HrEventTypeInterceptor">
+		<property name="hrEventTypeService"><ref bean="hrEventTypeService"/></property>
+  </bean>	
+</beans>

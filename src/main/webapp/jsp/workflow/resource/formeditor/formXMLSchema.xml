@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<forms xmlns="http://definition.bean.manager.workform.ntmast.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://definition.bean.manager.workform.ntmast.com formXMLSchema.xsd ">
+  <form create-by="tool" default-entity-name="" form-id="" html-code="" keep-histroy="false" name="" organize-id="" organize-name="" overtime="5" process-type="" readonly-when="" template="" title="" type="single">
+    <tabs default-select-index="1" off-style="" on-style="">
+      <tab form-subtitle="" form-title="" index="1" securityClass="" securityId="" title=""/>
+    </tabs>
+    <sub-fields-entity entity-name="" list-name="" readonly-when="hiddenFieldList.contains(${subEntityName})" sub-name="" tab-index="1" title="" use-when="readOnlyFieldList.contains(${subEntityName})">
+      <field FUNARG="" FUNC="" default-type="none" default-value="" edit-url="id" entity-name="" field-name="" is-pk="false" is-sign="false" name="" notnull-when="" parameter-name="" readonly-when="" reserveKey="" reserved="false" restriction="" securityClass="" securityId="" sumField="" tab-index="" title="" tooltip="" type="String" use-when="">
+        <button style=""/>
+        <check dictionaryClass="" dictionaryName="" style="">
+          <option description="" key="" selected="false"/>
+        </check>
+        <date-time size="25" style="" type="timestamp"/>
+        <calculate style=""/>
+        <display relative-field="">display</display>
+        <drop-down Enumeration-Type="" allow-empty="false" current-description="" dictionaryClass="" dictionaryName="" no-current-selected-key="" size="25" style="">
+          <option description="" key="" selected="false"/>
+        </drop-down>
+        <format style=""/>
+        <hidden/>
+        <hyperlink description="" target="" target-window=""/>
+        <iframe style=""/>
+        <image border="0" height="1" value="" width="1"/>
+        <password style=""/>
+        <radio Enumeration-Type="" dictionaryClass="" dictionaryName="" no-current-selected-key="" style="">
+          <option description="" key="" selected="false"/>
+        </radio>
+        <text maxlength="1" size="25" style=""/>
+        <textarea cols="60" rows="3" style=""/>
+        <special-edit edit-url="" key="" show-class="" style=""/>
+        <edit-field edit-url="" key="" style=""/>
+        <select-field edit-url="" key="" style=""/>
+      </field>
+    </sub-fields-entity>
+    <field FUNARG="" FUNC="" default-type="none" default-value="" edit-url="id" entity-name="" field-name="" is-pk="false" is-sign="false" name="" notnull-when="" parameter-name="" readonly-when="" reserveKey="" reserved="false" restriction="" securityClass="" securityId="" sumField="" tab-index="" title="" tooltip="" type="String" use-when="">
+      <button style=""/>
+      <check dictionaryClass="" dictionaryName="" style="">
+        <option description="" key="" selected="false"/>
+      </check>
+      <date-time size="25" style="" type="timestamp"/>
+      <calculate style=""/>
+      <display relative-field="">display</display>
+      <drop-down Enumeration-Type="" allow-empty="false" current-description="" dictionaryClass="" dictionaryName="" no-current-selected-key="" size="25" style="">
+        <option description="" key="" selected="false"/>
+      </drop-down>
+      <format style=""/>
+      <hidden/>
+      <hyperlink description="" target="" target-window=""/>
+      <iframe style=""/>
+      <image border="0" height="1" value="" width="1"/>
+      <password style=""/>
+      <radio Enumeration-Type="" dictionaryClass="" dictionaryName="" no-current-selected-key="" style="">
+        <option description="" key="" selected="false"/>
+      </radio>
+      <text maxlength="1" size="25" style=""/>
+      <textarea cols="60" rows="3" style=""/>
+      <special-edit edit-url="" key="" show-class="" style=""/>
+      <edit-field edit-url="" key="" style=""/>
+      <select-field edit-url="" key="" style=""/>
+    </field>
+    <print-template file-name="PrintTemplate.doc"/>
+    <text-template file-name="blank.doc" name="" type="doc"/>
+  </form>
+</forms>

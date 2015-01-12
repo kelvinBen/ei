@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+<!--***********************翻页初始化特殊查询配置开始*************-->
+	<bean id="proposaljointquery_page_init" class="org.proposal.joint.action.ProposalJointQueryPageInitAction">
+	    <property name="proposalJointService"><ref bean="proposalJointService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="speQuery"><ref bean="proposaljointforward"/></entry>
+	        </map>
+        </property>
+<!--        
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="proposal_buzi_interceptor"/>
+	        </list>
+     	</property>
+-->
+        <property name="pageSize">
+        	<value>15</value>
+        </property>
+	</bean>
+
+<!--***********************视图对象View配置****************************************-->
+	<bean id="proposalJointView"  class="org.proposal.joint.view.ProposalJointView" singleton="false"/>
+
+<!--***********************action配置开始*********************************************-->
+    <bean id="proposaljoint" class="org.proposal.joint.action.ProposalJointAction" singleton="false">
+	    <property name="proposalJointService"><ref bean="proposalJointService"/></property>
+	    <property name="view"><ref bean="proposalJointView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="proposaljointView"><ref bean="proposaljointforward"/></entry>
+	            <entry key="proposaljointViewChain"><ref bean="proposaljointforwardchain"/></entry>
+	        </map>
+		</property>
+		<!--拦截看看是否需要?
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="proposal_buzi_interceptor"/>
+	        </list>
+     	</property>-->
+    </bean>
+<!--
+
+	<bean id="proposal_buzi_interceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+		<property name="collections">
+			<map>
+				<entry key="PROPOSALJOINT_PROPOSALID_COLLECTION"><ref bean="PROPOSALJOINT_PROPOSALID_COLLECTION"/></entry>
+			</map>
+		</property>
+	</bean>
+
+-->
+<!--***********************action配置结束*******************************-->
+
+<!--***********************界面转向配置开始*************************-->
+    <bean id="proposaljointforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/proposal/joint/proposal_joint_detail.jsp</prop>
+			    <prop key="forinsert">jsp/proposal/joint/proposal_joint_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/proposal/joint/proposal_joint_forupdate.jsp</prop>
+			    <prop key="queryPageInit">jsp/proposal/joint/proposal_joint_query_init.jsp</prop>  
+
+			</props>
+		</property>
+	</bean>
+    <bean id="proposaljointforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="proposaljointquery_page_init"/></entry>
+			</map>
+		</property>
+    </bean>
+<!--***********************界面转向forward配置结束***********************************-->
+</beans>

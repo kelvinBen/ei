@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pro-cfg Id="" Name="" xmlns="http://actConfig.workflow.mast.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://actConfig.workflow.loushang.org ../dtd/actConfig.xsd ">
+  <act-cfg Id="" Name="">
+    <operations>
+      <operation Id="" fun-name="" title="">
+        <condition CondiStr="" CondiXml=""/>
+      </operation>
+    </operations>
+    <field Id="" isnull="false" name="" restrict="common" verify-fun=""/>
+    <actions>
+      <action type=""/>
+    </actions>
+  </act-cfg>
+</pro-cfg>

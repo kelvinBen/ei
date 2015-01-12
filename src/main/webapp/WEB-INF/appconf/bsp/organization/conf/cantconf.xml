@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    
+	<bean id="cantquery" class="net.mast.bsp.organization.cmd.CantQueryCmd">
+	    <property name="cantService"><ref bean="cantService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="cantforward"/></entry>
+	        </map>
+        </property>
+        
+         <property name="beforIntercept">
+        	<list>
+               <ref bean="cantinsertinterceptor"/>	           
+        	</list>
+ 	    </property>
+	</bean>	
+	
+	
+		<bean id="canthelp" class="net.mast.bsp.organization.cmd.CantHelpQueryCmd">
+	    <property name="cantService"><ref bean="cantService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="query"><ref bean="cantforward"/></entry>
+	        </map>
+        </property>
+        
+         <property name="beforIntercept">
+        	<list>
+               <ref bean="cantinsertinterceptor"/>	           
+        	</list>
+ 	    </property>
+	</bean>	
+	
+	
+	<bean id="cantView"  class="net.mast.bsp.organization.view.CantView" singleton="false"/>
+
+  
+     <bean id="cant" class="net.mast.bsp.organization.cmd.CantCmd" singleton="false">
+	    <property name="cantService"><ref bean="cantService"/></property>
+	        <!--add by  xuzhl-->
+	    <property name="countryService"><ref bean="countryService"/></property>
+	    <property name="view"><ref bean="cantView"/></property>
+	    <property name="forwards">
+	        <map>
+	               <entry key="cantView"><ref bean="cantforward"/></entry>
+	               <entry key="cantViewChain"><ref bean="cantforwardchain"/></entry>
+	        </map>
+	    </property>
+            <property name="beforIntercept">
+	        <list>
+	               <ref bean="cantinsertinterceptor"/>	           
+	        </list>
+     	    </property>
+     	
+     </bean>
+
+     <bean id="cantinsertinterceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+	    <property name="collections">
+    	        <map>
+                      <entry key="cantTypeCollection"><ref bean="cantTypeCollection"/></entry>
+                      <entry key="countryCodeCollection"><ref bean="countryCodeCollection"/></entry>
+    	        </map>
+    	    </property>
+     </bean>
+    
+
+     <bean id="cantDao" class="net.mast.bsp.organization.dao.jdbc.CantJdbcDao">
+	    <property name="dataSource"><ref bean="dataSource"/></property>
+     </bean>
+
+
+     <bean id="cantforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+	              <props>		    		    
+			    <prop key="detail">jsp/bsp/organization/cant/detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/organization/cant/forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/organization/cant/forupdate.jsp</prop>
+			    <prop key="querynopage">jsp/bsp/organization/cant/query.jsp</prop> 
+			    <prop key="subquerynopage">jsp/bsp/organization/cant/subquery.jsp</prop>
+			    <prop key="help">jsp/bsp/organization/cant/help.jsp</prop>  	
+			    <prop key="queryforhelp">jsp/bsp/organization/cant/canthelp.jsp</prop>  
+			    <prop key="queryforhelpbycode">jsp/bsp/organization/cant/canthelpbycode.jsp</prop>
+			    
+			    <prop key="checkNewRoot">jsp/bsp/organization/cant/checkroot.jsp</prop> 
+		        <prop key="checkNewRootNode">jsp/bsp/organization/cant/checknode.jsp</prop> 
+		        <prop key="choiceNewRoot">jsp/bsp/organization/cant/choiceroot.jsp</prop>  
+		        <prop key="choiceNewRootNode">jsp/bsp/organization/cant/choicenode.jsp</prop>   
+		      </props>
+            </property>
+     </bean>
+     
+     
+    <bean id="cantforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="cantquery"/></entry>
+			</map>
+	    </property>  
+    </bean>
+
+    <bean id="cantService" class="net.mast.bsp.organization.service.support.CantServiceImpl"> 
+	    <property name="cantDomain"><ref bean="cantDomain"/></property>   	
+	    <property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+    </bean>
+
+    <bean id="cantDomain" class="net.mast.bsp.organization.domain.support.CantImpl"> 
+	    <property name="cantDao"><ref bean="cantDao"/></property>   
+	      <property name="countryDomain"><ref bean="countryDomain"/></property>  
+	        <property name="cantTypeDomain"><ref bean="cantTypeDomain"/></property>  	
+    </bean>
+
+</beans>

@@ -1,3 +1,0 @@
-function testevent() {
-	alert("sss");
-}

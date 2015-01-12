@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+<!--***********************翻页初始化特殊查询配置开始*************-->
+	<bean id="proposalbuziquery_page_init" class="org.proposal.proposalbuzi.action.ProposalBuziQueryPageInitAction">
+	    <property name="proposalBuziService"><ref bean="proposalBuziService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="speQuery"><ref bean="proposalbuziforward"/></entry>
+	        </map>
+        </property>
+<!--        
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="proposal_buzi_interceptor"/>
+	        </list>
+     	</property>
+-->
+        <property name="pageSize">
+        	<value>15</value>
+        </property>
+	</bean>
+	<!-- 我的议案建议 -->
+	<bean id="myproposallist" class="org.proposal.proposalbuzi.action.MyProposalBuziAction">
+		<property name="proposalBuziService"><ref bean="proposalBuziService"/></property>
+	     <property name="forwards">
+	        <map>
+	            <entry key="speQuery"><ref bean="proposalbuziforward"/></entry>
+	        </map>
+        </property>
+ 		<property name="pageSize">
+        	<value>15</value>
+        </property>
+	</bean>
+
+<!--***********************视图对象View配置****************************************-->
+	<bean id="proposalBuziView"  class="org.proposal.proposalbuzi.view.ProposalBuziView" singleton="false"/>
+
+<!--***********************action配置开始*********************************************-->
+    <bean id="proposalbuzi" class="org.proposal.proposalbuzi.action.ProposalBuziAction" singleton="false">
+	    <property name="proposalBuziService"><ref bean="proposalBuziService"/></property>
+	    <property name="view"><ref bean="proposalBuziView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="proposalbuziView"><ref bean="proposalbuziforward"/></entry>
+	            <entry key="proposalbuziViewChain"><ref bean="proposalbuziforwardchain"/></entry>
+	        </map>
+		</property>
+		<!--拦截看看是否需要?
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="proposal_buzi_interceptor"/>
+	        </list>
+     	</property>-->
+    </bean>
+<!--
+	<bean id="proposal_buzi_interceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+		<property name="collections">
+			<map>
+				<entry key="PROPOSALBUZI_TYPE_COLLECTION"><ref bean="PROPOSALBUZI_TYPE_COLLECTION"/></entry>
+				<entry key="PROPOSALBUZI_LARGETYPECODE_COLLECTION"><ref bean="PROPOSALBUZI_LARGETYPECODE_COLLECTION"/></entry>
+				<entry key="PROPOSALBUZI_CATEGORY_COLLECTION"><ref bean="PROPOSALBUZI_CATEGORY_COLLECTION"/></entry>
+				<entry key="PROPOSALBUZI_STATE_COLLECTION"><ref bean="PROPOSALBUZI_STATE_COLLECTION"/></entry>
+				<entry key="PROPOSALBUZI_WEBSTATE_COLLECTION"><ref bean="PROPOSALBUZI_WEBSTATE_COLLECTION"/></entry>
+				<entry key="PROPOSALBUZI_AUDITSTATE_COLLECTION"><ref bean="PROPOSALBUZI_AUDITSTATE_COLLECTION"/></entry>
+				<entry key="PROPOSALBUZI_ISADDDEPT_COLLECTION"><ref bean="PROPOSALBUZI_ISADDDEPT_COLLECTION"/></entry>
+				<entry key="PROPOSALBUZI_ISREGISTER_COLLECTION"><ref bean="PROPOSALBUZI_ISREGISTER_COLLECTION"/></entry>
+				<entry key="PROPOSALBUZI_DELETESTATE_COLLECTION"><ref bean="PROPOSALBUZI_DELETESTATE_COLLECTION"/></entry>
+				<entry key="PROPOSALBUZI_SATISFY_COLLECTION"><ref bean="PROPOSALBUZI_SATISFY_COLLECTION"/></entry>
+			</map>
+		</property>
+	</bean>
+
+
+-->
+<!--***********************action配置结束*******************************-->
+
+<!--***********************界面转向配置开始*************************-->
+    <bean id="proposalbuziforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/proposal/proposalbuzi/proposal_buzi_detail.jsp</prop>
+			    <prop key="forinsert">jsp/proposal/proposalbuzi/proposal_buzi_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/proposal/proposalbuzi/proposal_buzi_forupdate.jsp</prop>
+			    <prop key="queryPageInit">jsp/proposal/proposalbuzi/proposal_buzi_query_init.jsp</prop>  
+			    <prop key="mylist">jsp/proposal/proposalbuzi/mylist.jsp</prop>  
+			    <prop key="forfankui">/jsp/proposal/proposalbuzi/forfankui.jsp</prop><!-- 满意度评价 -->
+
+			</props>
+		</property>
+	</bean>
+    <bean id="proposalbuziforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="proposalbuziquery_page_init"/></entry>
+			</map>
+		</property>
+    </bean>
+<!--***********************界面转向forward配置结束***********************************-->
+<!--********************字典服务***********************-->
+	<bean id="PROPOSALBUZI_TYPE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALBUZI.TYPE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALBUZI_LARGETYPECODE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALBUZI.LARGETYPECODE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALBUZI_CATEGORY_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALBUZI.CATEGORY</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALBUZI_STATE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALBUZI.STATE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALBUZI_WEBSTATE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALBUZI.WEBSTATE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALBUZI_AUDITSTATE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALBUZI.AUDITSTATE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALBUZI_ISADDDEPT_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALBUZI.ISADDDEPT</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALBUZI_ISREGISTER_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALBUZI.ISREGISTER</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALBUZI_DELETESTATE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALBUZI.DELETESTATE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALBUZI_SATISFY_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALBUZI.SATISFY</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	<bean id="PROPOSALSATISFY_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALSATISFY</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+	
+	<bean id="PROPOSALBUZIJIAOBANSTATE_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>PROPOSALBUZI.JIAOBANSTATE</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+
+</beans>

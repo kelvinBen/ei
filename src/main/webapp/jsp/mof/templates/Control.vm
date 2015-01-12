@@ -1,0 +1,35 @@
+##参考类型是否使用模版方式生成
+#set ($useRefTemplate=false)
+##标准模版路径
+#set ($standardTemplatePath="reference/standard")
+##系统参考类型模版路径
+#set ($systemTemplatePath="reference/system")
+##用户自定义模版路径
+#set ($customTemplatePath="reference/custom")
+##下面开始同步用户选中的窗口
+#foreach ($win in $windows)	
+#set($jsppath=$outputDirectory);
+$files.mkdir("$jsppath")
+ 
+#set($name=$win.Name)
+	##查询
+	#set( $path= "${name}_query.jsp");
+    $generator.parse("query.vm",$path,"window",$win)
+    ##明细
+	#set( $path= "${name}_detail.jsp");
+    $generator.parse("detail.vm",$path,"window",$win)
+ 	##增加
+	#set( $path= "${name}_insert.jsp");
+    $generator.parse("insert.vm",$path,"window",$win)
+    ##修改
+	#set( $path= "${name}_update.jsp");
+    $generator.parse("update.vm",$path,"window",$win)
+#end
+ 
+
+
+
+
+
+
+

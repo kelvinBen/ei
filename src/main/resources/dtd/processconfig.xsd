@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:element name="process-config">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="process-type" minOccurs="0" maxOccurs="unbounded" type="processType" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="processType">
+		<xsd:sequence>
+			<xsd:element name="process" minOccurs="0" maxOccurs="unbounded" type="versionType" />
+		</xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required" />
+		<xsd:attribute name="physicalname" type="xsd:string" use="required" />
+		<xsd:attribute name="description" type="xsd:string" />
+		<xsd:attribute name="order" type="xsd:integer" use="optional" default="-1" />
+		<xsd:attribute name="organize" type="xsd:string" use="optional" />
+	</xsd:complexType>
+
+	<xsd:complexType name="versionType">
+		<xsd:sequence>
+			<xsd:element name="version" maxOccurs="unbounded" type="xType" />
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:string" use="required" />
+		<xsd:attribute name="formid" type="xsd:string" use="required" />
+		<xsd:attribute name="formname" type="xsd:string" use="required" />
+		<xsd:attribute name="organize" type="xsd:string" use="required" />
+		<xsd:attribute name="reservetype" type="xsd:string" use="required" />
+		<xsd:attribute name="istemplet" type="xsd:string" use="optional" default="false"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="xType">
+		<xsd:all>
+			<xsd:element name="xpdlfile" type="fileType"/>
+			<xsd:element name="xmlfile" type="fileType"/>
+		</xsd:all>
+		<xsd:attribute name="versionid" type="xsd:string" use="required" />
+		<xsd:attribute name="name" type="xsd:string" use="required" />
+		<xsd:attribute name="description" type="xsd:string" use="optional" />
+		<xsd:attribute name="author" type="xsd:string" use="optional" />
+		<xsd:attribute name="create" type="xsd:string" use="optional" />
+		<xsd:attribute name="saveimport" type="xsd:string" use="optional" default="0"/>
+	</xsd:complexType>
+
+	<xsd:complexType name="fileType">
+		<xsd:attribute name="physicalname" type="xsd:string" use="required" />
+	</xsd:complexType>
+
+</xsd:schema>

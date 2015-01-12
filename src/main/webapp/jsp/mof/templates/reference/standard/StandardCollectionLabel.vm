@@ -1,0 +1,11 @@
+##可以使用的变量$field,$disp
+#set ($ref=$field.getMofReference())
+	    <html:label name="$field.getFormName()"
+#if ($disp.isOutValue()) 
+		      property="$field.getFormName()"
+#else
+	          value=""
+#end
+	          collection="${field.getFormName()}.Collection"
+			  labelProperty="Name" labelKey="ID" size="$field.getLength()"
+		/>

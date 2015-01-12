@@ -1,0 +1,98 @@
+iframe.WBTB_Composition
+{
+	border: 1px inset;
+}
+table.WBTB_Body
+{
+	background-color:buttonface;
+	border:1px solid #CCCCCC;
+}
+.yToolbar
+{
+	background-image:url("images/barbg.gif");
+}
+
+.WBTB_Btn
+{
+	BACKGROUND-COLOR: buttonface;
+	border:1 solid buttonface;
+	Text-align: center;
+	padding-top:2;
+	HEIGHT: 23px;
+	WIDTH: 23px;
+}
+.WBTB_Ico
+{
+	cursor:hand;
+}
+.line{
+	width:10px;
+	height:20;
+	text-align:center;
+}
+.WBTB_TBGen
+{
+	FONT: 8pt verdana,arial,sans-serif;
+}
+
+.WBTB_BtnMouseOverUp
+{
+	BACKGROUND-COLOR: #e1e1e1;
+	border-width:1px 1px 1px 1px;
+	border-style:solid;
+	border-color:white gray gray white;
+	Text-align: center;
+	padding-top:2;
+	cursor:hand;
+	HEIGHT: 23px;
+	WIDTH: 23px;
+}
+
+.WBTB_BtnMouseOverDown
+{
+	BACKGROUND-COLOR: #EEEEEE;
+	border-width:1px 1px 1px 1px;
+	border-style:solid;
+	border-color:gray white white gray;
+	Text-align: center;
+	padding-top:2;
+	cursor:hand;
+	HEIGHT: 23px;
+	WIDTH: 23px;
+}
+
+.BtnDown
+{
+	BACKGROUND-COLOR:  #8592B5;
+	cursor:hand;
+	Text-align: center;
+}
+
+.WBTB_IcoDown
+{
+	cursor:hand;
+}
+
+.WBTB_IcoDownPressed
+{
+	cursor:hand;
+}
+
+
+td.WBTB_TabOn {
+	font: 8pt MS Sans Serif;
+	padding:0px 3px;
+	border-width:0px 1px 1px 1px;
+	border-style:solid;
+	border-color:white gray gray gray;
+	background-color: white;
+}
+
+td.WBTB_TabOff {
+	font: 8pt MS Sans Serif;
+	padding:0px 3px;
+	border:1px outset;
+	cursor:hand;
+	background-color: #eeeeee;
+}
+

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:element name="jsfun">
+		<xsd:complexType>
+			<xsd:attribute name="formId" type="xsd:string" use="optional" />
+			<xsd:attribute name="fun-name" type="xsd:string" use="optional" />
+			<xsd:attribute name="target" type="xsd:string" use="optional" />
+			<xsd:attribute name="text" type="xsd:string" use="optional" />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="menu">
+		<xsd:annotation>
+			<xsd:documentation>属性：id、title、type,其中：</xsd:documentation>
+			<xsd:documentation>type:指定的流程类型，如果为空或“public”则作为公共操作</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="menu-item" maxOccurs="unbounded" minOccurs="0" />
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:string" use="optional" />
+			<xsd:attribute name="title" type="xsd:string" use="optional" />
+			<xsd:attribute name="type" type="xsd:string" use="optional" />
+			<xsd:attribute type="xsd:string" name="securityClass">
+				<xsd:annotation>
+					<xsd:documentation>特殊权限实现的类</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>			
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="menu-item">
+		<xsd:annotation>
+			<xsd:documentation>属性：id、title、readonly-show、description，其中：</xsd:documentation>
+			<xsd:documentation>readonly-show：是否在只读状态下显示，默认为“false”，如果为“true”，则该流程的文档在只读（办结）时显示该操作</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="jsfun" minOccurs="1" />
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:string" use="optional" />
+			<xsd:attribute name="title" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>操作名称</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute name="readonly-show" default="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:enumeration value="true" />
+						<xsd:enumeration value="false" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="fixItem" default="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:enumeration value="true" />
+						<xsd:enumeration value="false" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			
+			<xsd:attribute name="default-action" default="false">
+				<xsd:annotation>
+					<xsd:documentation>true表示默认选中</xsd:documentation>
+				</xsd:annotation>			
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:enumeration value="true" />
+						<xsd:enumeration value="false" />
+					</xsd:restriction>
+				</xsd:simpleType>
+
+			</xsd:attribute>
+			<xsd:attribute name="description" type="xsd:string" use="optional" />
+			<xsd:attribute type="xsd:string" name="securityId">
+				<xsd:annotation>
+					<xsd:documentation>权限ID</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+			<xsd:attribute type="xsd:string" name="securityClass">
+				<xsd:annotation>
+					<xsd:documentation>特殊权限实现的类</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="menus">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="menu" minOccurs="1" maxOccurs="unbounded" />
+			</xsd:sequence>
+			<xsd:attribute name="templet" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>模板名称，用于不同的显示模板替换</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

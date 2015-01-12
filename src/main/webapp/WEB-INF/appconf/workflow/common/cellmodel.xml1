@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ReportConfig>
+<Report id="WF001" formatNum="001" dataSourceType="" fileUrl="" description="" name="reporthrrecruitapplyreport" reportType="1" fixedCol="2">
+		<ReportHead drawLineRow="1">
+			<Row>
+				<Cell type="input"  property="Title" modify="false" colSpan="1" rowspan="2" align="36" fontSize="10" fontStyle="2" color="0x000000" />
+			</Row>
+				<Row rowHeight="20">
+				<Cell type="label"  value="" modify="false" colSpan="1" rowSpan="1" align="36" fontSize="10" fontStyle="2" color="0x000000" />
+			</Row>
+			<!--Row rowHeight="20">
+       <Cell colSpan="1" rowSpan="1" type="dyna" align="36" fontSize="10" fontStyle="2" value="1"/>
+			</Row-->
+		</ReportHead>	
+		<ReportDetail  rowHeight="20" sortCols="1,2">
+         <Col colWidth="100" fontSize="10" align="36" fontStyle="0" type="dyna" dataType="String" property="REPORT_COL0"/>
+		</ReportDetail>
+		<ReportTail>
+			<!--Row rowHeight="20">
+				<Cell type="mixed" value="׆±:"   property="TableMan"  modify="true" colSpan="1" rowSpan="1" align="33" fontSize="10" fontStyle="2" color="0x000000"/>
+				<Cell type="mixed" value="ɕǚ:" property="TableDate" modify="true" colSpan="2" rowSpan="1" align="34" fontSize="10" fontStyle="2" color="0x000000"/>
+			</Row-->
+		</ReportTail>
+				<VBScript>
+		   </VBScript>		
+	</Report>
+</ReportConfig>

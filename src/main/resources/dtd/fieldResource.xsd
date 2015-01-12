@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:element name="append">
+		<xsd:complexType>
+			<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="prefix" type="xsd:string" use="optional" default="false" />
+					<xsd:attribute name="text" type="xsd:string" use="optional" default="必填字段的附加显示" />
+					<xsd:attribute name="name" type="xsd:string" use="required"/>
+				</xsd:extension>
+			</xsd:simpleContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="common">
+		<xsd:complexType>
+			<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="name" type="xsd:string" use="required" />
+					<xsd:attribute name="text" type="xsd:string" use="optional" default="普通域代码" />
+				</xsd:extension>
+			</xsd:simpleContent>
+		</xsd:complexType>
+	</xsd:element>
+		<xsd:element name="search">
+		<xsd:complexType>
+			<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="text" type="xsd:string" use="optional" default="搜索域代码" />
+				</xsd:extension>
+			</xsd:simpleContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="field">
+		<xsd:complexType>
+			<xsd:choice>
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="common" />
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="readonly" />
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="hidden" />
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="search" />
+					<xsd:element maxOccurs="unbounded" minOccurs="0" ref="append"/>
+				</xsd:sequence>
+			</xsd:choice>
+			<xsd:attribute name="conType" type="xsd:string" use="optional" />
+			<xsd:attribute name="name" type="xsd:string" use="required" />
+			<xsd:attribute name="text" type="xsd:string" use="optional" />
+			<xsd:attribute name="type" type="xsd:string" use="optional" />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="fields">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" minOccurs="1" ref="field" />
+			</xsd:sequence>
+			<xsd:attribute name="selectSplit" type="xsd:string" use="optional" default="," />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="hidden">
+		<xsd:complexType>
+			<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="name" type="xsd:string" use="required" />
+					<xsd:attribute name="text" type="xsd:string" use="optional" default="隐藏域代码" />
+				</xsd:extension>
+			</xsd:simpleContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="readonly">
+		<xsd:complexType>
+			<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute name="name" type="xsd:string" use="required" />
+					<xsd:attribute name="text" type="xsd:string" use="optional" default="只读域代码" />
+				</xsd:extension>
+			</xsd:simpleContent>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

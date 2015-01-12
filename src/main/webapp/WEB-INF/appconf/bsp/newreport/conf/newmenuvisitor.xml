@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+     <bean id="menuvisitor" class="net.mast.bsp.report.cmd.MenuVisitorNewCmd" singleton="false">
+     <property name="menuVisitorNewService"><ref bean="menuVisitorNewService"/></property>
+     <property name="menuSysService"><ref bean="menuSysService"/></property>
+     <property name="userService"><ref bean="userService"/></property>
+     <property name="roleService"><ref bean="roleService"/></property>
+	 <property name="view"><ref bean="MenuVisitorView"/></property>   
+	    <property name="forwards">
+	        <map>
+	               <entry key="menuVisitor"><ref bean="newmenuvisitorforward"/></entry>
+	        </map>
+	    </property>    	
+     </bean>
+     
+  	<bean id="MenuVisitorView" class="net.mast.bsp.report.view.MenuVisitorView"> 	
+    </bean>	
+
+     <bean id="newmenuvisitorforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+	           <props>		    		    
+			    <prop key="forquery">jsp/bsp/report/newmenu/menuvisitorforquery.jsp</prop>
+			    <prop key="query">jsp/bsp/report/newmenu/menuvisitorquery.jsp</prop>
+		      </props>
+            </property>
+     </bean>
+     
+     <bean id="menuVisitorNewService" class="net.mast.bsp.report.service.support.MenuVisitorNewServiceImpl"> 
+     	<property name="roleDomain"><ref bean="roleDomain"/></property>
+     	<property name="userDomain"><ref bean="userDomain"/></property>
+     	<property name="rolePrivsDomain"><ref bean="rolePrivsDomain"/></property>
+     	<property name="uaDomain"><ref bean="uaDomain"/></property>
+     	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+		<property name="struDomain"><ref bean="struDomain"/></property>
+		<property name="menuSysItemDomain"><ref bean="menuSysItemDomain"/></property>
+     </bean>    
+</beans>

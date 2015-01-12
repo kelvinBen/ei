@@ -1,0 +1,64 @@
+body{/*页面总体样式*/
+	background-color:#coddea;                           /*网页背景色*/
+	padding-top:0px;                                    /**/
+	padding-left:0px;                                  /**/
+	padding-bottom:12px;                                /**/
+	font-size:9pt;
+	padding-right:0px                                   /**/
+}
+td{
+	font-size:9pt;                                      /*字体大小*/
+	padding:0px;                                        /**/
+	white-space:nowrap                                  /**/
+}
+table{
+	border-collapse : Collapse;                         /**/
+	border:0px none;                                    /**/
+}
+button{
+	background-image:url('images/btn_bg.gif');          /*按钮背景图片*/
+	padding-top:2px;                                    /**/
+	cursor:hand                                         /**/
+}
+A:link                                                      /*链接*/
+{
+    COLOR: #000000;                                         /*文字颜色*/
+    FONT-WEIGHT: 100;                                       /*文字字体粗细*/
+    TEXT-DECORATION: none;                                  /*文字修饰*/
+    TEXT-TRANSFORM: none                                    /*文字大小写*/
+}
+A:visited                                                   /*访问过的链接*/
+{
+    COLOR: #000000;                                         /*文字颜色*/
+    FONT-WEIGHT: 100;                                       /*文字字体粗细*/
+    TEXT-DECORATION: none;
+    TEXT-TRANSFORM: none
+}
+A:hover                                                     /*鼠标放上去的效果*/
+{
+    COLOR: #0000FF;
+    FONT-WEIGHT: 100;
+    TEXT-DECORATION: none
+}
+
+.tblListContent1{                       /*大表格边框*/
+{
+	border:1px solid #ffffff;
+}
+.workareatd{
+        background-color:#0080C1
+}
+.workareatd2{
+        background-color:E3E7E8
+}
+.trContentNextRow{
+        background-color:D4D7D8
+}
+.TdLeft
+{
+text-align:left;
+width:30%;
+white-space:nowrap;
+font-size:9pt;
+padding-left:10px;
+}

@@ -1,0 +1,186 @@
+<style>
+table
+{
+table-layout:fixed;
+border-collapse:collapse;
+border:1 solid ;
+}
+
+ td
+{
+vertical-align : top; 
+padding:3px;
+}
+table div
+{
+font-size:9pt;
+text-align:center;
+vertical-align : middle; 
+}
+.noborder
+{
+border:1 dotted ;
+}
+.noborder td
+{
+border:1 dotted ;
+}
+div
+{
+vertical-align:top;
+}
+.taboncss{padding-left:5px;padding-right:5px;font-size:9pt;white-space:nowrap;padding-top:0px;border-left:1px solid #ffffff;border-top:1px solid #ffffff;border-right:1px solid #666666;border-bottom:1px solid #f1f1f1;background-color:#f1f1f1}
+.taboffcss{padding-left:5px;padding-right:5px;font-size:9pt;white-space:nowrap;padding-top:3px;border-left:1px solid #ffffff;border-top:1px solid #f1f1f1;border-right:1px solid #666666;border-bottom:1px solid #ffffff;background-color:#cccccc}
+.subtabcss
+{
+table-layout:fixed;
+border-collapse:collapse;
+border:1 solid ;
+}
+.subtabcss td
+{
+border:1 solid #eeeeee;
+
+}
+.notrSelected
+{
+background-color:#ffffff;
+}
+.trSelected
+{
+background-color:#8989bc;
+}
+.tabtoucss td{
+	background-color:#E6E6E6;
+	border-width: 1px 0px 0px 1px;
+	border-style: solid;
+	filter: Alpha(Opacity=40, FinishOpacity=100, Style=1, StartX=0, StartY=0, FinishX=0, FinishY=50);
+	border-color: #E6E6E6;
+	vertical-align:center;
+	width:         100%;
+	height:        100%;
+	white-space:   nowrap;
+	padding-top:3;
+	color: #000000;
+}
+.tabsumcss td
+{
+	color:#000000;
+	font-size:9pt;
+	text-align:center;
+
+	height:21;
+	border:1 solid silver;
+	background:#f4f4f4;
+}
+
+</style>
+<script src="DefFormFunction.js">
+
+</script>
+<TABLE id="tabpage" onclick=doTabpageClick(); border=0><TBODY>
+<TR>
+<TD class=taboncss width=50>第1页 </TD>
+<TD class=taboffcss width=50>第2页</TD></TR></TBODY></TABLE><div id="pages"  unselectable=on  style="border:1 solid #707070;"><div id="page1"  unselectable=on  ><table id="tab1" width="100%"><tr>
+<TD phcol="1" phrow="1">11</TD><td>${defr0c1_field}</td>
+<TD phcol="3" phrow="1"></TD>
+<TD phcol="4" phrow="1"></TD>
+<TD phcol="5" phrow="1"></TD>
+<TD phcol="6" phrow="1"></TD></tr><tr>
+<TD phcol="1" phrow="2"></TD>
+<TD phcol="2" phrow="2"></TD>
+<TD phcol="3" phrow="2"></TD>
+<TD phcol="4" phrow="2"></TD>
+<TD phcol="5" phrow="2"></TD>
+<TD phcol="6" phrow="2"></TD></tr><tr>
+<TD phcol="1" phrow="3"></TD>
+<TD phcol="2" phrow="3"></TD>
+<TD phcol="3" phrow="3"></TD>
+<TD phcol="4" phrow="3"></TD>
+<TD phcol="5" phrow="3"></TD>
+<TD phcol="6" phrow="3"></TD></tr><tr>
+<TD phcol="1" phrow="4"></TD>
+<TD phcol="2" phrow="4"></TD>
+<TD phcol="3" phrow="4"></TD>
+<TD phcol="4" phrow="4"></TD>
+<TD phcol="5" phrow="4"></TD>
+<TD phcol="6" phrow="4"></TD></tr><tr>
+<TD phcol="1" phrow="5"></TD>
+<TD phcol="2" phrow="5"></TD>
+<TD phcol="3" phrow="5"></TD>
+<TD phcol="4" phrow="5"></TD>
+<TD phcol="5" phrow="5"></TD>
+<TD phcol="6" phrow="5"></TD></tr></table><button onclick='addRow("sub1")' >增加行</button>&nbsp;<button onclick='delRow("sub1")' >删除行</button><table id="sub1" width="100%"  class="subtabcss"  onclick="doTabSelect('sub1')"><tr>
+<TD phcol="1" phrow="1">23</TD>
+<TD phcol="2" phrow="1"></TD>
+<TD phcol="3" phrow="1"></TD>
+<TD phcol="4" phrow="1"></TD>
+<TD phcol="5" phrow="1"></TD>
+<TD phcol="6" phrow="1"></TD></tr><tr><td>${defr1c0sub1}</td>
+<TD phcol="2" phrow="2"></TD>
+<TD phcol="3" phrow="2"></TD>
+<TD phcol="4" phrow="2"></TD>
+<TD phcol="5" phrow="2"></TD>
+<TD phcol="6" phrow="2"></TD></tr>
+<tr><td>合计</td>
+<TD phcol="2" phrow="2">${defr1c0sub3}</TD>
+<TD phcol="3" phrow="2">${defr1c0sub4}</TD>
+<TD phcol="4" phrow="2">${defr1c0sub5}</TD>
+<TD phcol="5" phrow="2">${defr1c0sub2}</TD>
+<TD phcol="6" phrow="2">${defr1c0sub2}</TD></tr>
+
+</table></div><div id="page2"  style="display:none"  unselectable=on  ><table id="tab2" width="100%"><tr>
+<TD phcol="1" phrow="1">33</TD><td>${defr0c1_field}</td>
+<TD phcol="3" phrow="1"></TD>
+<TD phcol="4" phrow="1"></TD>
+<TD phcol="5" phrow="1"></TD>
+<TD phcol="6" phrow="1"></TD></tr><tr>
+<TD phcol="1" phrow="2"></TD>
+<TD phcol="2" phrow="2"></TD>
+<TD phcol="3" phrow="2"></TD>
+<TD phcol="4" phrow="2"></TD>
+<TD phcol="5" phrow="2"></TD>
+<TD phcol="6" phrow="2"></TD></tr><tr>
+<TD phcol="1" phrow="3"></TD>
+<TD phcol="2" phrow="3"></TD>
+<TD phcol="3" phrow="3"></TD>
+<TD phcol="4" phrow="3"></TD>
+<TD phcol="5" phrow="3"></TD>
+<TD phcol="6" phrow="3"></TD></tr><tr>
+<TD phcol="1" phrow="4"></TD>
+<TD phcol="2" phrow="4"></TD>
+<TD phcol="3" phrow="4"></TD>
+<TD phcol="4" phrow="4"></TD>
+<TD phcol="5" phrow="4"></TD>
+<TD phcol="6" phrow="4"></TD></tr><tr>
+<TD phcol="1" phrow="5"></TD>
+<TD phcol="2" phrow="5"></TD>
+<TD phcol="3" phrow="5"></TD>
+<TD phcol="4" phrow="5"></TD>
+<TD phcol="5" phrow="5"></TD>
+<TD phcol="6" phrow="5"></TD></tr></table><button onclick='addRow("sub2")' >增加行</button>&nbsp;<button onclick='delRow("sub2")' >删除行</button><table id="sub2" width="100%"><tr class="tabtoucss">
+<TD phcol="1" phrow="1">55</TD>
+<TD phcol="2" phrow="1"></TD>
+<TD phcol="3" phrow="1"></TD>
+<TD phcol="4" phrow="1"></TD>
+<TD phcol="5" phrow="1"></TD>
+<TD phcol="6" phrow="1"></TD></tr>
+<#list subForm_子表的名字 as sub>
+<tr><td>${sub.defr1c0sub3}</td>
+<TD phcol="2" phrow="2">${defr1c0sub3}</TD>
+<TD phcol="3" phrow="2">${defr1c0sub4}</TD>
+<TD phcol="4" phrow="2">${defr1c0sub5}</TD>
+<TD phcol="5" phrow="2">${defr1c0sub2}</TD>
+<TD phcol="6" phrow="2">${defr1c0sub2}</TD></tr>
+
+</#list>
+<tr><td>合计</td>
+<TD phcol="2" phrow="2">${defr1c0sub3}</TD>
+<TD phcol="3" phrow="2">${defr1c0sub4}</TD>
+<TD phcol="4" phrow="2">${defr1c0sub5}</TD>
+<TD phcol="5" phrow="2">${defr1c0sub2}</TD>
+<TD phcol="6" phrow="2">${defr1c0sub2}</TD></tr>
+
+</table>
+</div></div>
+<input type="" name="sub1_count" value="${sub1_count}">

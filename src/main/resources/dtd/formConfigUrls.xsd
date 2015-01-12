@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="qualified">
+    <xsd:element name="urls">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="reserve-url" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="edit-field-url" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="select-field-url" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="special-edit-url" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="verify-url" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="dynamic-default-url" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="extend-fields-url" minOccurs="1" maxOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="dynamic-default-url" type="xsd:string"/>
+    <xsd:element name="edit-field-url" type="xsd:string"/>
+    <xsd:element name="extend-fields-url" type="xsd:string"/>
+    <xsd:element name="reserve-url" type="xsd:string"/>
+    <xsd:element name="select-field-url" type="xsd:string"/>
+    <xsd:element name="special-edit-url" type="xsd:string"/>
+    <xsd:element name="verify-url" type="xsd:string"/>
+</xsd:schema>

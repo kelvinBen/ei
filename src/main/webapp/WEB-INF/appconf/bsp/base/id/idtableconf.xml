@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    
+<bean id="pubidtablequery" class="net.mast.bsp.base.id.cmd.PubIdTableQuery">
+<property name="pubIdtableService"><ref bean="pubIdtableService"/></property>
+	<property name="forwards">
+		<map>
+		 <entry key="query"><ref bean="pubidtableforward"/></entry>
+		</map>
+	</property>     
+</bean>
+<!--***********************通用查询PubIdtable配置结束******************************-->
+
+<!--****viewSupport.xml**************-->
+	<bean id="pubIdtableView"  class="net.mast.bsp.base.id.view.PubIdtableView" singleton="false"/>
+
+
+<!--******commandSupport.xml**********-->
+<!--***********************最大号表cmd配置开始*********************************-->    
+    <bean id="pubidtable" class="net.mast.bsp.base.id.cmd.PubIdtableCmd" singleton="false">
+	    <property name="pubIdtableService"><ref bean="pubIdtableService"/></property>
+	    <property name="view"><ref bean="pubIdtableView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="pubidtableView"><ref bean="pubidtableforward"/></entry>
+	            <entry key="pubidtableViewChain"><ref bean="pubidtableforwardchain"/></entry>
+	        </map>
+		</property>
+		<!--拦截看看是否需要?-->
+		<property name="beforIntercept">
+	        <list>
+	            <ref bean="pub_idtable_interceptor"/>	           
+	        </list>
+     	</property>
+    </bean>
+<!--***********************最大号表cmd配置结束*********************************-->
+
+
+
+<!--************daoSupport.xml****************-->
+<bean id="pubIdtableDao" class="net.mast.bsp.base.id.dao.jdbc.PubIdtableJdbcDao">
+	<property name="dataSource"><ref bean="dataSource"/></property>
+</bean>
+
+<!--*******************forwardSupport.xml**********************-->
+<!--***********************最大号表  forward配置开始***********************************-->
+    <bean id="pubidtableforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/bsp/base/id/pub_idtable_detail.jsp</prop>
+			    <prop key="forinsert">jsp/bsp/base/id/pub_idtable_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/bsp/base/id/pub_idtable_forupdate.jsp</prop>
+			    <prop key="output">jsp/bsp/base/id/success.jsp</prop>
+			     <prop key="query">jsp/bsp/base/id/pub_idtable_query.jsp</prop>
+			</props>
+		</property>
+	</bean>
+    <bean id="pubidtableforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="pubidtablequery"/></entry>
+			</map>
+		</property>
+    </bean>
+<!--***********************最大号表  forward配置结束***********************************-->
+
+
+
+<!--*******************************serviceSupport.xml******************************************-->
+<bean id="pubIdtableService" class="net.mast.bsp.base.id.service.support.PubIdtableServiceImpl"> 
+	<property name="pubIdtableDomain"><ref bean="pubIdtableDomain"/></property>  
+	  	
+	<property name="transactionTemplate"><ref bean="jdbcTransactionTemplate"/></property>
+</bean>
+
+<!--*****************************domainSupport.xml*****************************************-->
+<bean id="pubIdtableDomain" class="net.mast.bsp.base.id.domain.support.PubIdtableDomainImpl"> 
+	<property name="pubIdtableDao"><ref bean="pubIdtableDao"/></property>
+</bean>
+
+
+<!--***********************同时在collentionSupport.xml 中添加***************************-->
+<bean id="PUBIDTABLE_ISPREFIX_COLLECTION" class="net.mast.waf.data.EnumCollection">
+	    <property name="enumName"><value>PUBIDTABLE.ISPREFIX</value></property>
+	    <property name="enumService"><ref bean="enumService"/></property>
+</bean>
+<bean id="PUBIDTABLE_ISSUFFIX_COLLECTION" class="net.mast.waf.data.EnumCollection">
+	    <property name="enumName"><value>PUBIDTABLE.ISSUFFIX</value></property>
+	    <property name="enumService"><ref bean="enumService"/></property>
+</bean>
+<bean id="PUBIDTABLE_ISGLOBAL_COLLECTION" class="net.mast.waf.data.EnumCollection">
+	    <property name="enumName"><value>PUBIDTABLE.ISGLOBAL</value></property>
+	    <property name="enumService"><ref bean="enumService"/></property>
+</bean>
+
+
+<!--***********************同时在commandSupport.xml 中添加下面代码***************************-->
+		<bean id="pub_idtable_interceptor" class="net.mast.waf.interceptor.CollectionInterceptor">
+	    	<property name="collections">
+    	    	<map>
+				<entry key="PUBIDTABLE_ISPREFIX_COLLECTION"><ref bean="PUBIDTABLE_ISPREFIX_COLLECTION"/></entry>
+				<entry key="PUBIDTABLE_ISSUFFIX_COLLECTION"><ref bean="PUBIDTABLE_ISSUFFIX_COLLECTION"/></entry>
+				<entry key="PUBIDTABLE_ISGLOBAL_COLLECTION"><ref bean="PUBIDTABLE_ISGLOBAL_COLLECTION"/></entry>
+			</map>
+    	</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,347 @@
+<HTML>
+<HEAD>
+<TITLE>TAB属性</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+ 
+
+
+<style>
+td,body,select,div,span,button { font-size: 9pt; font-family:Arial; }
+BUTTON {width:5em; border-width: 1pt; }
+input { font-size: 9pt; padding:1pt 3pt;}
+.title {}
+a:link { color: #0000BB }
+a:visited { color: #0000BB }
+</style>
+
+
+<script>
+var win=window.dialogArguments;
+var modalObj=win.JsObj.getTabAll();
+
+
+ 
+
+function init()
+{
+var intxt=modalObj.tabname;
+if(intxt!=null)
+document.all("tabname").value=intxt;
+var windowname=modalObj.windowname;
+if(windowname!=null)
+document.all("windowname").value=windowname;
+var tabdes=modalObj.tabdes;
+if(tabdes!=null)
+document.all("tabdes").value=tabdes;
+var editobject=modalObj.editobject;
+if(editobject!=null)
+document.all("editobject").value=editobject;
+
+var maintab=modalObj.maintab;
+if(maintab!=null)
+selected("maintab",maintab);
+
+var detailtab=modalObj.detailtab;
+if(detailtab!=null)
+selected("detailtab",detailtab);
+
+var detailrows=modalObj.detailrows;
+if(detailrows!=null)
+document.all("detailrows").value=detailrows;
+
+
+ var tab_width=modalObj.width;
+if(tab_width!=null && !isNaN(tab_width))
+document.all("tab_width").value=tab_width;
+
+var ISUPDATE=modalObj.ISUPDATE;
+if(ISUPDATE!=null)
+selected("ISUPDATE",ISUPDATE);
+
+var buttonlyout=modalObj.buttonlyout;
+if(buttonlyout!=null)
+document.all("buttonlyout").value=buttonlyout;
+
+
+var buttonstyle=modalObj.buttonstyle;
+if(buttonstyle!=null)
+selected("buttonstyle",buttonstyle);
+
+
+
+
+
+var treetype=modalObj.treetype;
+if(treetype!=null)
+selected("treetype",treetype);
+var tab_INTERCEPTOR=modalObj.tab_INTERCEPTOR;
+if(tab_INTERCEPTOR!=null)
+document.all("tab_INTERCEPTOR").value=tab_INTERCEPTOR;
+
+}
+function dosave()
+{
+	var intxt=document.all("tabname").value;
+	if(intxt==null || intxt=="")
+	{
+	alert("名称不能为空，请输入！");
+	return false;
+	}
+	modalObj.tabname=intxt;
+	var windowname=document.all("windowname").value;
+	if(windowname==null || windowname=="")
+	{
+	//alert("所属Window不能为空！");
+	//return false;
+	}
+	modalObj.windowname=windowname;
+
+	var tabdes=document.all("tabdes").value;
+	if(tabdes!=null && tabdes!="")
+		modalObj.tabdes=tabdes;
+	else
+	{
+		alert("描述不能为空，请输入！");
+		return false;
+	}
+
+var editobject=document.all("editobject").value;
+if(editobject==null || editobject=="")
+{
+//alert("编辑对象不能为空！");
+//return false;
+}
+modalObj.editobject=editobject;
+var maintab=document.all("maintab").value;
+if(maintab!=null)
+modalObj.maintab=maintab;
+var detailtab=document.all("detailtab").value;
+if(detailtab!=null)
+modalObj.detailtab=detailtab;
+
+modalObj.ISUPDATE = document.all("ISUPDATE").value;
+
+var detailrows=document.all("ISUPDATE").value;
+
+if(detailrows!="" && isNaN(detailrows))
+{
+	alert("明细最大行数的值必须是整数，请核对后重新输入！");
+	return false;
+}
+else
+{
+	modalObj.detailrows=detailrows;
+}
+var buttonlyout=document.all("buttonlyout").value;
+if(buttonlyout!=null)
+modalObj.buttonlyout=buttonlyout;
+
+
+var tab_width=document.all("tab_width").value;
+if(tab_width!="" && isNaN(tab_width))
+{
+	  		alert("表单总宽度的值必须是整数，请核对后重新输入！");
+			 
+			return false;
+}
+else
+	modalObj.width=tab_width;
+
+
+var buttonstyle=document.all("buttonstyle").value;
+if(buttonstyle!=null && buttonstyle!="")
+	modalObj.buttonstyle=buttonstyle;
+else
+{
+	 alert("自定义按钮布局不能为空，请选择！"); 
+     return false;
+}
+
+
+
+
+
+var treetype=document.all("treetype").value;
+if(treetype!=null)
+modalObj.treetype=treetype;
+var tab_INTERCEPTOR=document.all("tab_INTERCEPTOR").value;
+if(tab_INTERCEPTOR!=null)
+modalObj.tab_INTERCEPTOR=tab_INTERCEPTOR;
+
+
+
+
+ 
+for(var i=0;i<modalObj.getElementsByTagName("input").length;i++)
+{
+	modalObj.getElementsByTagName("input")[i].MOF_FIELD_ID = "@"+document.all("tabname").value+"."+ modalObj.getElementsByTagName("input")[i].fieldname +"@";
+}
+ 
+var currentInsertPoint = modalObj.parentElement;
+for(var m=0;m<currentInsertPoint.children.length;m++)
+{
+	if(modalObj == currentInsertPoint.children[m] && m==0)
+	
+	{
+		 
+				for(var c=0;c<currentInsertPoint.parentElement.children[0].children[0].children[0].children.length;c++)
+				{
+ 
+					if(currentInsertPoint.parentElement.children[0].children[0].children[0].children[c].className=="taboncss")
+						currentInsertPoint.parentElement.children[0].children[0].children[0].children[c].innerHTML = tabdes;
+				}
+			 
+	}
+}
+
+
+window.returnValue="true";
+window.close();
+}
+//根据下拉域的ＮＡＭＥ，选项使该项selected
+function selected(sel,opi)
+{
+var select=document.all(sel);
+if(select==null || select.tagName!="SELECT")
+	return;
+	for(var i=0;i<select.options.length;i++)
+	{
+	if(select.options[i].value==opi)
+		select.options[i].selected=true;
+	}
+	if(select.onchange!=null)
+	select.onchange();
+}
+
+</script>
+</HEAD>
+
+<BODY bgcolor=buttonface onload="init();">
+<fieldset  class="radiogroup" style="padding:10px;"><legend class=title>Tab定义</legend>
+<table border="0" height="100%" width="90%" cellspacing="0" cellpadding="0" style="padding-left:10px">
+	<tr style="display:none">
+		<td >
+		所属Window：
+		</td>
+		<td >
+		<input size=20 name="windowname">  
+		</td>
+	</tr>
+	<tr>
+		<td nowrap>
+		名称：
+		</td>
+		<td >
+		<input size=20 name="tabname"><font color="#FF0000"> *</font>
+		</td>
+	</tr>
+	<tr>
+	<td nowrap>
+	描述：
+	</td>
+	<td >
+	<textarea  name="tabdes"></textarea><font color="#FF0000"> *</font>
+	</td>
+</tr>	
+<tr style="display:none">
+	<td nowrap>
+	编辑对象：
+	</td>
+	<td >
+	<input name="editobject" size=20><font color="#FF0000"> *</font>
+	</td>
+</tr>	<tr>
+	<td nowrap>
+	是否主Tab：
+	</td>
+	<td >
+	<select name="maintab"><option value=1>是</option><option value=0 selected>否</option></select>
+	</td>
+</tr>	
+<tr>
+	<td nowrap>
+	是否明细Tab：
+	</td>
+	<td >
+	<select name="detailtab"><option value=1>是</option><option value=0 selected>否</option></select>
+	</td>
+</tr>	
+
+<tr>
+	<td nowrap>
+	是否可更新：
+	</td>
+	<td >
+	<select name="ISUPDATE"><option value=1 selected>是</option><option value=0 >否</option></select>
+	</td>
+</tr>
+
+<tr>
+	<td nowrap>
+	明细最大行数：
+	</td>
+	<td >
+	<input size=20 name="detailrows">
+	</td>
+</tr>
+
+<tr>
+	<td nowrap>
+	表单总宽度：
+	</td>
+	<td >
+		<input size="20" name="tab_width">
+	</td>
+</tr>
+
+
+<tr>
+	<td nowrap>
+	页面布局：
+	</td>
+	<td >
+		<input size="20" name="buttonlyout">
+	</td>
+</tr>
+
+<tr>
+	<td nowrap>
+	自定义按钮布局：
+	</td>
+	<td >
+<select name="buttonstyle"><option value="">请选择</option>
+<option value="5">增加页面</option>
+<option value="1" selected="selected">查询列表</option>
+<option value="2">明细页面</option>
+<option value="3">修改与明细</option>
+<option value="4">编辑字段</option></select><font color="#FF0000"> *</font>
+	</td>
+</tr>
+<tr>
+	<td nowrap>
+	是否树型展示：
+	</td>
+	<td >
+	<select name="treetype"><option value=1>是</option><option value=0 selected>否</option></select>
+	</td>
+</tr>
+<tr>
+	<td nowrap>
+	拦截操作：
+	</td>
+	<td >
+	<input size=20 name="tab_INTERCEPTOR">
+	</td>
+</tr>
+
+
+<tr>
+	<td colspan=2 align=center>
+	<br>
+	<BUTTON ID=Ok TYPE=SUBMIT onclick="dosave();">确定</BUTTON>&nbsp; &nbsp; <BUTTON ONCLICK="window.close();">取消</BUTTON>
+	</td>
+</tr>
+</table>
+</fieldset>
+</BODY>   
+</HTML>

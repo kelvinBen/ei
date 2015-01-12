@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+<!--***********************翻页初始化特殊查询配置开始*************-->
+	<bean id="processtypequery" class="net.mast.workflow.wfclient.processmanage.processType.action.WfProcessTypeQueryPageInitAction">
+	    <property name="wfProcessTypeService"><ref bean="wfProcessTypeService"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="speQuery"><ref bean="wfprocesstypeforward"/></entry>
+	        </map>
+        </property>
+ 
+        <property name="pageSize">
+        	<value>15</value>
+        </property>
+	</bean>
+
+<!--***********************视图对象View配置****************************************-->
+	<bean id="wfProcessTypeView"  class="net.mast.workflow.wfclient.processmanage.processType.view.WfProcessTypeView" singleton="false"/>
+
+<!--***********************action配置开始*********************************************-->
+    <bean id="processtype" class="net.mast.workflow.wfclient.processmanage.processType.action.WfProcessTypeAction" singleton="false">
+	    <property name="wfProcessTypeService"><ref bean="wfProcessTypeService"/></property>
+	    <property name="view"><ref bean="wfProcessTypeView"/></property>
+	    <property name="forwards">
+	        <map>
+	            <entry key="wfprocesstypeView"><ref bean="wfprocesstypeforward"/></entry>
+	            <entry key="wfprocesstypeViewChain"><ref bean="wfprocesstypeforwardchain"/></entry>
+	        </map>
+		</property>
+ 
+    </bean>
+ 
+<!--***********************action配置结束*******************************-->
+
+<!--***********************界面转向配置开始*************************-->
+    <bean id="wfprocesstypeforward" class="net.mast.waf.mvc.ServletDispatcherForward">
+	    <property name="mappings">
+			<props>		    		    
+			    <prop key="detail">jsp/workflow/processtype/wf_process_type_detail.jsp</prop>
+			    <prop key="forinsert">jsp/workflow/processtype/wf_process_type_forinsert.jsp</prop>
+			    <prop key="forupdate">jsp/workflow/processtype/wf_process_type_forupdate.jsp</prop>
+			    <prop key="queryPageInit">jsp/workflow/processtype/wf_process_type_query_init.jsp</prop>  
+
+			</props>
+		</property>
+	</bean>
+    <bean id="wfprocesstypeforwardchain" class="net.mast.waf.mvc.ChainForward">
+	    <property name="mappings">
+			<map>
+			    <entry key="success"><ref bean="processtypequery"/></entry>
+			</map>
+		</property>
+    </bean>
+<!--***********************界面转向forward配置结束***********************************-->
+<!--********************字典服务***********************-->
+	<bean id="WFPROCESSTYPE_ISALLSUB_COLLECTION" class="net.mast.waf.data.EnumCollection">
+		    <property name="enumName"><value>WFPROCESSTYPE.ISALLSUB</value></property>
+		    <property name="enumService"><ref bean="enumService"/></property>
+	</bean>
+
+</beans>

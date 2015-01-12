@@ -1,0 +1,253 @@
+##PAGEָ����̶���
+#set($tabs =${window.Tabs})
+<%@ page contentType="text/html;charset=GBK" %>
+<%@ page import="net.mast.mof.util.MultiRequestUtil"%>
+
+##PAGEָ���������
+
+##TAGLIB�̶���
+<%@ taglib uri="/tags/web-html" prefix="html"%>
+#if ($tabs.size()>1)
+<%@ taglib uri="/tags/web-tab" prefix="tab"%>
+#end
+<%@ taglib uri="/tags/web-widgets" prefix="widgets"%>
+<%@ taglib uri="/tags/web-mast" prefix="ntmast"%>
+<%@ taglib uri="/tags/web-grid" prefix="grid"%>
+<%@ taglib uri="/tags/metadata" prefix="meta"%>
+<%@ taglib uri="/tags/pubcommonhelp" prefix="help"%>
+##TAGLIB������
+
+##JAVA����̶���
+<%
+	String ret_url = (String)request.getAttribute("return_url");
+	if( ret_url == null )
+		ret_url = MultiRequestUtil.getParameter(request,"return_url");
+	String main_pk = (String)request.getAttribute("main_primaryKey");
+	if( main_pk == null )
+		main_pk = MultiRequestUtil.getParameter(request,"main_primaryKey");
+	java.util.Map html_data = (java.util.Map) request.getAttribute("html.data") ;
+	Object pk_this = html_data.get("primaryKey");
+	String queueId = MultiRequestUtil.getParameter(request,"queueId");
+
+	String processtype = MultiRequestUtil.getParameter(request,"processType");
+	if( processtype == null)
+		processtype = "";
+		
+	String parent = MultiRequestUtil.getParameter(request,"parent_window");
+	String extReturnUrl = MultiRequestUtil.getParameter(request,"EXT_RETURN_URL");
+%>
+##JAVA���������
+
+##HTMLͷ�̶���
+<HTML>
+<HEAD>
+<TITLE>${window.Description}��ϸ</TITLE>
+#set ($have_tab =($window.hasHtmlTab()) )
+<link rel="stylesheet" type="text/css" href="<ntmast:ui css='editgrid.css'/>">
+<link rel="stylesheet" type="text/css" href="<ntmast:ui css='skin.css'/>">
+<script language="javascript" src="<ntmast:ui js='tab.js'/>"></script>
+<script language="javascript" src="<ntmast:ui js='grid.js'/>"></script>
+<script language="javascript" src="<ntmast:ui js='mof.js'/>"></script>
+
+##HTMLͷ������
+##����Զ���ű��ļ�
+##foreach( $table in $window.getAllTable() )
+#foreach( $custom_js in $window.getIncludeJsFiles("D") )
+<script language="javascript" src="<ntmast:ui js='$custom_js'/>"></script>
+#end
+##end
+</HEAD>
+
+##HTML�壨�������̶���
+<BODY topmargin="10px">
+<div id=imgPosition style=position:absolute;top:0px;left:0px;z-index:1;display:none>
+	<img src="">
+</div>
+<script>
+document.body.attachEvent("onclick",hidImage);
+</script>
+
+
+
+
+
+<html:form  name="frmList"  action="">
+
+##���ص�grid������ͨ�ò�ѯ����
+<div style="display:none">
+	<grid:grid name="condition" sumRow="false" complexHead="false" property="condition" type="edit" headHeight="22"  sumHeight="22" width="100%" height="100">
+		<grid:primaryKeyCol index="1" name="ID" property="ID" caption="ѡ��"  xml="ID" width="30" style="width:100%;" styleClass="default"  />
+		<grid:selectCol index="2" name="left_bracket" property="left_bracket" caption="������" width="40" size="1" ><grid:options collection="left_bracket.Collection" labelProperty="Name" property="ID"  /></grid:selectCol>
+		<grid:selectCol index="3" name="field" property="field" caption="��"  xml="field" width="150"  ><grid:options collection="field.Collection" labelProperty="Name" property="ID"  /></grid:selectCol>
+		<grid:selectCol index="4" name="compare" property="compare" caption="�ȽϷ�" xml="compare" width="60" size="1" ><grid:options collection="compare.Collection" labelProperty="Name" property="ID"  /></grid:selectCol>
+		<grid:textCol  index="5" name="value" property="value" caption="ֵ" xml="value" width="150" style="width:100%;" styleClass="default"  />			
+		<grid:selectCol index="2" name="right_bracket" property="right_bracket" caption="������" width="40" size="1" ><grid:options collection="right_bracket.Collection" labelProperty="Name" property="ID"  /></grid:selectCol>
+		<grid:selectCol index="7" name="link" property="link" caption="���ӷ�" width="70" size="1" ><grid:options collection="link.Collection" labelProperty="Name" property="ID"  /></grid:selectCol>
+	</grid:grid>
+</div>
+
+<%if(main_pk!=null){%>
+	<input type="hidden" name="main_primaryKey" value="<%=main_pk%>" />
+##<%}else if(pk_this!=null){%>
+##	<input type="hidden" name="main_primaryKey" value="<%=pk_this%>" />
+<%}%>
+<%if(parent!=null){%>
+	<html:hidden name="parent_window" value="<%=parent%>" />
+<%}%>
+
+<%if(ret_url!=null){%>
+	<html:hidden name="return_url" value="<%=ret_url%>" />
+<%}%>
+<html:hidden name="window_name" value="${window.Name}" />
+<html:hidden name="mof_process_save" value="0" />
+<html:hidden name="primaryKey" property="primaryKey"/>
+<%if(queueId != null) {%>
+<html:hidden name="queueId" value="<%=queueId%>" />
+<%}%>
+<html:hidden name="processType" value="<%=processtype%>"/>
+<%if(extReturnUrl != null){%>
+<input type="hidden" name="EXT_RETURN_URL" value="<%=extReturnUrl%>">
+<%}%>
+
+##HTML�壨������������
+
+##��ť��̶���
+<widgets:container title="${window.Description}��ϸ" >
+#set ( $Tab = $window.MainTab)
+
+#if( $Tab.getAllSysBtnFields().size()==0 )
+#if ( $Tab.isUpdate()&&$window.canUpdate() )
+<widgets:containbutton text="�޸�" name="update_sysBut_detail" onclick="forUpdate()"></widgets:containbutton>
+#end
+#if( $Tab.hasTree()==false)
+<widgets:containbutton text="����" name="return_sysBut_detail" onclick="forReturn()"></widgets:containbutton>
+#end
+#end
+
+##��ť�������
+##���ϵͳ��ť���Զ��尴ť
+#foreach( $field in $Tab.Fields )
+	${field.outButton("Detail")}
+#end
+
+<html:messages></html:messages>
+
+##���չʾ��
+#if( $have_tab)
+<tab:tab  id="tab1" type="table">
+#else 
+<div >
+#end
+
+#foreach( $tab in $tabs )
+
+	#if( $have_tab )
+		#if( $tab.isSameTab()==false || $velocityCount == 1 )
+			#if( $velocityCount > 1)
+	</tab:card>	
+			#end
+	<tab:card text="${tab.Description}" id="${tab.Name}">
+		#end
+	#end
+
+	#if( $tab.isDetail() )
+		#parse ("detail-grid.vm")
+	#else
+		#parse ("detail-form.vm")
+	#end
+
+#end
+
+#if( $have_tab)
+	</tab:card>
+  </tab:tab>
+#else
+</div>
+#end
+
+</widgets:container>
+
+##Html�壨�ײ����̶���
+</html:form>
+</BODY>
+</HTML>
+##Html�壨�ײ���������
+
+##HTMLβ�̶���
+<script language="javascript">
+//condition.show();
+
+
+#if( $Tab.getAllSysBtnFields().size()==0 )
+function forUpdate(){
+	document.forms[0].action="mofexec.cmd?method=forupdate&window_name=${window.Name}";
+	document.forms[0].submit();
+	disableButton(true);
+}
+#if ( $window.isCustomReturn() )
+function forReturn(){
+	location.href="$window.getCustomReturn()&primaryKey=<%=main_pk%>";
+	
+	disableButton(true);
+}
+#else
+function forReturn(){
+	<%if( extReturnUrl != null&&!"".equals(extReturnUrl) ){ %>	
+	location.href="<%=extReturnUrl%>";
+	<%}else if( ret_url == null||"".equals(ret_url) ){ %>	
+	location.href="mofexecquery.cmd?window_name=${window.Name}&clear=true";
+	<%}else{%>
+	location.href="<%=ret_url%>";
+	<%}%>
+	
+	disableButton(true);
+}
+#end
+#end
+
+##���ϵͳ��ť��Ӧ�Ľű�
+#foreach( $sysBtnField in $Tab.getAllSysBtnFields())
+	${sysBtnField.outScriptFunction("Detail")}
+#end
+
+#set ($first=true)
+#foreach( $tab in $tabs )
+	#if( $tab.isSameTab()==false && $velocityCount > 1)
+	#set ($first=false)
+	#end
+	#if( $tab.isDetail() && $first  && !$have_tab)
+	##web���5.0ע�͵������,��Tab������������
+	grid_${tab.Name}.show();
+	grid_${tab.Name}.setSumText("");
+	#end	
+#end
+#if( $have_tab )
+tab1.doCardClick=function(card){	
+	#foreach( $tab in $tabs )
+		#if( $tab.isDetail() )
+		if(card.id=="${tab.getFirstTabInHtml().Name}")
+		grid_${tab.Name}.show();
+		grid_${tab.Name}.setSumText("");
+		#end
+	#end
+}
+//ʹ�����Ҽ�ͷ�����л�Card
+function doMofCardKeyDown() {
+ if(window.event.keyCode == 39) {
+    tab1.doTabClick(tab1.getNextIndex(tab1.getCurrentCardIndex()));
+ }
+ else if (window.event.keyCode == 37) {
+    tab1.doTabClick(tab1.getPreviousIndex(tab1.getCurrentCardIndex()));
+ }
+}
+document.attachEvent("onkeydown",doMofCardKeyDown);
+#end
+
+##HTMLβ������
+##����Զ���ű�����
+##foreach( $table in $window.getAllTable() )
+##$table.getCustomJs()
+#foreach( $customJs in $window.getCustomJsFunction() )
+$customJs
+#end
+</script>

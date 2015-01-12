@@ -1,0 +1,23 @@
+<script language="javascript" src="calendarPage.js"></script>
+
+<html>
+<head>
+<title>日期选择</title>
+<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+</head>
+<body>
+<!--<button onclick="alert(tt.getDate('-'))">getDate</button>-->
+<div id='eee'></div>
+</body>
+<script language="javascript">
+var tt=new CalendarPage("tt");
+
+function DoClick()
+{//tt.saveValue();
+window.returnValue=tt.getDate('-');
+window.close();
+}
+
+tt.init("eee",'','-');
+tt.setTargetFormat("yyyy年MM/dd");
+</script>

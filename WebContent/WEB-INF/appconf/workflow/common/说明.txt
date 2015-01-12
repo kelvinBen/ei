@@ -1,2 +1,0 @@
-如果使用的数据库不是sqlServer,需要修改workflowconf.xml和workformcong.xml两个文件.
-1.将对sqlserver专用的bean注释掉，而将对应的bean打开。默认的是使用sqlserver.
