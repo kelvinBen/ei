@@ -3,7 +3,7 @@
 <web-app id="WebApp_1087364390062">
 	<context-param id="ContextParam_1086328608344">
 		<param-name>contextConfigLocation</param-name>
-		<param-value> /WEB-INF/conf/**/*.xml, /WEB-INF/appconf/**/*.xml,  </param-value>
+		<param-value> /WEB-INF/conf/**/*.xml, /WEB-INF/appconf/**/*.xml</param-value>
 	</context-param>
 	
 	<filter id="Filter_1086328608359">
